@@ -1,17 +1,17 @@
-<?php /* Smarty version Smarty-3.0.7, created on 2013-01-31 23:44:01
+<?php /* Smarty version Smarty-3.0.7, created on 2013-02-01 00:38:24
          compiled from "E:\UATME_OA/template/modules\system/country.list.html" */ ?>
-<?php /*%%SmartyHeaderCode:2837510a9141588db6-42070108%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:8204510a9e003548a9-26302046%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
     '86e073e44bc808fed3678e1a713f18401aff19f4' => 
     array (
       0 => 'E:\\UATME_OA/template/modules\\system/country.list.html',
-      1 => 1355789619,
+      1 => 1359650298,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '2837510a9141588db6-42070108',
+  'nocache_hash' => '8204510a9e003548a9-26302046',
   'function' => 
   array (
   ),
@@ -28,13 +28,13 @@ $_smarty_tpl->decodeProperties(array (
 		<tr>
 			<th>国家名称</th>
 			<th>国家缩写</th>
-			<th>是否可用</th>
+			<th>可用</th>
 			<th>操作</th>
 		</tr>
 		<tr>
 			<td><input id="countryName" class="span-2"/>+新增</td>
 			<td><input id="countryNameshort" class="span-3"/></td>
-			<td><input id="countryAvailable" class="span-1"/></td>
+			<td><input id="countryAvailable" type="checkbox" value="1" checked/></td>
 			<td><span class="clickbtn span-2" id="addCountry"> [添加] </span></td>
 		</tr>
 		<?php  $_smarty_tpl->tpl_vars['c'] = new Smarty_Variable;
@@ -47,8 +47,7 @@ if ($_smarty_tpl->_count($_from) > 0){
 " class="span-2 countryName"/></td>
 			<td><input value="<?php echo $_smarty_tpl->tpl_vars['c']->value['nameshort'];?>
 " class="span-3 countryNameshort"/></td>
-			<td><input value="<?php echo $_smarty_tpl->tpl_vars['c']->value['available'];?>
-" class="span-1 countryAvailable"/></td>
+			<td><input value="1" class="span-1 countryAvailable" type="checkbox" <?php if ($_smarty_tpl->tpl_vars['c']->value['available']==1){?>checked<?php }?>/></td>
 			<td><span class="clickbtn saveCountry" i="<?php echo $_smarty_tpl->tpl_vars['c']->value['id'];?>
 "> [保存] </span> <span class="clickbtn deleteCountry" i="<?php echo $_smarty_tpl->tpl_vars['c']->value['id'];?>
 "> [删除] </span></td>

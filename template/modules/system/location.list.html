@@ -8,22 +8,30 @@
 			<th>地区名称</th>
 			<th>地区缩写</th>
 			<th>所属国家</th>
-			<th>是否可用</th>
+			<th>可用</th>
 			<th>操作</th>
 		</tr>
 		<tr>
 			<td><input id="locationName" class="span-2"/>+新增</td>
 			<td><input id="locationNameshort" class="span-3"/></td>
-			<td><input id="locationCountry" class="span-1"/></td>
-			<td><input id="locationAvailable" class="span-1"/></td>
+			<td><select id="locationCountry">
+				<{foreach from=$country item=c}>
+					<option value="<{$c.id}>"><{$c.name}></option>
+				<{/foreach}>
+				</select></td>
+			<td><input id="locationAvailable" type="checkbox" value="1" checked/></td>
 			<td><span class="clickbtn span-2" id="addLocation"> [添加] </span></td>
 		</tr>
 		<{foreach from=$location item=l}>
 		<tr>
 			<td><input value="<{$l.name}>" class="span-2 locationName"/></td>
 			<td><input value="<{$l.nameshort}>" class="span-3 locationNameshort"/></td>
-			<td><input value="<{$l.country}>" class="span-1 locationCountry"/></td>
-			<td><input value="<{$l.available}>" class="span-1 locationAvailable"/></td>
+			<td><select class="locationCountry">
+				<{foreach from=$country item=c}>
+					<option value="<{$c.id}>" <{if $l.location_id==$c.id}>selected<{/if}>><{$c.name}></option>
+				<{/foreach}>
+				</select></td>
+			<td><input value="1" class="span-1 locationAvailable" type="checkbox" <{if $l.available==1}>checked<{/if}>/></td>
 			<td><span class="clickbtn saveLocation" i="<{$l.id}>"> [保存] </span> <span class="clickbtn deleteLocation" i="<{$l.id}>"> [删除] </span></td>
 		</tr>
 		<{/foreach}>

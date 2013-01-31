@@ -193,7 +193,14 @@ if($_SESSION['if_system_admin'] == 1){
 			$smarty->assign($assign);
 			$smarty->display('system/country.list.html');
 			break;
-		case 'location.list':	
+		case 'location.list':
+			$sql = 'SELECT * FROM uatme_oa_system_country';
+			$result = $mysqli->query($sql);
+			if($result->num_rows > 0){
+				while($array = $result->fetch_assoc()){
+					$assign['country'][] = $array;
+				}
+			}	
 			$sql = 'SELECT * from uatme_oa_system_location';
 			$result = $mysqli->query($sql);
 			if($result->num_rows > 0){
@@ -203,6 +210,42 @@ if($_SESSION['if_system_admin'] == 1){
 			}			
 			$smarty->assign($assign);
 			$smarty->display('system/location.list.html');
+			break;
+		case 'department.list':	
+			$sql = 'SELECT * FROM uatme_oa_system_location';
+			$result = $mysqli->query($sql);
+			if($result->num_rows > 0){
+				while($array = $result->fetch_assoc()){
+					$assign['location'][] = $array;
+				}
+			}
+			$sql = 'SELECT * from uatme_oa_system_department';
+			$result = $mysqli->query($sql);
+			if($result->num_rows > 0){
+				while($array = $result->fetch_assoc()){
+					$assign['department'][] = $array;
+				}
+			}			
+			$smarty->assign($assign);
+			$smarty->display('system/department.list.html');
+			break;
+		case 'position.list':
+			$sql = 'SELECT * FROM uatme_oa_system_department';
+			$result = $mysqli->query($sql);
+			if($result->num_rows > 0){
+				while($array = $result->fetch_assoc()){
+					$assign['department'][] = $array;
+				}
+			}
+			$sql = 'SELECT * FROM uatme_oa_system_position';
+			$result = $mysqli->query($sql);
+			if($result->num_rows > 0){
+				while($array = $result->fetch_assoc()){
+					$assign['position'][] = $array;
+				}
+			}				
+			$smarty->assign($assign);
+			$smarty->display('system/position.list.html');
 			break;
 		case 'privilege.list':			
 			$smarty->assign($assign);
@@ -280,21 +323,6 @@ if($_SESSION['if_system_admin'] == 1){
 				$error = '服务器忙，请稍后再试';
 			}
 			sendResponse($httpstatus, $error, $msg);
-			break;
-		case 'department.list':	
-			$sql = 'SELECT * from uatme_oa_system_department';
-			$result = $mysqli->query($sql);
-			if($result->num_rows > 0){
-				while($array = $result->fetch_assoc()){
-					$assign['department'][] = $array;
-				}
-			}			
-			$smarty->assign($assign);
-			$smarty->display('system/department.list.html');
-			break;
-		case 'position.list':			
-			$smarty->assign($assign);
-			$smarty->display('system/position.list.html');
 			break;
 	}		
 }else{

@@ -1,5 +1,42 @@
 <{include file="header.html"}>
 <{include file="topnav.html"}>
 
+
+<div class="container">
+	<table>
+		<tr>
+			<th>职位名称</th>
+			<th>职位缩写</th>
+			<th>所属部门</th>
+			<th>可用</th>
+			<th>操作</th>
+		</tr>
+		<tr>
+			<td><input id="positionName" class="span-2"/>+新增</td>
+			<td><input id="positionNameshort" class="span-3"/></td>
+			<td><select id="positionDepartment">
+				<{foreach from=$department item=d}>
+					<option value="<{$d.id}>"><{$d.name}></option>
+				<{/foreach}>
+				</select></td>
+			<td><input id="positionAvailable" type="checkbox" value="1" checked/></td>
+			<td><span class="clickbtn span-2" id="addPosition"> [添加] </span></td>
+		</tr>
+		<{foreach from=$position item=p}>
+		<tr>
+			<td><input value="<{$p.name}>" class="span-2 positionName"/></td>
+			<td><input value="<{$p.nameshort}>" class="span-3 positionNameshort"/></td>
+			<td><select class="positionDepartment">
+				<{foreach from=$department item=d}>
+					<option value="<{$d.id}>" <{if $p.department_id==$d.id}>selected<{/if}>><{$d.name}></option>
+				<{/foreach}>
+				</select></td>
+			<td><input value="1" class="span-1 positionAvailable" type="checkbox" <{if $p.available==1}>checked<{/if}>/></td>
+			<td><span class="clickbtn savePosition" i="<{$p.id}>"> [保存] </span> <span class="clickbtn deletePosition" i="<{$p.id}>"> [删除] </span></td>
+		</tr>
+		<{/foreach}>
+	</table>
+</div>
+
 <{include file="declaration.html"}>
 <{include file="footer.html"}>
