@@ -193,7 +193,14 @@ if($_SESSION['if_system_admin'] == 1){
 			$smarty->assign($assign);
 			$smarty->display('system/country.list.html');
 			break;
-		case 'location.list':			
+		case 'location.list':	
+			$sql = 'SELECT * from uatme_oa_system_location';
+			$result = $mysqli->query($sql);
+			if($result->num_rows > 0){
+				while($array = $result->fetch_assoc()){
+					$assign['location'][] = $array;
+				}
+			}			
 			$smarty->assign($assign);
 			$smarty->display('system/location.list.html');
 			break;
@@ -216,7 +223,72 @@ if($_SESSION['if_system_admin'] == 1){
 			$smarty->assign($assign);
 			$smarty->display('system/currency.list.html');
 			break;
-		case 'department.list':			
+		case 'currency.add':
+			$sql = 'SELECT orderby FROM uatme_oa_system_currency ORDER BY orderby DESC limit 1';
+			$result = $mysqli->query($sql);
+			if($result->num_rows == 1){
+				while($array=$result->fetch_assoc()){
+					$orderby = $array['orderby']+1;
+				}
+			}
+			$sql = 'INSERT INTO uatme_oa_system_currency (name, symbol, rate, date, orderby) 
+					VALUES ("'.$_POST['name'].'", 
+							"'.$_POST['symbol'].'", 
+							"'.$_POST['rate'].'",
+							"'.date('Y-m-d H:i:s').'",
+							"'.$orderby.'")';
+			if($mysqli->query($sql)){
+				if($mysqli->insert_id > 0){
+					$httpstatus = 200;
+					$msg = '添加汇率成功';
+				}else{
+					$httpstatus = 500;
+					$error = '服务器忙，请稍后再试';
+				}
+			}else{
+				$httpstatus = 500;
+				$error = '服务器忙，请稍后再试';
+			}
+			sendResponse($httpstatus, $error, $msg);
+			break;
+		case 'currency.save':
+			$sql = 'SELECT * FROM uatme_oa_system_currency WHERE id="'.$_POST['id'].'" AND available=1';
+			$result = $mysqli->query($sql);
+			if($result->num_rows == 1){
+				while($array = $result->fetch_assoc()){
+					$name = $array['name'];
+					$symbol = $array['symbol'];
+					$orderby = $array['orderby'];
+					$sql = 'UPDATE uatme_oa_system_currency SET available=0 WHERE id="'.$_POST['id'].'" AND available=1';
+					$mysqli->query($sql);
+					$sql = 'INSERT INTO uatme_oa_system_currency (name, symbol, rate, date, orderby) VALUES("'.$name.'","'.$symbol.'","'.$_POST['rate'].'","'.date('Y-m-d H:i:s').'","'.$orderby.'")';
+					if($mysqli->query($sql)){
+						if($mysqli->insert_id > 0){
+							$httpstatus = 200;
+							$msg = '保存汇率成功';
+						}else{
+							$httpstatus = 500;
+							$error = '服务器忙，请稍后再试';
+						}
+					}else{
+						$httpstatus = 500;
+						$error = '服务器忙，请稍后再试';
+					}
+				}
+			}else{
+				$httpstatus = 500;
+				$error = '服务器忙，请稍后再试';
+			}
+			sendResponse($httpstatus, $error, $msg);
+			break;
+		case 'department.list':	
+			$sql = 'SELECT * from uatme_oa_system_department';
+			$result = $mysqli->query($sql);
+			if($result->num_rows > 0){
+				while($array = $result->fetch_assoc()){
+					$assign['department'][] = $array;
+				}
+			}			
 			$smarty->assign($assign);
 			$smarty->display('system/department.list.html');
 			break;

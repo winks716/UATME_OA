@@ -1,0 +1,18 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+<div class="container">
+	<table>
+		<thead>
+			<tr><th>申请人</th><th>假期类型</th><th>起始-结束</th><th>代办</th><th>状态</th><th>操作</th></tr>
+		</thead>
+		<tbody>
+		<{foreach from=$apply item=a}>
+			<tr><td><{$a.applyer}></td><td><{$a.type}></td><td><{$a.start}> ~ <{$a.end}></td><td><{$a.alter}></td><td><{$a.status}></td><td></td></tr>
+		<{/foreach}>
+		</tbody>
+	</table>
+</div>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /* 
  * 主路由文件
  */
@@ -37,14 +37,7 @@ if(isset($_SESSION['employee_id']) && $_SESSION['employee_id']>0){
 	foreach($_POST as $k=>$v){
 		if(is_string($v)){
 			$_POST[$k] = htmlspecialchars($v);
-		}/*else if(is_array($v)){
-			foreach($v as $kk=>$vv){
-				if(is_string($vv)){
-					$v[$kk] = htmlspecialchars($vv);
-				}
-			}
-			$_POST[$k] = $v;
-		}*/
+		}
 	}
 	
 	//define privilege

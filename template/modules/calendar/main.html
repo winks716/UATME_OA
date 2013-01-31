@@ -1,10 +1,13 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
 <!--页面主体开始-->
       <!--顶部工具条定义开始-->
 	  <div class="container">
-                  <span class="clickbtn" onclick="javascript:$(this).parents('.ui-tabs-panel').load('index.php?m=calendar&year=<{$yearNow}>&month=<{$monthNow}>')">[<{$lang.calendar.thismonth}>]</span>
+                  <span class="clickbtn" onclick="javascript:window.location='index.php?m=calendar&s=index&year=<{$yearNow}>&month=<{$monthNow}>'">[<{$lang.calendar.thismonth}>]</span>
                   <{html_select_date prefix='selected_' field_order='YMD' month_value_format='%m' month_format='%m' time=$timestamp start_year='-1' end_year='+4' display_days=false}>
                   &nbsp;&nbsp;<select class="event_orderby"><option value="time"><{$lang.calendar.order.bytime}><option value="priority" <{if $key=='priority'}>selected<{/if}>><{$lang.calendar.order.bypriority}><option value="progress" <{if $key=='progress'}>selected<{/if}>><{$lang.calendar.order.byprogress}></select>
-                  <span class="clickbtn reloadCalendar" onclick="javascript:$(this).parents('.ui-tabs-panel').load('index.php?m=calendar&year='+$('select[name=\'selected_Year\']').val()+'&month='+$('select[name=\'selected_Month\']').val()+'&key='+$('select.event_orderby').val())">[<{$lang.calendar.go}>]</span>
+                  <span class="clickbtn reloadCalendar" onclick="javascript:window.location='index.php?m=calendar&s=index&year='+$('select[name=\'selected_Year\']').val()+'&month='+$('select[name=\'selected_Month\']').val()+'&key='+$('select.event_orderby').val()">[<{$lang.calendar.go}>]</span>
 		</div>
       <!--顶部工具条定义结束-->
       
@@ -49,16 +52,16 @@
                       </div>
                       <!--日历事件数据定义开始-->
                       <{foreach from=$data[$d[$i]] item=e}>
-                      <div class="event" d="<{if $e.detail!=''}><{$e.detail}><{else}>无<{/if}>" t="<{$e.title}>" style="padding:3px;word-wrap:break-word;overflow:hidden;width:100px;background:#FFFFCC;border-top:5px solid blue;text-decoration:<{if $e.progress==100}>line-through<{else}>none<{/if}>; border-top:solid 5px <{$e.color}>; color:<{if $e.priority==-2}>#AAAAAA<{else if $e.priority==-1}>#666666<{else if $e.priority==1}>orangered<{else if $e.priority==2}>#C60000<{else}>#000000<{/if}>;">
-                          <span style="font:bold 10px tahoma;"><{$e.hour}>:<{$e.minute}>&nbsp;&nbsp;
-                              <{if $e.eid==$user_id}>
-                              <span class="clickbtn delete_event" i="<{$e.id}>" title="<{$lang.calendar.deleteevent.tip}>">&nbsp;&nbsp;</span>
-                                  <span class="clickbtn at_event" i="<{$e.id}>" title="<{$lang.calendar.atevent.tip}>">&nbsp;&nbsp;&nbsp;</span>
-                                  <span class="clickbtn priority_event" i="<{$e.id}>" u="<{$e.priority}>" title="<{$lang.calendar.editpriority.tip}>">&nbsp;&nbsp;</span>
-                                  <span class="clickbtn progress_event" i="<{$e.id}>" p="<{$e.progress}>" title="<{$lang.calendar.editprogress.tip}>">&nbsp;&nbsp;&nbsp;</span>
+                      <div class="event" d="<{if $e.detail!=''}><{$e.detail}><{else}>无<{/if}>" t="<{$e.title}>" style="padding:3px;word-wrap:break-word;overflow:hidden;background:#FFFFCC;border-top:5px solid blue;text-decoration:<{if $e.progress==100}>line-through<{else}>none<{/if}>; border-top:solid 5px <{$e.color}>; color:<{if $e.priority==-2}>#AAAAAA<{else if $e.priority==-1}>#666666<{else if $e.priority==1}>orangered<{else if $e.priority==2}>#C60000<{else}>#000000<{/if}>;">
+                          <span style="font:bold 10px tahoma;">
+                              <{if $e.eid==$session.employee_id}>
+                              	  <span class="delete_event" style="color:blue;cursor:pointer;" i="<{$e.id}>" title="<{$lang.calendar.deleteevent.tip}>">&nbsp;&nbsp;&nbsp;</span>&nbsp;
+                                  <!-- <span class="at_event" style="color:blue;cursor:pointer;" i="<{$e.id}>" title="<{$lang.calendar.atevent.tip}>">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp; -->
+                                  <span class="priority_event" style="color:blue;cursor:pointer;" i="<{$e.id}>" u="<{$e.priority}>" title="<{$lang.calendar.editpriority.tip}>">&nbsp;&nbsp;&nbsp;</span>&nbsp;
+                                  <span class="progress_event" style="color:blue;cursor:pointer;" i="<{$e.id}>" p="<{$e.progress}>" title="<{$lang.calendar.editprogress.tip}>">&nbsp;&nbsp;&nbsp;&nbsp;</span>
                               <{/if}>
                               <br/>
-                              ~&nbsp;<{$e.end_hour}>:<{$e.end_minute}>
+                              <{$e.hour}>:<{$e.minute}>&nbsp;~&nbsp;<{$e.end_hour}>:<{$e.end_minute}>
                           </span><br/>
                           <{if $e.at_ename}><{$e.at_ename}><span style="color:red;">@</span><{if $e.eid!=$user_id}><{$e.ename}><{else}>me<{/if}><{/if}>
                           <span class="title">
@@ -83,6 +86,63 @@
 
 <!--页面主体结束-->
 
-<script type="text/javascript">
+<div id="alertDiv"></div>
 
-</script>
+<{include file="declaration.html"}>
+<{include file="footer.html"}>
+
+<script>
+        $(document).ready(function(){
+        	$('#alertDiv').dialog({
+        		width:600,
+        		height:420,
+        		modal:true,
+        		autoOpen:false
+        	});
+            $('span.day').click(function(){
+                var offset = $(this).offset();
+                $('#alertDiv').html('')
+                	.load('index.php?m=calendar&s=event&a=add',{'year':$(this).parent().attr('y'),'month':$(this).parent().attr('m'),'day':$(this).parent().attr('d')}).dialog('open');
+            })
+            $('div.event').hover(function(){
+                var offset = $(this).offset();
+                $('div.event_detail_div').find('div.title').html($(this).attr('t'));
+                $('div.event_detail_div').find('div.content').html($(this).attr('d'));
+                $('div.event_detail_div').css({'left':offset.left+$(this).width(),'top':offset.top}).show();
+            },function(){
+                $('div.event_detail_div').hide();
+            })
+            $('span.delete_event').click(function(){
+                $('.float_div').hide();
+                if(confirm('<{$lang.calendar.deleteevent.confirm}>')){
+                    $.post('index.php?m=calendar&s=event&a=delete',{'id':$(this).attr('i')},function(){
+                        window.location.reload();
+                    })
+                }
+            })
+            $('span.at_event').click(function(){
+                $('.float_div').hide();
+                var offset = $(this).offset();
+                $('div.add_at_div div.content').load('index.php?m=calendar&s=event&a=at',{'id':$(this).attr('i')},function(){
+                    $('div.add_at_div').css({left:offset.left-20,top:offset.top+15}).show();
+                });
+            })
+            $('span.priority_event').click(function(){
+                $('.float_div').hide();
+                var offset = $(this).offset();
+                $('div.edit_priority_div input[name="id"]').val($(this).attr('i'));
+                $('div.edit_priority_div :radio[value="'+$(this).attr('u')+'"]').attr('checked','checked');
+                $('div.edit_priority_div').css({left:offset.left-20,top:offset.top+15}).show();
+            })
+            $('span.progress_event').click(function(){
+                $('.float_div').hide();
+                var offset = $(this).offset();
+                $('div.edit_progress_div input[name="id"]').val($(this).attr('i'));
+                $('div.edit_progress_div :radio[value="'+$(this).attr('p')+'"]').attr('checked','checked');
+                $('div.edit_progress_div').css({left:offset.left-20,top:offset.top+15}).show();
+            })
+            $('.legend li').click(function(){
+                window.location='index.php?year='+$('select[name="selected_Year"]').val()+'&month='+$('select[name="selected_Month"]').val()+'&key='+$('select.event_orderby').val()+'&legendid='+$(this).attr('i');
+            })
+        })
+    </script>

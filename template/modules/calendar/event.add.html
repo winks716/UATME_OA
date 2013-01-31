@@ -1,28 +1,22 @@
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <title></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script>
+    /*$(function(){
+        $('table.add_event_tb .show_employee').toggle(function(){$('table.add_event_tb .at_employee_div').show();$(this).html('[点击隐藏员工列表]')},function(){$('table.add_event_tb .at_employee_div').hide();$(this).html('[点击展开员工列表]')});
+        $('table.add_event_tb .select_all').toggle(function(){$('table.add_event_tb .at_epid[di="'+$(this).attr('i')+'"]').attr('checked','checked');$(this).html('[全不选]')},function(){$('table.add_event_tb .at_epid[di="'+$(this).attr('i')+'"]').removeAttr('checked');$(this).html('[全选]')});
+    })*/
+    $(function(){
+    	$('#calendarEventDate').datepicker({
+    		dateFormat: 'yy-mm-dd'
+    	});
+    })
+</script>
     <style>
         table.add_event_tb{font:12px tahoma;width:280px;}
         table.add_event_tb div.at_employee_div{font:12px tahoma; display:none;}
     </style>
-    <script>
-        $(document).ready(function(){
-            $('table.add_event_tb .show_employee').toggle(function(){$('table.add_event_tb .at_employee_div').show();$(this).html('[点击隐藏员工列表]')},function(){$('table.add_event_tb .at_employee_div').hide();$(this).html('[点击展开员工列表]')});
-            $('table.add_event_tb .select_all').toggle(function(){$('table.add_event_tb .at_epid[di="'+$(this).attr('i')+'"]').attr('checked','checked');$(this).html('[全不选]')},function(){$('table.add_event_tb .at_epid[di="'+$(this).attr('i')+'"]').removeAttr('checked');$(this).html('[全选]')});
-        })
-    </script>
-  </head>
-  <body>
       <form class="add_event_form">
       <table class="add_event_tb" style="280px">
           <tr>
-              <th width="30px">日期</th><td><input onfocus="setday(this)" name="date" readonly style="background-color:#DEDEDE;" value="<{if $day}><{$year}>-<{$month}>-<{$day}><{else}><{$date}><{/if}>" size="9"/>
+              <th width="30px">日期</th><td><input id="calendarEventDate" name="date" readonly value="<{if $day}><{$year}>-<{$month}>-<{$day}><{else}><{$date}><{/if}>" size="9"/>
                   <strong>重复</strong>
                   <select name="lasting"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option></select><select name="lastingtype"><option value="0">工作日</option><option value="1">自然天</option></select></td>
           </tr>
@@ -55,12 +49,12 @@ and open the template in the editor.
           </tr>
           <tr>
               <th>标题</td>
-              <td><input name="title"/></td>
+              <td><input name="title" class="span-8"/></td>
           </tr>
           <tr>
               <th>内容</td><td><textarea name="detail" style="font:12px tahoma;"></textarea></td>
           </tr>
-          <tr>
+          <!-- <tr>
               <th><span style="color:red;">@</span>谁</td>
               <td>
                   <hr/>
@@ -78,11 +72,9 @@ and open the template in the editor.
                       <{/foreach}>
                   </div>
               </td>
-          </tr>
+          </tr> -->
           <tr>
               <td colspan="2" height="30px" align="center"><span class="clickbtn confirm_add_event" onclick="if(confirm('确认添加本事件?')){$.post('index.php?m=calendar&s=event&a=save.event',$('form.add_event_form').serialize(),function(){window.location.reload()})}">[确认添加]</span></td>
           </tr>
       </table>
       </form>
-  </body>
-</html>

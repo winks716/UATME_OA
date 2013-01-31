@@ -19,11 +19,11 @@
 		</tr>
 		<{foreach from=$currency item=c}>
 		<tr>
-			<td><{$c.name}><input type="hidden" class="currencyName"/></td>
-			<td><{$c.symbol}><input type="hidden" class="currencyName"/></td>
-			<td><input class="currencyName span-2" value="<{$c.rate}>"/></td>
+			<td><{$c.name}></td>
+			<td><{$c.symbol}></td>
+			<td><input class="currencyRate span-2" value="<{$c.rate}>"/></td>
 			<td><{$c.date}></td>
-			<td><span class="clickbtn saveCurrency" i="<{$c.id}>"> [保存] </span> <span class="clickbtn historyCountry" i="<{$c.id}>"> [历史] </span></td>
+			<td><span class="clickbtn saveCurrency" i="<{$c.id}>"> [保存] </span> <!-- <span class="clickbtn historyCountry" i="<{$c.id}>"> [历史] </span> --></td>
 		</tr>
 		<{/foreach}>
 	</table>
@@ -31,3 +31,51 @@
 
 <{include file="declaration.html"}>
 <{include file="footer.html"}>
+
+<script>
+$(function(){
+	
+	//add one employee
+	$('#addCurrency').click(function(){
+		if(confirm('确认要添加新的币种吗？')){
+			var name = $.trim($('#currencyName').val());
+			var symbol = $.trim($('#currencySymbol').val());
+			var rate = $.trim($('#currencyRate').val());
+			if(name != '' && symbol != '' && rate != ''){
+				$.post('index.php?m=system&s=setup&a=currency.add',{'name':name, 'symbol':symbol, 'rate':rate}, function(data){
+					var json = eval('(' + data + ')');
+					if(json.httpstatus == 200){
+						alert(json.msg);
+						window.location.reload();
+					}else{
+						alert(json.error);
+					}
+				})
+			}else{
+				alert('所有内容必填');
+			}	
+		}
+	})
+	
+	$('.saveCurrency').click(function(){
+		if(confirm('确认保存汇率修改结果吗？')){
+			var rate = $.trim($(this).parents('tr').find('.currencyRate').val());
+			var id = $(this).attr('i');
+			if(rate != ''){
+				$.post('index.php?m=system&s=setup&a=currency.save',{'rate':rate, 'id':id}, function(data){
+					alert(data);
+					var json = eval('(' + data + ')');
+					if(json.httpstatus == 200){
+						alert(json.msg);
+						window.location.reload();
+					}else{
+						alert(json.error);
+					}
+				})
+			}else{
+				alert('汇率必填');
+			}			
+		}
+	})
+})
+</script>

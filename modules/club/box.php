@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 switch($A){
 	case 'add':

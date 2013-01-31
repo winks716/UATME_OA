@@ -1,6 +1,7 @@
 <?php
 /**
 file: workflow.function.php
+
 version: 1
 author: vincent.shi
 path: /include/
@@ -14,7 +15,15 @@ workflow_init			//init workflow task based on workflow template
 
 */
 
-function workflow_init($apply_employee_id, $apply_type_english, $apply_id){
+function workflowForward(){
+	
+}
+
+function workflowBackward(){
+	
+}
+
+function workflowInit($apply_employee_id, $apply_type_english, $apply_id){
 	global $mysqli;
 	//workflow
 	//step1 select document type from workflow dbtable
@@ -117,8 +126,8 @@ function workflow_init($apply_employee_id, $apply_type_english, $apply_id){
 					}
 				}
 				//insert a new task for selected executer
-				$sql = 'INSERT INTO uatme_oa_workflow_task(document_typelv1_id, document_id, employee_id, orderby)
-						VALUES ("'.$document_typelv1_id.'", "'.$apply_id.'", "'.$executer_employee_id.'", "'.$array_workflow_template['orderby'].'")';
+				$sql = 'INSERT INTO uatme_oa_workflow_task(document_typelv1_id, document_id, employee_id, orderby, created_date, updated_date)
+						VALUES ("'.$document_typelv1_id.'", "'.$apply_id.'", "'.$executer_employee_id.'", "'.$array_workflow_template['orderby'].'", "'.Date('Y-m-d H:i:s').'", "'.Date('Y-m-d H:i:s').'")';
 						//echo $sql;
 				$mysqli->query($sql);
 				//increase task counter

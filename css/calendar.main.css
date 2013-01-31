@@ -24,17 +24,19 @@ div.eventdetail{position:absolute;}
 .calendar_table tr.data td.date{border:solid 1px #ABC3D7; background-color:#FFFFFF; width:100px; font:12px tahoma; height:70px; padding:3px; vertical-align:top;}
 .calendar_table tr.data td.date:hover{background-color:orange;}
 .calendar_table tr.data td.date span.day{font:bold 12px arial; color:black; cursor:pointer;}
-.calendar_table tr.data td.date span.day_view{background-image: url(../images/ui_icon.png);background-position:125 127;}
-.calendar_table tr.data td.date span.month_view{background-image: url(../images/ui_icon.png);background-position:110 127;display:none;}
+.calendar_table tr.data td.date span.day:hover{color:#999999;}
+.calendar_table tr.data td.date span.day_view{background-image: url(images/calendar/ui_icon.png);background-position:125 127;}
+.calendar_table tr.data td.date span.month_view{background-image: url(images/calendar/ui_icon.png);background-position:110 127;display:none;}
 
-.calendar_table tr.data td.date div.event{width:100px;background-color: #FFF9CF; margin-bottom:3px; padding:3px;}
+.calendar_table tr.data td.date div.event{width:95%;background-color: #FFF9CF; margin-bottom:3px; padding:3px;}
+.calendar_table tr.data td.date div.event:hover{background-color:#EBDBA5;}
 .calendar_table tr.data td.date div.event span.title{word-wrap:break-word;}
 
-.calendar_table tr.data td.date div.event span.delete_event{background-image: url(../images/ui_icon.png);background-position:172 111;}
-.calendar_table tr.data td.date div.event span.edit_event{background-image: url(../images/ui_icon.png);background-position:190 127;}
-.calendar_table tr.data td.date div.event span.at_event{background-image: url(../images/ui_icon.png);background-position:239 64;}
-.calendar_table tr.data td.date div.event span.priority_event{background-image: url(../images/ui_icon.png);background-position:221 95;}
-.calendar_table tr.data td.date div.event span.progress_event{background-image: url(../images/ui_icon.png);background-position:191 95;}
+.calendar_table tr.data td.date div.event span.delete_event{background-image: url(images/calendar/ui_icon.png);background-position:172px 111px;}
+.calendar_table tr.data td.date div.event span.edit_event{background-image: url(images/calendar/ui_icon.png);background-position:190px 127px;}
+.calendar_table tr.data td.date div.event span.at_event{background-image: url(images/calendar/ui_icon.png);background-position:239px 64px;}
+.calendar_table tr.data td.date div.event span.priority_event{background-image: url(images/calendar/ui_icon.png);background-position:221px 95px;}
+.calendar_table tr.data td.date div.event span.progress_event{background-image: url(images/calendar/ui_icon.png);background-position:191px 95px;}
 
 div.event_detail_div{position:absolute;display:none;border:solid 5px #ABC3D7;background-color: #EFF4F7; word-wrap:break-word;}
 div.event_detail_div div.title{width:150px;font:bold 12px tahoma;background-color:#CDE4F9;padding:3px; word-wrap:break-word;}

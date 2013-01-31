@@ -96,33 +96,31 @@ switch($A){
         }
         break;
     default:
-        $assign['employeeid'] = $_SESSION['user_employeeid'];
-        $assign['password'] = $_SESSION['user_password'];
-        $assign['account'] = $_SESSION['account'];
-        $smarty->assign($assign);
-
-        $query = 'SELECT * FROM uatme_view_department_employee WHERE eid!="'.$_SESSION['user_id'].'"';
-        $result = $mysqli->query($query);
+    	$assign['year'] = $_POST['year'];
+    	$assign['month'] = $_POST['month'];
+    	$assign['day'] = $_POST['day'];
+        $sql = 'SELECT * FROM uatme_oa_system_employee WHERE id!="'.$_SESSION['employee_id'].'"';
+        $result = $mysqli->query($sql);
         if($result->num_rows > 0){
             while($array = $result->fetch_assoc()){
-                $employee[$array['dname']]['did'] = $array['did'];
-                $employee[$array['dname']]['dname'] = $array['dname'];
-                $employee[$array['dname']]['employee'][] = array('eid'=>$array['eid'],'ename'=>$array['ename'],'epid'=>$array['epid']);
+            	$assign['employee'][] = $array;
+                //$employee[$array['dname']]['did'] = $array['did'];
+                //$employee[$array['dname']]['dname'] = $array['dname'];
+                //$employee[$array['dname']]['employee'][] = array('eid'=>$array['eid'],'ename'=>$array['ename'],'epid'=>$array['epid']);
                 //print_r($array);
             }
         }
-        $smarty->assign('employee',$employee);
-        //print_r($employee);
 
         //设定图例颜色的数组
-        $query = 'SELECT * FROM uatme_legend';
-        $result = $mysqli->query($query);
+        $sql = 'SELECT * FROM uatme_legend';
+        $result = $mysqli->query($sql);
         if($result->num_rows > 0){
             while($array = $result->fetch_assoc()){
-                $legend[] = $array;
+                $assign['legend'][] = $array;
             }
         }
-        $smarty->assign('legend',$legend);
+        
+        $smarty->assign($assign);
 
         $smarty->display('calendar/event.add.html');
         break;
