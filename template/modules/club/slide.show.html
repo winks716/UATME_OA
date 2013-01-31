@@ -1,0 +1,21 @@
+	<!-- Start WOWSlider.com BODY section -->
+	<link rel="stylesheet" type="text/css" href="css/wowsSlide/style.css" />
+	<div id="wowslider-container1">
+		<div class="ws_images">
+			<ul>
+				<{foreach from=$slide item=s}>
+				<li><img src="<{$s.image}>" alt="<{$s.title}>" title="<{$s.detail}>" id="wows1_<{$s.id}>"/></li>
+				<{/foreach}>
+			</ul>
+		</div>
+		<div class="ws_bullets"><div>
+			<{foreach from=$slide item=s}>
+			<a href="#" title="<{$s.detail}>"><img src="<{$s.image}>" alt="<{$s.title}>"/><{$s.id}></a>
+			<{/foreach}>
+			</div></div>
+		<div class="ws_shadow"></div>
+	</div>
+	
+	<script type="text/javascript" src="js/wowsSlide/wowslider.js"></script>
+	<script type="text/javascript" src="js/wowsSlide/script.js"></script>
+	<!-- End WOWSlider.com BODY section -->

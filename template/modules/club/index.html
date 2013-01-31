@@ -1,0 +1,170 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+<style>
+.ui-tooltip {
+        max-width: 600px;
+        max-height: 300px;
+    }
+</style>
+
+<{if $session.if_club_admin==1}>
+<div class="toolBar">
+	宽<input id="styleWidth" style="width:50px;"/>
+	高<input id="styleHeight" style="width:50px;"/>
+	左<input id="styleLeft" style="width:50px;"/>
+	顶<input id="styleTop" style="width:50px;"/>
+	背景色<input id="styleBgcolor" style="width:100px;"/>
+	<span class="clickbtn boxAdd"> [添加] </span>
+	<span class="clickbtn" id="hideButton"> [隐藏按钮] </span>
+</div>
+<div class="toolBar">
+	<img id="loading" src="images/global/loading.gif" style="display:none;">
+	<form name="form" action="" method="POST" enctype="multipart/form-data">
+		<table cellpadding="0" cellspacing="0" class="tableForm">
+			<tr>
+				<td>
+				照片标题<input id="image_name" size="30"/>
+				&nbsp;&nbsp;照片详情<textarea id="image_detail" style="height:50px;width:300px;"></textarea>
+				&nbsp;&nbsp;<input id="fileToUpload" type="file" size="20" name="fileToUpload" class="input">
+				<button class="button" id="buttonUpload" onclick="return ajaxFileUpload();">上传</button></td>
+			</tr>
+		</table>
+	</form> 
+</div>
+<{/if}>
+
+<div style="width:1100px; height:400px;" class="container">
+<div style="width:1px; height:1px; padding:5px; position:absolute; margin:auto;">
+<{foreach from=$box item=b}>
+
+<div i="<{$b.id}>" class="item <{if $session.if_club_admin!=1 && $b.style_bgimage!=''}>containDetail<{/if}>" title="<{$b.title}>" style="width:<{$b.style_width}>; height:<{$b.style_height}>; position:absolute; left:<{$b.style_left}>; top:<{$b.style_top}>; background:<{$b.style_bgcolor}> url('<{$b.style_bgimage}>');">
+<{if $session.if_club_admin==1}>
+<span class="clickbtn imageEdit" i="<{$b.id}>"> [关联照片] </span><br/>
+<span class="clickbtn boxEdit" i="<{$b.id}>"> [编辑模块] </span><br/>
+<span class="clickbtn boxDelete" i="<{$b.id}>"> [删除模块] </span>
+<{/if}>
+</div>
+
+<{/foreach}>
+</div>
+</div>
+
+<div id="dialogDiv"></div>
+
+<{include file="footer.html"}>
+
+<script>
+$(function(){
+	$(document).tooltip({
+		items:"div.item",
+		position: { my: "left+5 top", at: "right top" }
+	})
+	
+	$('div.containDetail').css({'cursor':'pointer'}).click(function(){
+		$('#dialogDiv').html('').attr('title',$(this).attr('title')).dialog({
+			modal: true,
+			autoOpen: true,
+			height: 600,
+			width: 900
+		}).load('index.php?m=club&s=box&a=slide.show',{id:$(this).attr('i')});
+	})
+	
+	<{if $session.if_club_admin==1}>
+	$('#hideButton').toggle(function(){
+		$('div.item .clickbtn').hide();
+	},function(){
+		$('div.item .clickbtn').show();
+	})
+	
+	$('.boxAdd').click(function(){
+		var styleHeight = $('#styleHeight').val(),
+		styleWidth = $('#styleWidth').val(),
+		styleLeft = $('#styleLeft').val(),
+		styleTop = $('#styleTop').val(),
+		styleBgcolor = $('#styleBgcolor').val();
+		$.post('index.php?m=club&s=box&a=add',{'styleHeight':styleHeight,'styleWidth':styleWidth,'styleLeft':styleLeft,'styleTop':styleTop,'styleBgcolor':styleBgcolor},function(data){
+			var json = eval("(" + data + ")");
+			if(json.httpstatus == 200){
+				alert(json.msg);
+				window.location.reload();
+			}else{
+				alert(json.error);
+			}
+		})
+	})
+	
+	$('.imageEdit').click(function(){
+		$('#dialogDiv').html('').dialog({
+			modal: true,
+			autoOpen: true,
+			height: 500,
+			width:300
+		}).load('index.php?m=club&s=box&a=image.edit',{id:$(this).attr('i')});
+	})
+	
+	$('.boxEdit').click(function(){
+		$('#dialogDiv').html('').dialog({
+			modal: true,
+			autoOpen: true
+		}).load('index.php?m=club&s=box&a=edit',{id:$(this).attr('i')});
+	})
+	
+	$('.boxDelete').click(function(){
+		if(confirm('删除此模块？与此模块关联的图片将失去关联！是否确认？')){
+			var id = $(this).attr('i');
+			$.post('index.php?m=club&s=box&a=delete',{'id':id},function(data){
+				var json = eval("(" + data + ")");
+				if(json.httpstatus == 200){
+					alert(json.msg);
+					window.location.reload();
+				}else{
+					alert(json.error);
+				}
+			})
+		}
+	})
+	<{/if}>
+})
+</script>
+
+<{if $session.if_club_admin==1}>
+<script type="text/javascript" src="js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+function ajaxFileUpload(){
+	if($.trim($('#image_name').val())==''){
+		alert('照片标题不能为空，请填写');
+		$('#image_name').get(0).focus();
+	}else{
+		$("#loading")
+		.ajaxStart(function(){
+			$(this).show();
+		})
+		.ajaxComplete(function(){
+			$(this).hide();
+		});
+
+		$.ajaxFileUpload({
+			url:'index.php?m=club&s=box&a=image.upload',
+			secureuri:false,
+			fileElementId:'fileToUpload',
+			dataType: 'json',
+			data:{'image_name':$('#image_name').val(),'image_detail':$('#image_detail').val()},
+			success: function (data, status){
+				if(typeof(data.error) != 'undefined'){
+					if(data.error != ''){
+						alert(data.error);
+					}else{
+						alert(data.msg);
+					}
+				}
+			},
+			error: function (data, status, e){
+				alert(e);
+			}
+		})
+	}
+	return false;
+}
+</script>
+<{/if}>

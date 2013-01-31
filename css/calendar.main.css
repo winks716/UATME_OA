@@ -1,0 +1,44 @@
+a,a:link,a:active{text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+#calendarTable{font:12px tahoma;}
+.clickbtn{cursor:pointer;color:blue;font:12px tahoma;}
+
+div.add_at_div,div.add_event_div{width:290px;position:absolute;display:none;border:solid 5px #ABC3D7;background-color:#F9E98E;}
+div.add_at_div div.title,div.add_event_div div.title{width:290px;background-color:#CDE4F9;}
+div.add_at_div div.content,div.add_event_div div.content{width:290px;padding:3px;margin:3px;}
+div.add_at_div div.title div,div.add_event_div div.title div{width:210px;height:20px;padding:3px;font:bold 12px tahoma;color:#666666;text-align:center;margin-left:90px;}
+
+div.edit_priority_div,div.edit_progress_div{width:120px;position:absolute;display:none;border:solid 5px #ABC3D7;background-color:#F9E98E;}
+div.edit_priority_div div.title,div.edit_progress_div div.title{width:120px;background-color:#CDE4F9;}
+div.edit_priority_div div.content,div.edit_progress_div div.content{width:120px;padding:3px;margin:3px;}
+div.edit_priority_div div.title div,div.edit_progress_div div.title div{width:120px;height:20px;padding:3px;font:bold 12px tahoma;color:#666666;text-align:center;}
+
+td.login{font:12px tahoma; text-align:right;}
+td.setup{font:12px tahoma;}
+td.turn{font:bold 12px tahoma; height:30px;}
+div.eventdetail{position:absolute;}
+.calendar_table tr.title th{font:bold 12px tahoma; height:30px;}
+.calendar_table td.legend{width:100px;}
+
+.calendar_table tr.data td.date{border:solid 1px #ABC3D7; background-color:#FFFFFF; width:100px; font:12px tahoma; height:70px; padding:3px; vertical-align:top;}
+.calendar_table tr.data td.date:hover{background-color:orange;}
+.calendar_table tr.data td.date span.day{font:bold 12px arial; color:black; cursor:pointer;}
+.calendar_table tr.data td.date span.day_view{background-image: url(../images/ui_icon.png);background-position:125 127;}
+.calendar_table tr.data td.date span.month_view{background-image: url(../images/ui_icon.png);background-position:110 127;display:none;}
+
+.calendar_table tr.data td.date div.event{width:100px;background-color: #FFF9CF; margin-bottom:3px; padding:3px;}
+.calendar_table tr.data td.date div.event span.title{word-wrap:break-word;}
+
+.calendar_table tr.data td.date div.event span.delete_event{background-image: url(../images/ui_icon.png);background-position:172 111;}
+.calendar_table tr.data td.date div.event span.edit_event{background-image: url(../images/ui_icon.png);background-position:190 127;}
+.calendar_table tr.data td.date div.event span.at_event{background-image: url(../images/ui_icon.png);background-position:239 64;}
+.calendar_table tr.data td.date div.event span.priority_event{background-image: url(../images/ui_icon.png);background-position:221 95;}
+.calendar_table tr.data td.date div.event span.progress_event{background-image: url(../images/ui_icon.png);background-position:191 95;}
+
+div.event_detail_div{position:absolute;display:none;border:solid 5px #ABC3D7;background-color: #EFF4F7; word-wrap:break-word;}
+div.event_detail_div div.title{width:150px;font:bold 12px tahoma;background-color:#CDE4F9;padding:3px; word-wrap:break-word;}
+div.event_detail_div div.content{width:150px;padding:3px;font:12px tahoma; word-wrap:break-word;}
+
+table.inform_table{width:850px; height:20px; font:12px tahoma;}
+span.setup_btn_div{padding:10px; border:solid 5px #CCCCCC; background-color: #EFF4F7;}

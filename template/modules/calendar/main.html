@@ -1,0 +1,88 @@
+<!--页面主体开始-->
+      <!--顶部工具条定义开始-->
+	  <div class="container">
+                  <span class="clickbtn" onclick="javascript:$(this).parents('.ui-tabs-panel').load('index.php?m=calendar&year=<{$yearNow}>&month=<{$monthNow}>')">[<{$lang.calendar.thismonth}>]</span>
+                  <{html_select_date prefix='selected_' field_order='YMD' month_value_format='%m' month_format='%m' time=$timestamp start_year='-1' end_year='+4' display_days=false}>
+                  &nbsp;&nbsp;<select class="event_orderby"><option value="time"><{$lang.calendar.order.bytime}><option value="priority" <{if $key=='priority'}>selected<{/if}>><{$lang.calendar.order.bypriority}><option value="progress" <{if $key=='progress'}>selected<{/if}>><{$lang.calendar.order.byprogress}></select>
+                  <span class="clickbtn reloadCalendar" onclick="javascript:$(this).parents('.ui-tabs-panel').load('index.php?m=calendar&year='+$('select[name=\'selected_Year\']').val()+'&month='+$('select[name=\'selected_Month\']').val()+'&key='+$('select.event_orderby').val())">[<{$lang.calendar.go}>]</span>
+		</div>
+      <!--顶部工具条定义结束-->
+      
+      <!--{include file="skilltip.html"}-->
+
+      <!--月视图日历主体定义开始-->
+	  <div class="container">
+      <table class="calendar_table">
+          <!--日历标题定义开始-->
+          <tr class="title">
+              <th style="color:red;"><span><{$lang.calendar.week.sunday}></span></th>
+              <th><span><{$lang.calendar.week.monday}></span></th>
+              <th><span><{$lang.calendar.week.tuesday}></span></th>
+              <th><span><{$lang.calendar.week.wednesday}></span></th>
+              <th><span><{$lang.calendar.week.thursday}></span></th>
+              <th><span><{$lang.calendar.week.friday}></span></th>
+              <th style="color:orange;"><span><{$lang.calendar.week.saturday}></span></th>
+              <!--日历图例定义开始-->
+              <td class="legend" rowspan="<{$rMax+1}>" valign="top">
+                  <ul>
+                      <li i="0" style="list-style:none; font:bold 12px tahoma; height:30px; cursor:pointer; margin-left:-15px;"><{$lang.calendar.alllegend}></li>
+                      <{foreach from=$legend item=l}>
+                      <li i="<{$l.id}>" style="list-style:square; color:<{$l.color}>; font:12px tahoma; margin-bottom:10px; cursor:pointer;">
+                          <span style="color:black;"><{$l.name}></span>
+                          <{if $legendid==$l.id}>&hearts;<{/if}>
+                      </li>
+                      <{/foreach}>
+                  </ul>
+              </td>
+              <!--日历图例定义结束-->
+          </tr>
+          <!--日历标题定义结束-->
+          <!--日历数据定义开始-->
+          <{foreach from=$date item=d}>
+          <tr class="data">
+              <{foreach from=$day item=i}>
+              <td class="<{if $d[$i]==0}>nodate<{else}>date<{/if}>" i="<{$d[$i]}>" <{if $year==$yearNow && $month==$monthNow && $d[$i]==$dayNow}>style="background-Color:#ABC3D7;"<{/if}>>
+                  <{if $d[$i]!=0}>
+                      <div y="<{$year}>" m="<{$month}>" d="<{$d[$i]}>">
+                          <span class="day" title="<{$lang.calendar.addevent.tip}>"><{$d[$i]}></span>&nbsp;&nbsp;
+                        <{if $holiday[$d[$i]]}><span style="color:#66CC00;"><{$holiday[$d[$i]]}>&nbsp;&nbsp;<{/if}>
+                      </div>
+                      <!--日历事件数据定义开始-->
+                      <{foreach from=$data[$d[$i]] item=e}>
+                      <div class="event" d="<{if $e.detail!=''}><{$e.detail}><{else}>无<{/if}>" t="<{$e.title}>" style="padding:3px;word-wrap:break-word;overflow:hidden;width:100px;background:#FFFFCC;border-top:5px solid blue;text-decoration:<{if $e.progress==100}>line-through<{else}>none<{/if}>; border-top:solid 5px <{$e.color}>; color:<{if $e.priority==-2}>#AAAAAA<{else if $e.priority==-1}>#666666<{else if $e.priority==1}>orangered<{else if $e.priority==2}>#C60000<{else}>#000000<{/if}>;">
+                          <span style="font:bold 10px tahoma;"><{$e.hour}>:<{$e.minute}>&nbsp;&nbsp;
+                              <{if $e.eid==$user_id}>
+                              <span class="clickbtn delete_event" i="<{$e.id}>" title="<{$lang.calendar.deleteevent.tip}>">&nbsp;&nbsp;</span>
+                                  <span class="clickbtn at_event" i="<{$e.id}>" title="<{$lang.calendar.atevent.tip}>">&nbsp;&nbsp;&nbsp;</span>
+                                  <span class="clickbtn priority_event" i="<{$e.id}>" u="<{$e.priority}>" title="<{$lang.calendar.editpriority.tip}>">&nbsp;&nbsp;</span>
+                                  <span class="clickbtn progress_event" i="<{$e.id}>" p="<{$e.progress}>" title="<{$lang.calendar.editprogress.tip}>">&nbsp;&nbsp;&nbsp;</span>
+                              <{/if}>
+                              <br/>
+                              ~&nbsp;<{$e.end_hour}>:<{$e.end_minute}>
+                          </span><br/>
+                          <{if $e.at_ename}><{$e.at_ename}><span style="color:red;">@</span><{if $e.eid!=$user_id}><{$e.ename}><{else}>me<{/if}><{/if}>
+                          <span class="title">
+                              <{$e.title|truncate:15}>
+                              <span style="font:10px tahoma;"><{$e.progress}>%</span>
+                          </span>
+                      </div>
+                      <{/foreach}>
+                      <!--日历事件数据定义结束-->
+                  <{else}>
+                  <{/if}>
+              </td>
+              <{/foreach}>
+          </tr>
+          <{/foreach}>
+          <!--日历数据定义结束-->
+      </table>
+      <!--月视图日历主体定义结束-->
+      </div>
+
+      <!--{include file="bottom.html"}-->
+
+<!--页面主体结束-->
+
+<script type="text/javascript">
+
+</script>

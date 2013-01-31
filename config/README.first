@@ -1,0 +1,17 @@
+README FOR CONFIG DIRECTORY
+
+==========================================================================================
+config目录说明
+==========================================================================================
+1) lang.*.config.php为多国语言包
+2) account.config.php为组织配置文件，其中的数组元素v必须与后台数据库前缀保持一致，例如v=>demo,那么后台DB名称为demo_uatme_db
+
+
+
+==========================================================================================
+config directory description
+==========================================================================================
+1) lang.*.config.php is language package
+2) account.config.php is config of company using U@ME,
+the 'v'KEY's VALUE in array must be as the same as the prefix of the DATABASE，
+for example, if v=>'demo', then DATABASE name should be 'demo_uatme_db'.

@@ -1,0 +1,40 @@
+<div style="width:100%;">
+	<table>
+	<thead>
+		<tr><th>报销申请编号</th><th>报销金额</th><th>报销申请人</th><th>报销申请日期</th><th>状态</th></tr>
+	</thead>
+	<tbody>
+	<{foreach from=$expense_apply item=ea}>
+		<tr><td><a i="<{$ea.id}>" class="expenseItem" href="#"><{$ea.apply_no}></a></td><td><{$ea.apply_money}></td><td><{$ea.apply_employee_name}>, <{$ea.apply_employee_no}></td><td><{$ea.apply_date}></td><td><{$ea.apply_status}></td></tr>
+	<{/foreach}>
+	</tbody>
+	</table>
+</div>
+
+<div id="expenseDetail"></div>
+
+<script>
+$(function(){
+	$('#expenseDetail').dialog({
+		autoOpen: false,
+		modal: true,
+		width: 600,
+		height: 400,
+		buttons: {
+			'确认': function() {
+				$( this ).dialog( "close" );
+			}
+		}
+	});
+	$('.expenseItem').click(function(){
+		var id=$(this).attr('i');
+		$('#expenseDetail').dialog('open');
+		$.ajaxSetup({
+			contentType: "application/x-www-form-urlencoded; charset=utf-8"
+		});
+		$.post('index.php?m=expense&s=apply&a=get.detail',{'id':id},function(data){
+			$('#expenseDetail').html(data);
+		});
+	})
+})
+</script>

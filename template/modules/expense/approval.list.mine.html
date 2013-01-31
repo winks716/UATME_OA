@@ -1,0 +1,71 @@
+<div style="width:100%;">
+	<table>
+		<thead>
+			<tr><th>申请编号</th><th>申请人</th><th>申请日期</th></tr>
+		</thead>
+		<tbody>
+		<{foreach from=$apply_approval item=aa}>
+		<tr>
+			<td><a i="<{$aa.id}>" class="approvalItem" href="#"><{$aa.apply_no}></a></td>
+			<td><{$aa.apply_employee_name}>, <{$aa.apply_employee_no}></td>
+			<td><{$aa.apply_date}></td>
+		</tr>
+		<{/foreach}>
+		</tbody>
+	</table>
+</div>
+
+
+<div id="approvalDetail"></div>
+
+<div id="submitApplyAlertDiv"></div>
+
+<script>
+$(function(){
+	$('#approvalDetail, #submitApplyAlertDiv').dialog({
+		autoOpen: false,
+		modal: true
+	});
+	$('.approvalItem').click(function(){
+		var id=$(this).attr('i');
+		$('#approvalDetail').html('').dialog('open');
+		$.ajaxSetup({
+			contentType: "application/x-www-form-urlencoded; charset=utf-8"
+		});
+		$.post('index.php?m=expense&s=approval&a=get.detail',{'id':id},function(data){
+			$('#approvalDetail').html(data).dialog({
+				buttons: {
+					'通过': function() {
+						if(confirm('确认通过？')){
+							$('#submitApplyAlertDiv').html('正在递交数据，请稍候……').dialog("open");
+							$.post('index.php?m=expense&s=approval&a=agree',{'id':id},function(data){
+								$('#submitApplyAlertDiv').html(data).dialog({
+									buttons: {
+										'确认': function(){
+													$(this).dialog("close");
+													$('#approvalDetail').dialog("close");
+												}
+									}
+								});
+							})
+						}
+					},
+					'拒绝': function() {
+						$('#submitApplyAlertDiv').html('正在递交数据，请稍候……').dialog("open");
+						$.post('index.php?m=expense&s=approval&a=refuse',{'id':id},function(data){
+							$('#submitApplyAlertDiv').html(data).dialog({
+								buttons: {
+									'确认': function(){
+												$(this).dialog("close");
+												$('#approvalDetail').dialog("close");
+											}
+								}
+							});
+						})
+					}
+				}
+			});
+		});
+	})
+})
+</script>

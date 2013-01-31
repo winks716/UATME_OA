@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>汉盛OA</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link media="screen, projection" type="text/css" href="css/blueprint/screen.css" rel="stylesheet" />
+	<link media="print" type="text/css" href="css/blueprint/print.css" rel="stylesheet" />
+	<{foreach from=$themeList item=t}>
+    <link media="screen" title="<{$t.name}>" href="css/jqueryui/<{$t.name}>/jquery-ui-1.9.1.custom.min.css" rel="<{if $session.themeName!=$t.name}>alternate <{/if}>stylesheet" type="text/css" />
+	<{/foreach}>
+    <link media="screen" href="css/global.css" rel="stylesheet" type="text/css" />
+    <link media="screen" href="css/calendar.main.css" rel="stylesheet" type="text/css" />
+    <script src="js/jquery-1.7.2.min.js"></script>
+    <script src="js/jquery-ui-1.9.1.custom.min.js"></script>
+    <script src="js/global.js"></script>
+  </head>
+  <body>

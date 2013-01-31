@@ -1,0 +1,39 @@
+<{foreach from=$expense_apply item=ea}>
+	<div>
+		<table>
+			<tr><th>编号</th><td><{$ea.apply_no}></td></tr>
+			<tr><th>申请人</th><td><{$ea.apply_employee_name}>, <{$ea.apply_employee_no}></td></tr>
+			<tr><th>金额</th><td><{$ea.apply_money}></td></tr>
+			<tr><th>申请日期</th><td><{$ea.apply_date}></td></tr>
+		</table>
+	</div>
+	<div>
+		金额明细：
+			<table>
+				<thead>
+				<tr>
+					<th>类别</th>
+					<th>发票编号</th>
+					<th>金额</th>
+					<th>日期</th>
+					<th>客户信息(单位，姓名，职位)</th>
+					<th>项目</th>
+					<th>备注</th>
+				</tr>
+				</thead>
+				<tbody>
+					<{foreach from=$apply_detail item=ad}>
+					<tr>
+						<td><{$ad.expense_type}></td>
+						<td><{$ad.invoice_no}></td>
+						<td><{$ad.expense_currency_type}><{$ad.expense_money}></td>
+						<td><{$ad.expense_date}></td>
+						<td><{$ad.expense_target_customer}>, <{$ad.expense_target_person_name}>, <{$ad.expense_target_person_position}></td>
+						<td><{$ad.expense_project}></td>
+						<td><{$ad.expense_description}></td>
+					</tr>
+					<{/foreach}>
+				</tbody>
+			</table>
+	</div>
+<{/foreach}>

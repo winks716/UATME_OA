@@ -1,0 +1,89 @@
+<div id="topNavigation">
+	  <table><tr>
+	  <td><img src="images/global/logo.highsource.small.gif" border="0"/></td>
+	  <td><span class="">色彩
+		<{foreach from=$themeList item=t}>
+		  <a class="switchTheme border" title="<{$t.name}>" href="javascript:void(0)" style="height:15px; width:15px; display:inline-block; background-color:<{$t.bgcolor}>;"></a>
+		<{/foreach}>
+	  </span></td>
+	  <td><span class="">欢迎, <{$session.employee_name}>(<{$session.employee_namezh}>)</span></td>
+	  <td><span class=""><span class="clickbtn" id="logOff"> [退出] </span></span></td>
+	  </tr></table>
+</div>
+
+<div id="mainNavigationDiv" class="ui-widget-header">
+<table id="mainNavigation">
+	<tr>
+	<{foreach from=$menu item=m}>
+		<{if $m.module!='system' 
+			|| ($m.module=='system' && $session.if_system_admin==1)}>
+		<td class="menu ui-state-default ui-corner-top <{if $m.module==$request_module}>ui-state-active<{/if}>">
+			<a href="<{$m.href}>" i="<{$m.id}>" p="0" class="ui-tabs-anchor"><{$m.label}></a>
+		</td>
+		<{/if}>
+	<{/foreach}>
+	<td></td>
+	</tr>
+</table>
+</div>
+
+<table id="subNavigationTable">
+<{foreach from=$menu item=m}>
+<tr class="subNavigation <{if $m.module==$request_module}>active<{else}>disactive<{/if}>">
+	<{foreach from=$submenu[$m.id] item=sm}>
+		<{if $sm.action!='doc.tech_handbook' 
+			|| ($sm.action=='doc.tech_handbook' && ($session.if_tech_reader==1 || $session.if_tech_admin==1))}>
+		<td class="menu">
+			<a href="<{$sm.href}>" i="<{$sm.id}>" p="<{$m.id}>" <{if $sm.module==$request_module && $sm.submodule==$request_submodule && $sm.action==$request_action}>class="ui-state-active"<{/if}>><{$sm.label}></a>
+		</td>
+		<{/if}>
+	<{/foreach}>
+	<td class="menuBlank"></td>
+</tr>
+<{/foreach}>
+</table>
+
+<{if $session.if_announced==0 && $announce[0]['id']>0}>
+<div id="announce" title="公司通告">
+	<{foreach from=$announce item=a}>
+	<div class="item append-bottom notice">
+		<div class="title"><label><{$a.title}></label>&nbsp;&nbsp;&nbsp;&nbsp;<{$a.update_date}></div>
+		<div class="detail"><textarea readonly=readonly><{$a.detail}></textarea></div>
+	</div>
+	<{/foreach}>
+</div>
+<{/if}>
+
+<script type="text/javascript">
+//init logoff button action
+$('#logOff').click(function(){
+	$.post('index.php?m=base&s=logoff',{},function(){
+		window.location = 'index.php';
+	})
+})
+//init switch theme button action
+$('.switchTheme').click(function(){
+	var themeName = $(this).attr('title');
+	$.post('index.php?m=base&s=theme&a=switch',{'themeName':themeName},function(){
+		$('link[rel*=style][title]').each(function(){
+            if (this.getAttribute('title') == themeName){
+				this.disabled = false;
+			}else{
+				this.disabled = true;
+			}
+        });
+	})
+})
+//INIT company announce
+$('#announce').dialog({
+	autoOpen: true,
+	height: 450,
+	width: 700,
+	modal: true,
+	buttons: {
+		'确认': function(){
+			$('#announce').dialog('close');
+		}
+	}
+})
+</script>

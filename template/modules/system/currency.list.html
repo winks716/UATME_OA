@@ -1,0 +1,33 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+
+<div class="container">
+	<table>
+		<tr>
+			<th>货币名称</th>
+			<th>货币标识</th>
+			<th>汇率</th>
+			<th>更新日期</th>
+			<th>操作</th>
+		</tr>
+		<tr>
+			<td><input id="currencyName" class="span-2"/>+新增</td>
+			<td><input id="currencySymbol" class="span-3"/></td>
+			<td><input id="currencyRate" class="span-2"/></td>
+			<td><span class="clickbtn span-2" id="addCurrency"> [添加] </span></td>
+		</tr>
+		<{foreach from=$currency item=c}>
+		<tr>
+			<td><{$c.name}><input type="hidden" class="currencyName"/></td>
+			<td><{$c.symbol}><input type="hidden" class="currencyName"/></td>
+			<td><input class="currencyName span-2" value="<{$c.rate}>"/></td>
+			<td><{$c.date}></td>
+			<td><span class="clickbtn saveCurrency" i="<{$c.id}>"> [保存] </span> <span class="clickbtn historyCountry" i="<{$c.id}>"> [历史] </span></td>
+		</tr>
+		<{/foreach}>
+	</table>
+</div>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>

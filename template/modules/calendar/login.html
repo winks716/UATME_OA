@@ -1,0 +1,105 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>U@Me <{$lang.login.title}></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+        .login_div{font:12px tahoma;}
+        .clickbtn{font:12px tahoma;color:blue;cursor:pointer;}
+    </style>
+    <script src="js/jquery-1.6.4.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('select[name="account"]').find('option[value="'+$.cookie('account')+'"]').attr('selected','selected');
+            $('input[name="pid"]').val($.cookie('pid'));
+            $('input[name="pass"]').val($.cookie('pass'));
+            if($.cookie('ifauto')==1){
+                $('input[name="ifauto"]').attr('checked','checked');
+                $.post('index.php?m=calendar&s=login&a=verify',{'account':$('select[name="account"]').val(),'pid':$.cookie('pid'),'pass':$.cookie('pass')},function(){
+                    window.location.reload();
+                })
+            }else{
+                $('.login_btn').click(function(){
+                    Verify();
+                })
+                $(':input').keydown(function(e){
+                    if(e.keyCode==13){
+                       Verify(); //处理事件
+                    }
+                });
+            }
+        })
+        function Verify(){
+            $.post('index.php?m=calendar&s=login&a=verify',{'account':$('select[name="account"]').val(),'pid':$('input[name="pid"]').val(),'pass':$('input[name="pass"]').val()},function(data){
+                eval('var json='+data);
+                if(json.result==1){
+                    if($('input[name="ifauto"]:checked').size()==1){
+                        $.cookie('ifauto',1);
+                        $.cookie('account',$('select[name="account"]').val());
+                        $.cookie('pid',$('input[name="pid"]').val());
+                        $.cookie('pass',$('input[name="pass"]').val());
+                    }
+                    window.location.reload();
+                }else{
+                    $.cookie('ifauto',null);
+                    //$.cookie('account',null);
+                    //$.cookie('pid',null);
+                    //$.cookie('pass',null);
+                    alert('<{$lang.login.error}>');
+                }
+            })
+        }
+    </script>
+  </head>
+  <body>
+      <div class="login_div">
+            <div><center><img src="images/logo.small.gif"/></center></div>
+            <div>
+                <center>
+                    <{$lang.login.account}>&nbsp;&nbsp;
+                    <select name="account" style="width:96px;">
+                        <{foreach from=$accountlist item=a}>
+                        <option value="<{$a.v}>"><{$a.o}></option>
+                        <{/foreach}>
+                    </select><br/>
+                    <{$lang.login.pid}>&nbsp;&nbsp;<input name="pid" size="12"/><br/>
+                    <{$lang.login.password}>&nbsp;&nbsp;<input type="password" name="pass" size="12"/><br/>
+                    <input type="checkbox" name="ifauto"/><{$lang.login.ifauto}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="clickbtn login_btn">[<{$lang.login.btn}>]</span>
+                    <br/>
+                    <br/>
+                    <div style="color:#AAAAAA;font:12px tahoma;text-align:left;">
+                        <pre>
+                        RELEASE NOTE
+                        <!--v2.000 - Now employees in ur company may share events with employees of those accounts verificatied by ur company-->
+                        v1.010 - Now U can visit U@ME by MOBILEphone(iphone/moto/samsung/htc etc.) to See What's up by Dayview.( Cannot ADD or MODIFY yet, coming soon~ )
+                        v1.009 - Now We add an headline for employee management, and fix some bugs of logout.
+                        v1.008 - Now Admin can publish informs which will marquee through the skilltip.
+                        v1.007 - Now Admin can modify anyone's password, and WE move the skilltip upper.
+                        v1.006 - Now enterprise user may regist an unique account for ur company, no sharing events with other accounts any more.
+                        v1.005 - Now u may see some skill tips for u.
+                        v1.004 - Now u may choose other languages.
+                        v1.003 - Now u may identify or modify the urgent level.
+                        v1.002 - Now u may identify or modify the progress.
+                        v1.001 - Now u may @ someone.
+                        v1.000 - Original edition.
+                        </pre>
+                    </div>
+                    <div style="color:#CCCCCC;font:10px tahoma;">Powered by <{$copyrightcompany}>&copy;2010-<{$copyrightyear}>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F1e4d5ab74ff5ff3224131287dddc2380' type='text/javascript'%3E%3C/script%3E"));
+</script>
+		    </div>
+                </center>
+            </div>
+      </div>
+  </body>
+</html>

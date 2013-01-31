@@ -1,0 +1,16 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+<span id="sendmailBtn">click to send mail</span>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>
+
+<script>
+$(function(){
+	$('#sendmailBtn').click(function(){
+		$.post('index.php?m=base&s=mail&a=default');
+		document.write('已发送');
+	})
+})
+</script>

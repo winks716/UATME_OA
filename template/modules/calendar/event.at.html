@@ -1,0 +1,49 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+        table.add_at_tb{font:12px tahoma;width:270px;}
+        table.add_at_tb div.at_employee_div{font:12px tahoma;}
+    </style>
+    <script>
+        $(document).ready(function(){
+            $('table.add_at_tb .select_all').toggle(function(){$('table.add_at_tb input.at_epid[di="'+$(this).attr('i')+'"]').attr('checked','checked');$(this).html('[全不选]')},function(){$('.at_epid[di="'+$(this).attr('i')+'"]').removeAttr('checked');$(this).html('[全选]')});
+        })
+    </script>
+  </head>
+  <body>
+      <form class="add_at_form">
+      <table class="add_at_tb">
+          <tr>
+              <td>
+                  <input name="id" value="<{$id}>" type="hidden"/>
+                  <div class="at_employee_div">
+                      <{foreach from=$employee item=d}>
+                      <div style="margin-bottom:3px;padding:5px;">
+                          <{$d.dname}><span class="clickbtn select_all" i="<{$d.did}>">[全选]</span><br/>
+                          <{foreach from=$d.employee item=e}>
+                              <{if $e.ifat}>
+                                  <span><input type="checkbox" value="<{$e.eid}>" name="unateid[]"/>取消@<{$e.ename}></span>
+                              <{else}>
+                                  <span><input type="checkbox" di="<{$d.did}>" class="at_epid" value="<{$e.eid}>" name="ateid[]"/><{$e.ename}></span>
+                              <{/if}>
+                          <{/foreach}>
+                      </div>
+                      <hr/>
+                      <{/foreach}>
+                  </div>
+              </td>
+          </tr>
+          <tr>
+              <td height="30px" align="center"><span class="clickbtn confirm_add_at" onclick="if(confirm('确认@这些人?')){$.post('index.php?m=calendar&s=event&a=save.at',$('form.add_at_form').serialize(),function(data){alert(data);$('div.add_at_div').hide()})}">[确认@]</span></td>
+          </tr>
+      </table>
+      </form>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+
+<div class="container">
+	<table>
+		<tr>
+			<th>国家名称</th>
+			<th>国家缩写</th>
+			<th>是否可用</th>
+			<th>操作</th>
+		</tr>
+		<tr>
+			<td><input id="countryName" class="span-2"/>+新增</td>
+			<td><input id="countryNameshort" class="span-3"/></td>
+			<td><input id="countryAvailable" class="span-1"/></td>
+			<td><span class="clickbtn span-2" id="addCountry"> [添加] </span></td>
+		</tr>
+		<{foreach from=$country item=c}>
+		<tr>
+			<td><input value="<{$c.name}>" class="span-2 countryName"/></td>
+			<td><input value="<{$c.nameshort}>" class="span-3 countryNameshort"/></td>
+			<td><input value="<{$c.available}>" class="span-1 countryAvailable"/></td>
+			<td><span class="clickbtn saveCountry" i="<{$c.id}>"> [保存] </span> <span class="clickbtn deleteCountry" i="<{$c.id}>"> [删除] </span></td>
+		</tr>
+		<{/foreach}>
+	</table>
+</div>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>

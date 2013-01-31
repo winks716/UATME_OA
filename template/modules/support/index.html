@@ -1,0 +1,65 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+<div class="left push-1" style="width:400px;">
+<form id="questionForm">
+<table class="span-7">
+<tr>
+<th colspan="2">添加新问题</td>
+</tr>
+<tr>
+<th class="span-2">标题</th><td><input id="title" name="title"/></td>
+</tr>
+<tr>
+<th>详情</th><td><textarea name="detail" class="span-5"></textarea></td>
+</tr>
+<tr>
+<td colspan="2" style="text-align:right;"><span class="clickbtn" id="questionAdd"> [递交] </span></td>
+</tr>
+</table>
+</form>
+</div>
+<div class="left" style="width:700px;">
+<table>
+<tr>
+<th>问题标题</th>
+<{if $ifadmin==1}><th>提问者</th><{/if}>
+<th>递交时间</th>
+<th>回帖数(最新回帖数)</th>
+</tr>
+<{foreach from=$question item=q}>
+<tr class="questionItem" title="<{$q.detail}>">
+<td><{$q.title}></td>
+<{if $ifadmin==1}><td><{$q.employee_name}></td><{/if}>
+<td><{$q.create_date}></td>
+<td><{$q.reply_count}>(<{$q.latest_reply_count}>)</td>
+</tr>
+<{/foreach}>
+</table>
+</div>
+<div class="clear"></div>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>
+
+<script type="text/javascript">
+	$(function(){
+		$('tr.questionItem').tooltip();
+		$('#questionAdd').click(function(){
+			if($.trim($('#title').val())!=''){
+				$.post('index.php?m=support&s=question&a=add',$('#questionForm').serialize(),function(data){
+					var json = eval("(" + data + ")");
+					if(json.httpstatus == 200){
+						alert(json.msg);
+						window.location.reload();
+					}else{
+						alert(json.error);
+					}
+				})
+			}else{
+				alert('问题标题不可为空，请填写');
+				$('#title').get(0).focus();
+			}
+		})
+	})
+</script>

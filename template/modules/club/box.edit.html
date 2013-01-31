@@ -1,0 +1,33 @@
+<table>
+<tr><th>标题</th><td><input id="edit_title" value="<{$title}>"/></td></tr>
+<tr><th>高度</th><td><input id="edit_styleHeight" value="<{$style_height}>"/></td></tr>
+<tr><th>宽度</th><td><input id="edit_styleWidth" value="<{$style_width}>"/></td></tr>
+<tr><th>左边距</th><td><input id="edit_styleLeft" value="<{$style_left}>"/></td></tr>
+<tr><th>顶边距</th><td><input id="edit_styleTop" value="<{$style_top}>"/></td></tr>
+<tr><th>背景色</th><td><input id="edit_styleBgcolor" value="<{$style_bgcolor}>"/></td></tr>
+<tr><td><span id="boxSave" class="clickbtn"> [保存] </span></td></tr>
+</table>
+
+<script type="text/javascript">
+	$(function(){
+		$('#boxSave').click(function(){
+			var id = <{$id}>,
+			title = $('#edit_title').val(),
+			styleHeight = $('#edit_styleHeight').val(),
+			styleWidth = $('#edit_styleWidth').val(),
+			styleLeft = $('#edit_styleLeft').val(),
+			styleTop = $('#edit_styleTop').val(),
+			styleBgcolor = $('#edit_styleBgcolor').val();
+			$.post('index.php?m=club&s=box&a=save',{'id':id,'title':title,'styleHeight':styleHeight,'styleWidth':styleWidth,'styleLeft':styleLeft,'styleTop':styleTop,'styleBgcolor':styleBgcolor},function(data){
+				var json = eval("(" + data + ")");
+				if(json.httpstatus == 200){
+					alert(json.msg);
+					$('#dialogDiv').dialog("close").html('');
+					window.location.reload();
+				}else{
+					alert(json.error);
+				}
+			})
+		})
+	})
+</script>

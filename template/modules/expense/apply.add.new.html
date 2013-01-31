@@ -1,0 +1,177 @@
+<form id="expense_apply_form">
+	<div>
+		<table>
+			<tr>
+				<th class="span-2">申请类别</th>
+				<td>
+					<select name="apply_type1_id">
+					<{foreach from=$apply_type1 item=at1}>
+						<option value="<{$at1.id}>"><{$at1.name}></option>
+					<{/foreach}>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>支付方式</th>
+				<td>
+					<select name="apply_type2_id">
+					<{foreach from=$apply_type2 item=at2}>
+						<option value="<{$at2.id}>"><{$at2.name}></option>
+					<{/foreach}>
+					</select>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+
+	<div>
+		<p>金额明细：<span class="clickbtn" id="addApplyDetailItemButton"> [+新增记录] </span></p>
+		<table id="apply_detail_table">
+			<thead>
+			<tr>
+				<th rowspan="2">类别</th>
+				<th rowspan="2">发票编号</th>
+				<th rowspan="2">金额</th>
+				<th rowspan="2">日期</th>
+				<th colspan="3">客户信息</th>
+				<th rowspan="2">项目</th>
+				<th rowspan="2">备注</th>
+			</tr>
+			<tr>
+				<th>单位</th>
+				<th>姓名</th>
+				<th>职位</th>
+			</tr>
+			</thead>
+			<tr class="apply_detail_item">
+				<td>
+					<select name="expense_type_id[]">
+					<{foreach from=$expense_type item=et}>
+						<option value="<{$et.id}>"><{$et.name}></option>
+					<{/foreach}>
+					</select>
+				</td>
+				<td><input class="span-2" name="invoice_no[]"/></td>
+				<td>
+					<select name="expense_currency[]">
+					<{foreach from=$currency_type item=ct}>
+						<option value="<{$ct.id}>-<{$ct.rate}>"><{$ct.symbol}></option>
+					<{/foreach}>
+					</select>
+					<input class="span-2" name="expense_money[]"/>元
+				</td>
+				<td><input class="span-3 expense_date" name="expense_date[]" readonly /></td>
+				<td>
+					<select name="expense_target_customer_id[]">
+					<{foreach from=$customer item=c}>
+						<option value="<{$c.id}>"><{$c.name}></option>
+					<{/foreach}>
+					</select>
+				</td>
+				<td>
+					<input class="span-2" name="expense_target_person_name[]"/>
+				</td>
+				<td>
+					<input class="span-2" name="expense_target_person_position[]"/>
+				</td>
+				<td>
+					<select class="span-2" name="project_id[]">
+					<{foreach from=$project item=p}>
+						<option value="<{$p.id}>"><{$p.name}></option>
+					<{/foreach}>
+					</select>
+				</td>
+				<td><input class="span-3" name="expense_description[]"/></td>
+			</tr>
+		</table>
+	</div>
+</form>			
+			
+<div class="right"><span id="submitApplyButton" class="clickbtn"> [递交申请] </span></div>
+
+<div id="submitApplyAlertDiv"></div>
+
+<script type="text/javascript">
+$(function(){
+	var myDate = new Date();
+	var myYear = myDate.getFullYear();
+	var myMonth = myDate.getMonth()+1;
+	var myDay = myDate.getDate();
+	if(myDay<10){myDay = '0'+myDay}
+	var myToday = myYear+'-'+myMonth+'-'+myDay;
+	$('.expense_date').val(myToday);
+	$('.expense_date').datepicker({
+		"dateFormat": "yy-mm-dd"
+	});
+	$('#submitApplyAlertDiv').dialog({
+		autoOpen: false,
+		modal: true
+	})
+	$( "#addApplyDetailItemButton" ).click(function(){
+		var htmlStr = '<tr class="apply_detail_item">'
+						+'	<td>'
+						+'		<select name="expense_type_id[]">'
+						<{foreach from=$expense_type item=et}>
+						+'			<option value="<{$et.id}>"><{$et.name}></option>'
+						<{/foreach}>
+						+'		</select>'
+						+'	</td>'
+						+'	<td><input class="span-2" name="invoice_no[]"/></td>'
+						+'	<td>'
+						+'		<select name="expense_currency[]">'
+						<{foreach from=$currency_type item=ct}>
+						+'			<option value="<{$ct.id}>-<{$ct.rate}>"><{$ct.symbol}></option>'
+						<{/foreach}>
+						+'		</select>'
+						+'		<input class="span-2" name="expense_money[]"/>元'
+						+'	</td>'
+						+'	<td><input class="span-3 expense_date" name="expense_date[]" readonly value="'+myToday+'"/></td>'
+						+'	<td>'
+						+'		<select name="expense_target_companyname[]">'
+						<{foreach from=$customer item=c}>
+						+'			<option value="<{$c.name}>"><{$c.name}></option>'
+						<{/foreach}>
+						+'		</select>'
+						+'	</td>'
+						+'	<td>'
+						+'		<input class="span-2" name="expense_target_personname[]"/>'
+						+'	</td>'
+						+'	<td>'
+						+'		<input class="span-2" name="expense_target_personposition[]"/>'
+						+'	</td>'
+						+'	<td>'
+						+'		<select class="span-2" name="project_id[]">'
+						<{foreach from=$project item=p}>
+						+'			<option value="<{$p.id}>"><{$p.name}></option>'
+						<{/foreach}>
+						+'		</select>'
+						+'	</td>'
+						+'	<td><input class="span-3" name="expense_description[]"/></td>'
+						+'</tr>';
+		$('#apply_detail_table').append(htmlStr).find('.apply_detail_item:last .expense_date').datepicker();
+	})
+	$('#submitApplyButton').click(function(){
+		$('#submitApplyAlertDiv').html('正在递交数据，请稍候……').dialog("open");
+		$.post('index.php?m=expense&s=apply&a=save.new',$('#expense_apply_form').serialize(),function(data){
+			$('#submitApplyAlertDiv').html(data);
+			$('#submitApplyAlertDiv').dialog({
+				buttons:{
+					"继续添加": function(){
+									$.ajaxSetup({
+										contentType: "application/x-www-form-urlencoded; charset=utf-8"
+									});
+									$.post('index.php?m=expense&s=apply&a=add.new',{},function(data){
+										$('#expenseApplyDialog').html(data);
+									});
+								},
+					"完成": function(){
+								$(this).dialog("close");
+								$( "#expenseApplyDialog" ).dialog( "close" );
+							}
+				}
+			});
+		})
+	})
+})
+</script>

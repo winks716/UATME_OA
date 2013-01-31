@@ -1,0 +1,32 @@
+<form id="edit_image_list">
+<table>
+	<tr><th>封面</th><th>归入模块</th><th>缩略图</th><th>标题</th></tr>
+	<{foreach from=$image item=im}>
+	<tr style="border-bottom:dashed 1px #CCCCCC;">
+		<td><input type="radio" name="edit_image_ifthumbnail" value="<{$im.id}>" <{if $im.ifthumbnail == 1}>checked<{/if}>/></td>
+		<td><input type="checkbox" name="edit_image_checkbox[]" value="<{$im.id}>" <{if $im.box_id==$id}>checked<{/if}>/></td>
+		<td><image height="30px" width="30px" src="<{$im.image}>" alt="<{$im.title}>"/></td>
+		<td><{$im.title}></td>
+	</tr>
+	<{/foreach}>
+</table>
+<input name="id" type="hidden" value="<{$id}>"/>
+</form>
+<span class="clickbtn" i="<{$id}>" id="edit_image_save"> [保存选择] </span>
+
+<script type="text/javascript">
+	$(function(){
+		$('#edit_image_save').click(function(){
+			$.post('index.php?m=club&s=box&a=image.save',$('#edit_image_list').serialize(),function(data){
+				var json = eval("(" + data + ")");
+				if(json.httpstatus == 200){
+					alert(json.msg);
+					$('#dialogDiv').dialog("close").html('');
+					window.location.reload();
+				}else{
+					alert(json.error);
+				}
+			})
+		})
+	})
+</script>

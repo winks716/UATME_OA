@@ -1,0 +1,150 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+<div class="container">
+	<table>
+		<tr>
+			<th>中文名</th>
+			<th>英文名</th>
+			<th>缩写(必须唯一)</th>
+			<th>电邮(必须唯一)</th>
+			<th>工号(必须唯一)</th>
+			<th>在职</th>
+			<th>操作</th>
+		</tr>
+		<tr>
+			<td><input id="namezh" class="span-2"/>+新增</td>
+			<td><input id="name" class="span-3"/></td>
+			<td><input id="short_name" class="span-2"/></td>
+			<td><input id="email" class="span-4"/></td>
+			<td><input id="employee_no" class="span-2"/></td>
+			<td><input id="ifleave" type="hidden" value="0"/>是</td>
+			<td><span class="clickbtn span-2" id="addEmployee"> [添加] </span></td>
+		</tr>
+		<{foreach from=$employee item=e}>
+		<tr>
+			<td><input value="<{$e.namezh}>" class="span-2 namezh"/></td>
+			<td><input value="<{$e.name}>" class="span-3 name"/></td>
+			<td><input value="<{$e.short_name}>" class="span-2 short_name"/></td>
+			<td><input value="<{$e.email}>" class="span-4 email"/></td>
+			<td><input value="<{$e.employee_no}>" class="span-2 employee_no"/></td>
+			<td><input value="stay" class="ifleave" type="checkbox" <{if $e.ifleave==0}>checked<{/if}>/></td>
+			<td><span class="clickbtn saveEmployee" i="<{$e.id}>"> [保存] </span>
+				<span class="clickbtn editPrivilege" i="<{$e.id}>"> [权限] </span>
+				<span class="clickbtn resetPassword" i="<{$e.id}>"> [密码重置] </span>
+				<{if $e.ifleave==1}> <span class="clickbtn deleteEmployee" i="<{$e.id}>"> [删除] </span><{/if}></td>
+		</tr>
+		<{/foreach}>
+	</table>
+</div>
+
+<div id="alertDiv"></div>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>
+
+<script>
+$(function(){
+	//add one employee
+	$('#addEmployee').click(function(){
+		var namezh = $.trim($('#namezh').val());
+		var name = $.trim($('#name').val());
+		var short_name = $.trim($('#short_name').val());
+		var email = $.trim($('#email').val());
+		var employee_no = $.trim($('#employee_no').val());
+		var ifleave = $.trim($('#ifleave').val());
+		if(name != '' && email != '' && employee_no != '' && short_name != ''){
+			$.post('index.php?m=system&s=setup&a=employee.add',{'namezh':namezh, 'name':name, 'short_name':short_name, 'email':email, 'employee_no':employee_no, 'ifleave':ifleave}, function(data){
+				var json = eval('(' + data + ')');
+				if(json.httpstatus == 200){
+					alert(json.msg);
+					window.location.reload();
+				}else{
+					alert(json.error);
+				}
+			})
+		}else{
+			alert('除了中文名，其他内容必填');
+		}
+	})
+	
+	//delete one employee
+	$('.deleteEmployee').click(function(){
+		if(confirm('确认删除此员工？'))
+		var id = $(this).attr('i');
+		$.post('index.php?m=system&s=setup&a=employee.delete',{'id':id}, function(data){
+			var json = eval('(' + data + ')');
+			if(json.httpstatus == 200){
+				alert(json.msg);
+				window.location.reload();
+			}else{
+				alert(json.error);
+			}			
+		})
+	})
+	
+	//save one employee
+	$('.saveEmployee').click(function(){
+		var id = $(this).attr('i');
+		var namezh = $.trim($(this).parents('tr').find('.namezh').val());
+		var name = $.trim($(this).parents('tr').find('.name').val());
+		var short_name = $.trim($(this).parents('tr').find('.short_name').val());
+		var email = $.trim($(this).parents('tr').find('.email').val());
+		var employee_no = $.trim($(this).parents('tr').find('.employee_no').val());
+		var ifleave = $.trim($(this).parents('tr').find('.ifleave:checked').val());
+		ifleave = (ifleave=='stay') ? 0 : 1;
+		if(name != '' && email != '' && employee_no != '' && short_name != ''){
+			$.post('index.php?m=system&s=setup&a=employee.save',{'id':id, 'namezh':namezh, 'name':name, 'short_name':short_name, 'email':email, 'employee_no':employee_no, 'ifleave':ifleave}, function(data){
+				var json = eval('(' + data + ')');
+				if(json.httpstatus == 200){
+					alert(json.msg);
+					window.location.reload();
+				}else{
+					alert(json.error);
+				}			
+			})
+		}else{
+			alert('除了中文名，其他内容必填');
+		}
+	})
+	
+	//edit employee privilege
+	$('.editPrivilege').click(function(){
+		var id = $(this).attr('i');
+		$('#alertDiv').html('').dialog({
+			modal: true,
+			width: 500,
+			height: 450,
+			buttons: {
+				'保存': function(){
+					$.post('index.php?m=system&s=setup&a=employee.privilege.save',$('#editPrivilegeForm').serialize(),function(data){
+						var json = eval('(' + data + ')');
+						if(json.httpstatus == 200){
+							alert(json.msg);
+							$('#alertDiv').dialog('close').html('');
+						}else{
+							alert(json.error);
+						}
+					})
+				},
+				'取消': function(){$('#alertDiv').dialog('close').html('')}
+			}
+		}).load('index.php?m=system&s=setup&a=employee.privilege.edit',{'id':id});
+	})
+	
+	//reset employee's password
+	$('.resetPassword').click(function(){
+		if(confirm('确认要重置此用户的密码？')){
+			var id = $(this).attr('i');
+			$.post('index.php?m=system&s=setup&a=employee.password.reset',{'id':id},function(data){
+				var json = eval('(' + data + ')');
+				if(json.httpstatus == 200){
+					alert(json.msg);
+				}else{
+					alert(json.error);
+				}
+			})			
+		}
+	})
+})
+</script>

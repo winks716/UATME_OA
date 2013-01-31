@@ -1,0 +1,37 @@
+<div class="left toolbar"> <span id="expenseApply" class="clickbtn"> [申请报销] </span></div>
+<div id="expenseApplyDialog" title="报销申请单"></div>
+
+<div class="clear"></div>
+<div id="expenseList">
+	<ul>
+	<{foreach from=$tab item=t}>
+		<li><a href="<{$t.href}>"><{$t.label}></a></li>
+	<{/foreach}>
+	</ul>
+</div>  
+
+<script type="text/javascript">
+$(function() {
+	$( "#expenseList" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+	$( "#expenseList li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" ); 
+	$( "#expenseApplyDialog" ).dialog({
+		autoOpen: false,
+		width: 1000,
+		height: 500,
+		modal: true,
+		resizable: false,
+		close: function() {
+			$('#expenseApplyDialog').html('');
+		}
+	});	
+	$( "#expenseApply" ).click(function() {
+		$( "#expenseApplyDialog" ).dialog( "open" );
+		$.ajaxSetup({
+			contentType: "application/x-www-form-urlencoded; charset=utf-8"
+		});
+		$.post('index.php?m=expense&s=apply&a=add.new',{},function(data){
+			$('#expenseApplyDialog').html(data);
+		});
+	});
+});
+</script>

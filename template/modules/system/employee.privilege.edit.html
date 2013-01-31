@@ -1,0 +1,8 @@
+<form id="editPrivilegeForm">
+<input type="hidden" value="<{$id}>" name="id"/>
+<table>
+<{foreach from=$privilege item=p}>
+<tr><td><input name="privilege[]" type="checkbox" value="<{$p.id}>" <{if $p.assigned==1}>checked<{/if}>/></td><td><{$p.namezh}></td><td><{$p.comment}></td></tr>
+<{/foreach}>
+</table>
+</form>
