@@ -7,31 +7,42 @@
 		<tr>
 			<th>部门名称</th>
 			<th>部门缩写</th>
+			<th>部门经理</th>
 			<th>所属地区</th>
 			<th>可用</th>
 			<th>操作</th>
 		</tr>
 		<tr>
-			<td><input id="departmentName" class="span-2"/>+新增</td>
-			<td><input id="departmentNameshort" class="span-3"/></td>
-			<td><select id="departmentLocation">
+			<td><input id="name" class="span-2"/>+新增</td>
+			<td><input id="nameshort" class="span-3"/></td>
+			<td><select id="manageremployeeid">
+				<{foreach from=$employee item=e}>
+					<option value="<{$e.id}>"><{$e.name}> - <{$e.namezh}></option>
+				<{/foreach}>
+				</select></td>
+			<td><select id="parentid">
 				<{foreach from=$location item=l}>
 					<option value="<{$l.id}>"><{$l.name}></option>
 				<{/foreach}>
 				</select></td>
-			<td><input id="departmentAvailable" type="checkbox" value="1" checked/></td>
-			<td><span class="clickbtn span-2" id="addLocation"> [添加] </span></td>
+			<td><input id="available" type="checkbox" value="1" checked/></td>
+			<td><span class="clickbtn span-2" id="addDepartment"> [添加] </span></td>
 		</tr>
 		<{foreach from=$department item=d}>
 		<tr>
-			<td><input value="<{$d.name}>" class="span-2 departmentName"/></td>
-			<td><input value="<{$d.nameshort}>" class="span-3 departmentNameshort"/></td>
-			<td><select class="departmentLocation">
+			<td><input value="<{$d.name}>" class="span-2 name"/></td>
+			<td><input value="<{$d.nameshort}>" class="span-3 nameshort"/></td>
+			<td><select class="manageremployeeid">
+				<{foreach from=$employee item=e}>
+					<option value="<{$e.id}>" <{if $d.manager_employee_id==$e.id}>selected<{/if}>><{$e.name}> - <{$e.namezh}></option>
+				<{/foreach}>
+				</select></td>
+			<td><select class="parentid">
 				<{foreach from=$location item=l}>
 					<option value="<{$l.id}>" <{if $d.location_id==$l.id}>selected<{/if}>><{$l.name}></option>
 				<{/foreach}>
 				</select></td>
-			<td><input value="1" class="span-1 departmentAvailable" type="checkbox" <{if $d.available==1}>checked<{/if}>/></td>
+			<td><input value="1" class="span-1 available" type="checkbox" <{if $d.available==1}>checked<{/if}>/></td>
 			<td><span class="clickbtn saveDepartment" i="<{$d.id}>"> [保存] </span> <span class="clickbtn deleteDepartment" i="<{$d.id}>"> [删除] </span></td>
 		</tr>
 		<{/foreach}>
@@ -40,3 +51,48 @@
 
 <{include file="declaration.html"}>
 <{include file="footer.html"}>
+
+<script>
+$(function(){
+	$('#addDepartment').click(function(){
+		var name = $('#name').val();
+		var nameshort = $('#nameshort').val();
+		var manageremployeeid = $('#manageremployeeid').val();
+		var parentid = $('#parentid').val();
+		var available = $('#available:checked').val();
+		if(name!='' || nameshort!=''){
+			$.post('index.php?m=system&s=setup&a=department.add', {'name':name,'nameshort':nameshort,'manageremployeeid':manageremployeeid,'parentid':parentid,'available':available}, function(data){
+				var json = eval('(' + data + ')');
+				if(json.httpstatus == 200){
+					alert(json.msg);
+					window.location.reload();
+				}
+				if(json.httpstatus == 500){
+					alert(json.error);
+				}
+			})			
+		}
+	})
+	$('.saveDepartment').click(function(){
+		var o = $(this).parents('tr');
+		var name = o.find('.name').val();
+		var nameshort = o.find('.nameshort').val();
+		var manageremployeeid = o.find('.manageremployeeid').val();
+		var parentid = o.find('.parentid').val();
+		var available = o.find('.available:checked').val();
+		var id = $(this).attr('i');
+		if(name!='' || nameshort!=''){
+			$.post('index.php?m=system&s=setup&a=department.save', {'id':id,'name':name,'nameshort':nameshort,'manageremployeeid':manageremployeeid,'parentid':parentid,'available':available}, function(data){
+				var json = eval('(' + data + ')');
+				if(json.httpstatus == 200){
+					alert(json.msg);
+					window.location.reload();
+				}
+				if(json.httpstatus == 500){
+					alert(json.error);
+				}
+			})			
+		}
+	})
+})
+</script>

@@ -194,7 +194,7 @@ if($_SESSION['if_system_admin'] == 1){
 			$smarty->display('system/country.list.html');
 			break;
 		case 'country.add':
-			$sql = 'INSERT INTO uatme_oa_system_country() VALUES("'.$_POST[''].'","'.$_POST[''].'","'.$_POST[''].'")';
+			$sql = 'INSERT INTO uatme_oa_system_country(name, nameshort, available) VALUES("'.$_POST['name'].'","'.$_POST['nameshort'].'","'.($_POST['available']==1?1:0).'")';
 			$mysqli->query($sql);
 			if($mysqli->insert_id > 0){
 				$httpstatus = 200;
@@ -207,12 +207,10 @@ if($_SESSION['if_system_admin'] == 1){
 			break;
 		case 'country.save':
 			$sql = 'UPDATE uatme_oa_system_country
-					SET title="'.$_POST['title'].'", 
-							detail="'.$_POST['detail'].'", 
-									start_date="'.$_POST['start_date'].'", 
-											end_date="'.$_POST['end_date'].'", 
-													publisher_employee_id="'.$_SESSION['employee_id'].'"   
-																 WHERE id="'.$_POST['id'].'" LIMIT 1';
+					SET name="'.$_POST['name'].'", 
+							nameshort="'.$_POST['nameshort'].'",  
+									available="'.($_POST['available']==1?1:0).'" 
+											WHERE id="'.$_POST['id'].'" LIMIT 1';
 			if($mysqli->query($sql)){
 				$httpstatus = 200;
 				$msg = '保存国家成功';
@@ -241,7 +239,7 @@ if($_SESSION['if_system_admin'] == 1){
 			$smarty->display('system/location.list.html');
 			break;
 		case 'location.add':
-			$sql = 'INSERT INTO uatme_oa_system_location() VALUES("'.$_POST[''].'","'.$_POST[''].'","'.$_POST[''].'")';
+			$sql = 'INSERT INTO uatme_oa_system_location(name, nameshort, country_id, available) VALUES("'.$_POST['name'].'","'.$_POST['nameshort'].'","'.$_POST['parentid'].'","'.($_POST['available']==1?1:0).'")';
 			$mysqli->query($sql);
 			if($mysqli->insert_id > 0){
 				$httpstatus = 200;
@@ -253,23 +251,29 @@ if($_SESSION['if_system_admin'] == 1){
 			sendResponse($httpstatus, $error, $msg);
 			break;
 		case 'location.save':
-			$sql = 'UPDATE uatme_oa_system_location 
-					SET title="'.$_POST['title'].'", 
-							detail="'.$_POST['detail'].'", 
-									start_date="'.$_POST['start_date'].'", 
-											end_date="'.$_POST['end_date'].'", 
-													publisher_employee_id="'.$_SESSION['employee_id'].'"   
-																 WHERE id="'.$_POST['id'].'" LIMIT 1';
+			$sql = 'UPDATE uatme_oa_system_location
+					SET name="'.$_POST['name'].'", 
+							nameshort="'.$_POST['nameshort'].'", 
+									country_id="'.$_POST['parentid'].'",  
+											available="'.($_POST['available']==1?1:0).'" 
+													WHERE id="'.$_POST['id'].'" LIMIT 1';
 			if($mysqli->query($sql)){
 				$httpstatus = 200;
 				$msg = '保存地区成功';
 			}else{
 				$httpstatus = 500;
-				$error = '服务器忙，请稍后再试';
+				$error = '服务器忙，请稍后再试！';
 			}
 			sendResponse($httpstatus, $error, $msg);
 			break;
 		case 'department.list':	
+			$sql = 'SELECT * from uatme_oa_system_employee WHERE id!=1 AND ifavailable=1 ORDER BY ifleave ASC, name ASC';
+			$result = $mysqli->query($sql);
+			if($result->num_rows > 0){
+				while($array = $result->fetch_assoc()){
+					$assign['employee'][] = $array;
+				}
+			}	
 			$sql = 'SELECT * FROM uatme_oa_system_location';
 			$result = $mysqli->query($sql);
 			if($result->num_rows > 0){
@@ -288,7 +292,7 @@ if($_SESSION['if_system_admin'] == 1){
 			$smarty->display('system/department.list.html');
 			break;
 		case 'department.add':
-			$sql = 'INSERT INTO uatme_oa_system_department() VALUES("'.$_POST[''].'","'.$_POST[''].'","'.$_POST[''].'")';
+			$sql = 'INSERT INTO uatme_oa_system_department(name, nameshort, location_id, available) VALUES("'.$_POST['name'].'","'.$_POST['nameshort'].'","'.$_POST['parentid'].'","'.($_POST['available']==1?1:0).'")';
 			$mysqli->query($sql);
 			if($mysqli->insert_id > 0){
 				$httpstatus = 200;
@@ -300,19 +304,18 @@ if($_SESSION['if_system_admin'] == 1){
 			sendResponse($httpstatus, $error, $msg);
 			break;
 		case 'department.save':
-			$sql = 'UPDATE uatme_oa_system_department 
-					SET title="'.$_POST['title'].'", 
-							detail="'.$_POST['detail'].'", 
-									start_date="'.$_POST['start_date'].'", 
-											end_date="'.$_POST['end_date'].'", 
-													publisher_employee_id="'.$_SESSION['employee_id'].'"   
-																 WHERE id="'.$_POST['id'].'" LIMIT 1';
+			$sql = 'UPDATE uatme_oa_system_department
+					SET name="'.$_POST['name'].'", 
+							nameshort="'.$_POST['nameshort'].'", 
+									location_id="'.$_POST['parentid'].'",  
+											available="'.($_POST['available']==1?1:0).'" 
+													WHERE id="'.$_POST['id'].'" LIMIT 1';
 			if($mysqli->query($sql)){
 				$httpstatus = 200;
 				$msg = '保存部门成功';
 			}else{
 				$httpstatus = 500;
-				$error = '服务器忙，请稍后再试';
+				$error = '服务器忙，请稍后再试！';
 			}
 			sendResponse($httpstatus, $error, $msg);
 			break;
@@ -335,7 +338,7 @@ if($_SESSION['if_system_admin'] == 1){
 			$smarty->display('system/position.list.html');
 			break;
 		case 'position.add':
-			$sql = 'INSERT INTO uatme_oa_system_position() VALUES("'.$_POST[''].'","'.$_POST[''].'","'.$_POST[''].'")';
+			$sql = 'INSERT INTO uatme_oa_system_position(name, nameshort, department_id, available) VALUES("'.$_POST['name'].'","'.$_POST['nameshort'].'","'.$_POST['parentid'].'","'.($_POST['available']==1?1:0).'")';
 			$mysqli->query($sql);
 			if($mysqli->insert_id > 0){
 				$httpstatus = 200;
@@ -347,19 +350,18 @@ if($_SESSION['if_system_admin'] == 1){
 			sendResponse($httpstatus, $error, $msg);
 			break;
 		case 'position.save':
-			$sql = 'UPDATE uatme_oa_system_position 
-					SET title="'.$_POST['title'].'", 
-							detail="'.$_POST['detail'].'", 
-									start_date="'.$_POST['start_date'].'", 
-											end_date="'.$_POST['end_date'].'", 
-													publisher_employee_id="'.$_SESSION['employee_id'].'"   
-																 WHERE id="'.$_POST['id'].'" LIMIT 1';
+			$sql = 'UPDATE uatme_oa_system_position
+					SET name="'.$_POST['name'].'", 
+							nameshort="'.$_POST['nameshort'].'", 
+									department_id="'.$_POST['parentid'].'",  
+											available="'.($_POST['available']==1?1:0).'" 
+													WHERE id="'.$_POST['id'].'" LIMIT 1';
 			if($mysqli->query($sql)){
 				$httpstatus = 200;
 				$msg = '保存职位成功';
 			}else{
 				$httpstatus = 500;
-				$error = '服务器忙，请稍后再试';
+				$error = '服务器忙，请稍后再试！';
 			}
 			sendResponse($httpstatus, $error, $msg);
 			break;
