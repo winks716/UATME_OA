@@ -292,7 +292,7 @@ if($_SESSION['if_system_admin'] == 1){
 			$smarty->display('system/department.list.html');
 			break;
 		case 'department.add':
-			$sql = 'INSERT INTO uatme_oa_system_department(name, nameshort, location_id, available) VALUES("'.$_POST['name'].'","'.$_POST['nameshort'].'","'.$_POST['parentid'].'","'.($_POST['available']==1?1:0).'")';
+			$sql = 'INSERT INTO uatme_oa_system_department(name, nameshort, manager_employee_id, location_id, available) VALUES("'.$_POST['name'].'","'.$_POST['nameshort'].'","'.$_POST['manageremployeeid'].'","'.$_POST['parentid'].'","'.($_POST['available']==1?1:0).'")';
 			$mysqli->query($sql);
 			if($mysqli->insert_id > 0){
 				$httpstatus = 200;
@@ -307,9 +307,10 @@ if($_SESSION['if_system_admin'] == 1){
 			$sql = 'UPDATE uatme_oa_system_department
 					SET name="'.$_POST['name'].'", 
 							nameshort="'.$_POST['nameshort'].'", 
-									location_id="'.$_POST['parentid'].'",  
-											available="'.($_POST['available']==1?1:0).'" 
-													WHERE id="'.$_POST['id'].'" LIMIT 1';
+									manager_employee_id="'.$_POST['manageremployeeid'].'",
+											location_id="'.$_POST['parentid'].'",  
+													available="'.($_POST['available']==1?1:0).'" 
+															WHERE id="'.$_POST['id'].'" LIMIT 1';
 			if($mysqli->query($sql)){
 				$httpstatus = 200;
 				$msg = '保存部门成功';
