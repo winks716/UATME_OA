@@ -193,6 +193,35 @@ if($_SESSION['if_system_admin'] == 1){
 			$smarty->assign($assign);
 			$smarty->display('system/country.list.html');
 			break;
+		case 'country.add':
+			$sql = 'INSERT INTO uatme_oa_system_country() VALUES("'.$_POST[''].'","'.$_POST[''].'","'.$_POST[''].'")';
+			$mysqli->query($sql);
+			if($mysqli->insert_id > 0){
+				$httpstatus = 200;
+				$msg = '添加国家成功！';
+			}else{
+				$httpstatus = 500;
+				$error = '服务器忙，请稍后再试！';
+			}
+			sendResponse($httpstatus, $error, $msg);
+			break;
+		case 'country.save':
+			$sql = 'UPDATE uatme_oa_system_country
+					SET title="'.$_POST['title'].'", 
+							detail="'.$_POST['detail'].'", 
+									start_date="'.$_POST['start_date'].'", 
+											end_date="'.$_POST['end_date'].'", 
+													publisher_employee_id="'.$_SESSION['employee_id'].'"   
+																 WHERE id="'.$_POST['id'].'" LIMIT 1';
+			if($mysqli->query($sql)){
+				$httpstatus = 200;
+				$msg = '保存国家成功';
+			}else{
+				$httpstatus = 500;
+				$error = '服务器忙，请稍后再试';
+			}
+			sendResponse($httpstatus, $error, $msg);
+			break;
 		case 'location.list':
 			$sql = 'SELECT * FROM uatme_oa_system_country';
 			$result = $mysqli->query($sql);
@@ -210,6 +239,35 @@ if($_SESSION['if_system_admin'] == 1){
 			}			
 			$smarty->assign($assign);
 			$smarty->display('system/location.list.html');
+			break;
+		case 'location.add':
+			$sql = 'INSERT INTO uatme_oa_system_location() VALUES("'.$_POST[''].'","'.$_POST[''].'","'.$_POST[''].'")';
+			$mysqli->query($sql);
+			if($mysqli->insert_id > 0){
+				$httpstatus = 200;
+				$msg = '添加地区成功！';
+			}else{
+				$httpstatus = 500;
+				$error = '服务器忙，请稍后再试！';
+			}
+			sendResponse($httpstatus, $error, $msg);
+			break;
+		case 'location.save':
+			$sql = 'UPDATE uatme_oa_system_location 
+					SET title="'.$_POST['title'].'", 
+							detail="'.$_POST['detail'].'", 
+									start_date="'.$_POST['start_date'].'", 
+											end_date="'.$_POST['end_date'].'", 
+													publisher_employee_id="'.$_SESSION['employee_id'].'"   
+																 WHERE id="'.$_POST['id'].'" LIMIT 1';
+			if($mysqli->query($sql)){
+				$httpstatus = 200;
+				$msg = '保存地区成功';
+			}else{
+				$httpstatus = 500;
+				$error = '服务器忙，请稍后再试';
+			}
+			sendResponse($httpstatus, $error, $msg);
 			break;
 		case 'department.list':	
 			$sql = 'SELECT * FROM uatme_oa_system_location';
@@ -229,6 +287,35 @@ if($_SESSION['if_system_admin'] == 1){
 			$smarty->assign($assign);
 			$smarty->display('system/department.list.html');
 			break;
+		case 'department.add':
+			$sql = 'INSERT INTO uatme_oa_system_department() VALUES("'.$_POST[''].'","'.$_POST[''].'","'.$_POST[''].'")';
+			$mysqli->query($sql);
+			if($mysqli->insert_id > 0){
+				$httpstatus = 200;
+				$msg = '添加部门成功！';
+			}else{
+				$httpstatus = 500;
+				$error = '服务器忙，请稍后再试！';
+			}
+			sendResponse($httpstatus, $error, $msg);
+			break;
+		case 'department.save':
+			$sql = 'UPDATE uatme_oa_system_department 
+					SET title="'.$_POST['title'].'", 
+							detail="'.$_POST['detail'].'", 
+									start_date="'.$_POST['start_date'].'", 
+											end_date="'.$_POST['end_date'].'", 
+													publisher_employee_id="'.$_SESSION['employee_id'].'"   
+																 WHERE id="'.$_POST['id'].'" LIMIT 1';
+			if($mysqli->query($sql)){
+				$httpstatus = 200;
+				$msg = '保存部门成功';
+			}else{
+				$httpstatus = 500;
+				$error = '服务器忙，请稍后再试';
+			}
+			sendResponse($httpstatus, $error, $msg);
+			break;
 		case 'position.list':
 			$sql = 'SELECT * FROM uatme_oa_system_department';
 			$result = $mysqli->query($sql);
@@ -246,6 +333,35 @@ if($_SESSION['if_system_admin'] == 1){
 			}				
 			$smarty->assign($assign);
 			$smarty->display('system/position.list.html');
+			break;
+		case 'position.add':
+			$sql = 'INSERT INTO uatme_oa_system_position() VALUES("'.$_POST[''].'","'.$_POST[''].'","'.$_POST[''].'")';
+			$mysqli->query($sql);
+			if($mysqli->insert_id > 0){
+				$httpstatus = 200;
+				$msg = '添加职位成功！';
+			}else{
+				$httpstatus = 500;
+				$error = '服务器忙，请稍后再试！';
+			}
+			sendResponse($httpstatus, $error, $msg);
+			break;
+		case 'position.save':
+			$sql = 'UPDATE uatme_oa_system_position 
+					SET title="'.$_POST['title'].'", 
+							detail="'.$_POST['detail'].'", 
+									start_date="'.$_POST['start_date'].'", 
+											end_date="'.$_POST['end_date'].'", 
+													publisher_employee_id="'.$_SESSION['employee_id'].'"   
+																 WHERE id="'.$_POST['id'].'" LIMIT 1';
+			if($mysqli->query($sql)){
+				$httpstatus = 200;
+				$msg = '保存职位成功';
+			}else{
+				$httpstatus = 500;
+				$error = '服务器忙，请稍后再试';
+			}
+			sendResponse($httpstatus, $error, $msg);
 			break;
 		case 'privilege.list':			
 			$smarty->assign($assign);

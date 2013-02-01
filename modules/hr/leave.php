@@ -28,7 +28,7 @@ switch($A){
 			$httpstatus = 200;
 			$msg = '假期申请成功！请等待批复结果';
 		}else{
-			$httpstatus = 503;
+			$httpstatus = 500;
 			$error = '服务器忙，请稍后再试！';
 		}
 		sendResponse($httpstatus, $error, $msg);
