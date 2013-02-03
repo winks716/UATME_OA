@@ -1,17 +1,17 @@
-<?php /* Smarty version Smarty-3.0.7, created on 2013-01-31 23:43:43
+<?php /* Smarty version Smarty-3.0.7, created on 2013-02-04 03:59:00
          compiled from "E:\UATME_OA/template/modules\system/employee.list.html" */ ?>
-<?php /*%%SmartyHeaderCode:19660510a912fba38b1-16889660%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:1330510ec1842e41a1-89015013%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
     '9ecf97014a23422e7075443fe4d7d1ebb89aa5b5' => 
     array (
       0 => 'E:\\UATME_OA/template/modules\\system/employee.list.html',
-      1 => 1359039212,
+      1 => 1359920749,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '19660510a912fba38b1-16889660',
+  'nocache_hash' => '1330510ec1842e41a1-89015013',
   'function' => 
   array (
   ),
@@ -27,20 +27,11 @@ $_smarty_tpl->decodeProperties(array (
 		<tr>
 			<th>中文名</th>
 			<th>英文名</th>
-			<th>缩写(必须唯一)</th>
-			<th>电邮(必须唯一)</th>
-			<th>工号(必须唯一)</th>
 			<th>在职</th>
 			<th>操作</th>
 		</tr>
 		<tr>
-			<td><input id="namezh" class="span-2"/>+新增</td>
-			<td><input id="name" class="span-3"/></td>
-			<td><input id="short_name" class="span-2"/></td>
-			<td><input id="email" class="span-4"/></td>
-			<td><input id="employee_no" class="span-2"/></td>
-			<td><input id="ifleave" type="hidden" value="0"/>是</td>
-			<td><span class="clickbtn span-2" id="addEmployee"> [添加] </span></td>
+			<td colspan="4"><span class="clickbtn span-2" id="initAddEmployee"> [添加] </span></td>
 		</tr>
 		<?php  $_smarty_tpl->tpl_vars['e'] = new Smarty_Variable;
  $_from = $_smarty_tpl->getVariable('employee')->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
@@ -48,19 +39,15 @@ if ($_smarty_tpl->_count($_from) > 0){
     foreach ($_from as $_smarty_tpl->tpl_vars['e']->key => $_smarty_tpl->tpl_vars['e']->value){
 ?>
 		<tr>
-			<td><input value="<?php echo $_smarty_tpl->tpl_vars['e']->value['namezh'];?>
-" class="span-2 namezh"/></td>
-			<td><input value="<?php echo $_smarty_tpl->tpl_vars['e']->value['name'];?>
-" class="span-3 name"/></td>
-			<td><input value="<?php echo $_smarty_tpl->tpl_vars['e']->value['short_name'];?>
-" class="span-2 short_name"/></td>
-			<td><input value="<?php echo $_smarty_tpl->tpl_vars['e']->value['email'];?>
-" class="span-4 email"/></td>
-			<td><input value="<?php echo $_smarty_tpl->tpl_vars['e']->value['employee_no'];?>
-" class="span-2 employee_no"/></td>
-			<td><input value="stay" class="ifleave" type="checkbox" <?php if ($_smarty_tpl->tpl_vars['e']->value['ifleave']==0){?>checked<?php }?>/></td>
-			<td><span class="clickbtn saveEmployee" i="<?php echo $_smarty_tpl->tpl_vars['e']->value['id'];?>
-"> [保存] </span>
+			<td><?php echo $_smarty_tpl->tpl_vars['e']->value['namezh'];?>
+</td>
+			<td><?php echo $_smarty_tpl->tpl_vars['e']->value['name'];?>
+</td>
+			<td><?php if ($_smarty_tpl->tpl_vars['e']->value['ifleave']==0){?>是<?php }else{ ?>否<?php }?></td>
+			<td><span class="clickbtn editBasic" i="<?php echo $_smarty_tpl->tpl_vars['e']->value['id'];?>
+"> [基本信息] </span>
+				<span class="clickbtn editPosition" i="<?php echo $_smarty_tpl->tpl_vars['e']->value['id'];?>
+"> [职位] </span>
 				<span class="clickbtn editPrivilege" i="<?php echo $_smarty_tpl->tpl_vars['e']->value['id'];?>
 "> [权限] </span>
 				<span class="clickbtn resetPassword" i="<?php echo $_smarty_tpl->tpl_vars['e']->value['id'];?>
@@ -81,6 +68,55 @@ if ($_smarty_tpl->_count($_from) > 0){
 
 <script>
 $(function(){
+	
+	//init the ui to add a new employee
+	$('.editBasic').click(function(){
+		var id = $(this).attr('i');
+		$('#alertDiv').html('').dialog({
+			modal: true,
+			width: 500,
+			height: 450,
+			buttons: {
+				'保存修改': function(){
+					$.post('index.php?m=system&s=setup&a=employee.save',$('#editEmployeeForm').serialize(),function(data){
+						alert(data);
+						var json = eval('(' + data + ')');
+						if(json.httpstatus == 200){
+							alert(json.msg);
+							window.location.reload();
+						}else{
+							alert(json.error);
+						}
+					})
+				},
+				'取消': function(){$('#alertDiv').dialog('close').html('')}
+			}
+		}).load('index.php?m=system&s=setup&a=employee.edit.init',{'id':id});
+	})
+	
+	//init the ui to add a new employee
+	$('#initAddEmployee').click(function(){
+		$('#alertDiv').html('').dialog({
+			modal: true,
+			width: 500,
+			height: 450,
+			buttons: {
+				'确认添加': function(){
+					$.post('index.php?m=system&s=setup&a=employee.add.save',$('#addEmployeeForm').serialize(),function(data){
+						var json = eval('(' + data + ')');
+						if(json.httpstatus == 200){
+							alert(json.msg);
+							window.location.reload();
+						}else{
+							alert(json.error);
+						}
+					})
+				},
+				'取消': function(){$('#alertDiv').dialog('close').html('')}
+			}
+		}).load('index.php?m=system&s=setup&a=employee.add.init');
+	})
+	
 	//add one employee
 	$('#addEmployee').click(function(){
 		var namezh = $.trim($('#namezh').val());
@@ -142,6 +178,30 @@ $(function(){
 		}else{
 			alert('除了中文名，其他内容必填');
 		}
+	})
+	
+	//edit employee position
+	$('.editPosition').click(function(){
+		var id = $(this).attr('i');
+		$('#alertDiv').html('').dialog({
+			modal: true,
+			width: 500,
+			height: 450,
+			buttons: {
+				'保存': function(){
+					$.post('index.php?m=system&s=setup&a=employee.position.save',$('#editPositionForm').serialize(),function(data){
+						var json = eval('(' + data + ')');
+						if(json.httpstatus == 200){
+							alert(json.msg);
+							$('#alertDiv').dialog('close').html('');
+						}else{
+							alert(json.error);
+						}
+					})
+				},
+				'取消': function(){$('#alertDiv').dialog('close').html('')}
+			}
+		}).load('index.php?m=system&s=setup&a=employee.position.edit',{'id':id});
 	})
 	
 	//edit employee privilege

@@ -1,0 +1,22 @@
+<div class="container">
+<form id="editEmployeeForm">
+	<{foreach from=$employee item=e}>
+	<input type="hidden" name="id" value="<{$e.id}>"/>
+	<table>
+		<tr><th>中文名</th><td><input name="namezh" value="<{$e.namezh}>"/></td></tr>
+		<tr><th>英文名</th><td><input name="name" value="<{$e.name}>"/></td></tr>
+		<tr><th>英文缩写</th><td><input name="short_name" value="<{$e.short_name}>"/></td></tr>
+		<tr><th>电子邮箱</th><td><input name="email" value="<{$e.email}>"/></td></tr>
+		<tr><th>工号</th><td><input name="employee_no" value="<{$e.employee_no}>"/></td></tr>
+		<tr><th>在职</th><td><input type="radio" name="ifleave" value="0" <{if $e.ifleave==0}>checked<{/if}>/>是&nbsp;&nbsp;
+							<input type="radio" name="ifleave" value="1" <{if $e.ifleave==1}>checked<{/if}>/>否</td></tr>
+		<tr><th>部门</th><td><select name="department_id">
+								<option value="0">-请选择员工所属部门-</option>
+								<{foreach from=$department item=d}>
+								<option value="<{$d.id}>" <{if $d.id==$e.department_id}>selected<{/if}>><{$d.name}></option>
+								<{/foreach}>
+							</select></td></tr>
+	</table>
+	<{/foreach}>
+</form>
+</div>

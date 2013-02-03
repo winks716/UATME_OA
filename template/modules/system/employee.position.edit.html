@@ -1,0 +1,10 @@
+<div class="container">
+	<form id="editPositionForm">
+	<input type="hidden" value="<{$id}>" name="id"/>
+	<table>
+	<{foreach from=$position item=p}>
+	<tr><td><input name="position[]" type="checkbox" value="<{$p.id}>" <{if $p.assigned==1}>checked<{/if}>/></td><td><{$p.name}></td></tr>
+	<{/foreach}>
+	</table>
+	</form>
+</div>

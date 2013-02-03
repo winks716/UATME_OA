@@ -12,13 +12,26 @@ if($_SESSION['if_system_admin'] == 1){
 			$smarty->assign($assign);
 			$smarty->display('system/employee.list.html');
 			break;
-		case 'employee.add':
-			$sql = 'INSERT INTO uatme_oa_system_employee (name, namezh, short_name, email, employee_no) 
+		case 'employee.add.init':
+			$sql = 'SELECT * from uatme_oa_system_department ORDER BY location_id ASC';
+			$result = $mysqli->query($sql);
+			if($result->num_rows > 0){
+				while($array = $result->fetch_assoc()){
+					$assign['department'][] = $array;
+				}
+			}	
+			$smarty->assign($assign);
+			$smarty->display('system/employee.add.html');
+			break;
+		case 'employee.add.save':
+			$sql = 'INSERT INTO uatme_oa_system_employee (name, namezh, short_name, email, employee_no, department_id, ifleave) 
 					VALUES ("'.$_POST['name'].'", 
 							"'.$_POST['namezh'].'", 
 							"'.$_POST['short_name'].'",
 							"'.$_POST['email'].'",
-							"'.$_POST['employee_no'].'")';
+							"'.$_POST['employee_no'].'",
+							"'.$_POST['department_id'].'",
+							"'.$_POST['ifleave'].'")';
 			if($mysqli->query($sql)){
 				if($mysqli->insert_id > 0){
 					$httpstatus = 200;
@@ -49,6 +62,24 @@ if($_SESSION['if_system_admin'] == 1){
 			}
 			sendResponse($httpstatus, $error, $msg);
 			break;
+		case 'employee.edit.init':
+			$sql = 'SELECT * from uatme_oa_system_department ORDER BY location_id ASC';
+			$result = $mysqli->query($sql);
+			if($result->num_rows > 0){
+				while($array = $result->fetch_assoc()){
+					$assign['department'][] = $array;
+				}
+			}
+			$sql = 'SELECT * from uatme_oa_system_employee WHERE id="'.$_POST['id'].'"';
+			$result = $mysqli->query($sql);
+			if($result->num_rows == 1){
+				while($array = $result->fetch_assoc()){
+					$assign['employee'][] = $array;
+				}
+			}	
+			$smarty->assign($assign);
+			$smarty->display('system/employee.edit.html');
+			break;
 		case 'employee.save':
 			$sql = 'UPDATE uatme_oa_system_employee
 					SET name="'.$_POST['name'].'", 
@@ -56,8 +87,9 @@ if($_SESSION['if_system_admin'] == 1){
 									short_name="'.$_POST['short_name'].'", 
 											email="'.$_POST['email'].'", 
 													employee_no="'.$_POST['employee_no'].'",
-															ifleave="'.$_POST['ifleave'].'"  
-																 WHERE id="'.$_POST['id'].'" LIMIT 1';
+															department_id="'.$_POST['department_id'].'",
+																	ifleave="'.$_POST['ifleave'].'"  
+																		 WHERE id="'.$_POST['id'].'" LIMIT 1';
 			if($mysqli->query($sql)){
 				$httpstatus = 200;
 				$msg = '保存用户成功';
@@ -97,6 +129,45 @@ if($_SESSION['if_system_admin'] == 1){
 		case 'employee.privilege.save':
 			$privilege = implode(',',$_POST['privilege']);
 			$sql = 'UPDATE uatme_oa_system_employee SET privilege_id_list="'.$privilege.'" WHERE id="'.$_POST['id'].'" LIMIT 1';
+			if($mysqli->query($sql)){
+				$httpstatus = 200;
+				$msg = '保存权限成功';
+			}else{
+				$httpstatus = 500;
+				$error = '服务器忙，请稍后再试';
+			}
+			sendResponse($httpstatus, $error, $msg);
+			break;
+		case 'employee.position.edit':
+			//get employee's privilege
+			$sql = 'SELECT position_id_list,id from uatme_oa_system_employee WHERE id="'.$_POST['id'].'"';
+			$result = $mysqli->query($sql);
+			if($result->num_rows == 1){
+				while($array = $result->fetch_assoc()){
+					$employeePosition = $array['position_id_list'];
+					$assign['id'] = $array['id'];
+				}
+			}
+			$employeePosition = explode(',',$employeePosition);
+			//get privileges information
+			$sql = 'SELECT * from uatme_oa_system_position';
+			$result = $mysqli->query($sql);
+			if($result->num_rows > 0){
+				while($array = $result->fetch_assoc()){
+					if(in_array($array['id'], $employeePosition)){
+						$array['assigned'] = 1;
+					}else{
+						$array['assigned'] = 0;
+					}
+					$assign['position'][] = $array;
+				}
+			}
+			$smarty->assign($assign);
+			$smarty->display('system/employee.position.edit.html');
+			break;
+		case 'employee.position.save':
+			$position = implode(',',$_POST['position']);
+			$sql = 'UPDATE uatme_oa_system_employee SET position_id_list="'.$position.'" WHERE id="'.$_POST['id'].'" LIMIT 1';
 			if($mysqli->query($sql)){
 				$httpstatus = 200;
 				$msg = '保存权限成功';
