@@ -16,11 +16,13 @@
 			<td><input id="name" class="span-2"/>+新增</td>
 			<td><input id="nameshort" class="span-3"/></td>
 			<td><select id="manageremployeeid">
+				<option value="0">-请选择部门经理-</option>
 				<{foreach from=$employee item=e}>
 					<option value="<{$e.id}>"><{$e.name}> - <{$e.namezh}></option>
 				<{/foreach}>
 				</select></td>
 			<td><select id="parentid">
+				<option value="0">-请选择所属地区-</option>
 				<{foreach from=$location item=l}>
 					<option value="<{$l.id}>"><{$l.name}></option>
 				<{/foreach}>
@@ -33,11 +35,13 @@
 			<td><input value="<{$d.name}>" class="span-2 name"/></td>
 			<td><input value="<{$d.nameshort}>" class="span-3 nameshort"/></td>
 			<td><select class="manageremployeeid">
+				<option value="0">-请选择部门经理-</option>
 				<{foreach from=$employee item=e}>
 					<option value="<{$e.id}>" <{if $d.manager_employee_id==$e.id}>selected<{/if}>><{$e.name}> - <{$e.namezh}></option>
 				<{/foreach}>
 				</select></td>
 			<td><select class="parentid">
+				<option value="0">-请选择所属地区-</option>
 				<{foreach from=$location item=l}>
 					<option value="<{$l.id}>" <{if $d.location_id==$l.id}>selected<{/if}>><{$l.name}></option>
 				<{/foreach}>
