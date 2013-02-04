@@ -45,7 +45,6 @@ $(function(){
 			buttons: {
 				'保存修改': function(){
 					$.post('index.php?m=system&s=setup&a=employee.save',$('#editEmployeeForm').serialize(),function(data){
-						alert(data);
 						var json = eval('(' + data + ')');
 						if(json.httpstatus == 200){
 							alert(json.msg);
