@@ -22,14 +22,42 @@ switch($A){
 				 VALUES ("'.$_POST['leaveType'].'", "'.$_POST['leaveStartDate'].' '.$_POST['leaveStartTime'].'", "'.$_POST['leaveEndDate'].' '.$_POST['leaveEndTime'].'", "'.$_POST['leaveReason'].'", "'.$_SESSION['employee_id'].'", "'.$_POST['leaveAlter'].'")';
 		if($mysqli->query($sql)){
 			//init work flow
-			workflowInit($_SESSION['employee_id'], 'leave.apply', $mysqli->insert_id);
+			$firstPersonId = workflowInit($_SESSION['employee_id'], 'leave.apply', $mysqli->insert_id);
 			//send mail to the first person
-			//mailSendMail($SMTPConfig);
-			$httpstatus = 200;
-			$msg = '假期申请成功！请等待批复结果';
+			if($firstPersonId > 0){
+				$sql = 'SELECT email,namezh FROM uatme_oa_system_employee WHERE id="'.$firstPersonId.'"';
+				$result = $mysqli->query($sql);
+				if($result->num_rows == 1){
+					while($array = $result->fetch_assoc()){
+						$SMTPConfig = array(
+								'sendto' => array(array('mail'=>$array['email'],'name'=>$array['namezh'])),
+								'subject' => '假期申请审批任务',
+								'body' => '<p><h3>'.$_SESSION["namezh"].'申请休假。</h3></p>
+											<p><h4>申请详情</h4></p>
+											<p><table>
+												<tr><th>假期类型</th><th>起始-结束</th><th>代办</th><th>事由</th></tr>
+												<tr><th>'.$_POST["leaveType"].'</th><th>'.$_POST['leaveStartDate'].' '.$_POST['leaveStartTime'].' 至 '.$_POST['leaveEndDate'].' '.$_POST['leaveEndTime'].'</th><th>'.$_POST['leaveAlter'].'</th><th>'.$_POST['leaveReason'].'</th></tr>
+											</table></p>'
+								);
+						if(mailSendMail($SMTPConfig)){
+							$httpstatus = 200;
+							$msg = '假期申请成功！请等待批复结果';
+						}else{
+							$httpstatus = 500;
+							$error = '服务器0忙，请稍后再试！';
+						}
+					}
+				}else{
+					$httpstatus = 500;
+					$error = '服务器1忙，请稍后再试！';
+				}
+			}else{
+				$httpstatus = 500;
+				$error = '服务器2忙，请稍后再试！';
+			}
 		}else{
 			$httpstatus = 500;
-			$error = '服务器忙，请稍后再试！';
+			$error = '服务器3忙，请稍后再试！';
 		}
 		sendResponse($httpstatus, $error, $msg);
 		break;
