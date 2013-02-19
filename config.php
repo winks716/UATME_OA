@@ -62,7 +62,7 @@ foreach(glob(DOCROOT.'/config/*.config.php') as $conf){
 }
 
 //设置公司名称，域名等全局信息
-define('COMPANY_DOMAIN','highsource.com.cn');
+define('COMPANY_DOMAIN','highsource.com');
 
 //设置多国语言包
 //获得语言包种类

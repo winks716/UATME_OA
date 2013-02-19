@@ -26,7 +26,7 @@ function workflowBackward(){
 function workflowInit($apply_employee_id, $apply_type_english, $apply_id){
 	global $mysqli;
 	//init the first person in workflow;
-	$firstPersonId = 0;
+	$task = array('executerId'=>0,'taskId'=>0);
 	//workflow
 	//step1 select document type from workflow dbtable
 	$sql = 'SELECT id FROM uatme_oa_workflow_document_typelv1 WHERE name_english="'.$apply_type_english.'"';
@@ -134,7 +134,8 @@ function workflowInit($apply_employee_id, $apply_type_english, $apply_id){
 				$mysqli->query($sql);
 				//increase task counter
 				if($task_counter++ == 0){
-					$firstPersonId = $executer_employee_id;
+					$task['executerId'] = $executer_employee_id;
+					$task['taskId'] = $mysqli->insert_id;
 				}
 			}
 		}
@@ -149,5 +150,5 @@ function workflowInit($apply_employee_id, $apply_type_english, $apply_id){
 			//just update document status as approved
 		}
 	}
-	return $firstPersonId;
+	return $task;
 }
