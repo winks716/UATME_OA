@@ -1,3 +1,22 @@
+<?php /* Smarty version Smarty-3.0.7, created on 2013-02-20 08:37:25
+         compiled from "E:\UATME_OA/template/modules\base/login.html" */ ?>
+<?php /*%%SmartyHeaderCode:1362251241ac5054d80-90422304%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    'e612dae6c23b66186b1181d4df6934c6074c227d' => 
+    array (
+      0 => 'E:\\UATME_OA/template/modules\\base/login.html',
+      1 => 1361320639,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '1362251241ac5054d80-90422304',
+  'function' => 
+  array (
+  ),
+  'has_nocache_code' => false,
+)); /*/%%SmartyHeaderCode%%*/?>
 <!DOCTYPE html>
 <html>
 <head>
