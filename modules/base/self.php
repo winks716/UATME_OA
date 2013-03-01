@@ -17,6 +17,22 @@ switch($A){
 				$assign['employee']['department_name'] = $array['name'];
 			}
 		}
+		//totally how many annual leave available (including used or unused)
+		$sql = 'SELECT * FROM uatme_oa_hr_leave_employee WHERE leave_type_id=(SELECT id FROM uatme_oa_hr_leave_type WHERE name="年假" LIMIT 1) AND ifavailable=1 AND employee_id="'.$_SESSION['employee_id'].'"';
+		$result = $mysqli->query($sql);
+		if($result->num_rows == 1){
+			while($array = $result->fetch_assoc()){
+				$assign['employee']['total_annualleave'] = $array['count'];
+			}
+		}
+		//has used annual leave
+		$sql = 'SELECT count(*) as leavecount, employee_id FROM uatme_oa_hr_leave_apply WHERE employee_id="'.$_SESSION['employee_id'].'" AND status=1 AND ((start BETWEEN "'.Date('Y').'-01-01 00:00:00" AND "'.Date('Y').'-12-31 23:59:59") OR (end BETWEEN "'.Date('Y').'-01-01 00:00:00" AND "'.Date('Y').'-12-31 23:59:59")) AND type=(SELECT id FROM uatme_oa_hr_leave_type WHERE name="年假" LIMIT 1) GROUP BY employee_id';
+		$result = $mysqli->query($sql);
+		if($result->num_rows == 1){
+			while($array = $result->fetch_assoc()){
+				$assign['employee']['used_annualleave'] = $array['leavecount'];
+			}
+		}
 		$smarty->assign($assign);
 		$smarty->display('base/self.edit.html');
 	break;
