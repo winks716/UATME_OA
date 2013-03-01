@@ -6,7 +6,7 @@
 		<tr>
 			<th>中文名</th>
 			<th>英文名</th>
-			<th>在职</th>
+			<th>部门</th>
 			<th>操作</th>
 		</tr>
 		<tr>
@@ -16,7 +16,7 @@
 		<tr>
 			<td><{$e.namezh}></td>
 			<td><{$e.name}></td>
-			<td><{if $e.ifleave==0}>是<{else}>否<{/if}></td>
+			<td><{$e.department_name}></td>
 			<td><span class="clickbtn editBasic" i="<{$e.id}>"> [基本信息] </span>
 				<span class="clickbtn editPosition" i="<{$e.id}>"> [职位] </span>
 				<span class="clickbtn editPrivilege" i="<{$e.id}>"> [权限] </span>

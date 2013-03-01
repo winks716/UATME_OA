@@ -2,10 +2,18 @@
 if($_SESSION['if_system_admin'] == 1){
 	switch($A){
 		case 'employee.list':
+			$sql = 'SELECT * from uatme_oa_system_department';
+			$result = $mysqli->query($sql);
+			if($result->num_rows > 0){
+				while($array = $result->fetch_assoc()){
+					$department[$array['id']] = $array['name'];
+				}
+			}
 			$sql = 'SELECT * from uatme_oa_system_employee WHERE id!=1 ORDER BY ifleave ASC, name ASC';
 			$result = $mysqli->query($sql);
 			if($result->num_rows > 0){
 				while($array = $result->fetch_assoc()){
+					$array['department_name'] = $department[$array['department_id']];
 					$assign['employee'][] = $array;
 				}
 			}			

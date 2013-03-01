@@ -127,17 +127,18 @@ function workflowInit($apply_employee_id, $apply_type_english, $apply_id){
 						$executer_employee_id = $array['alternative_employee_id'];
 					}
 				}
+				$authorKey = md5(sha1($document_typelv1_id.$apply_id.$executer_employee_id.Date('Y-m-d H:i:s')));
+				//insert a new task for selected executer
+				$sql = 'INSERT INTO uatme_oa_workflow_task(document_typelv1_id, document_id, employee_id, author_key, orderby, created_date, updated_date)
+						VALUES ("'.$document_typelv1_id.'", "'.$apply_id.'", "'.$executer_employee_id.'", "'.$authorKey.'", "'.$array_workflow_template['orderby'].'", "'.Date('Y-m-d H:i:s').'", "'.Date('Y-m-d H:i:s').'")';
+						//echo $sql;
+				$mysqli->query($sql);
 				//increase task counter
 				if($task_counter++ == 0){
 					$task['executerId'] = $executer_employee_id;
 					$task['taskId'] = $mysqli->insert_id;
-					$task['authorKey'] = md5(sha1($document_typelv1_id.$apply_id.$executer_employee_id.Date('Y-m-d H:i:s')));
+					$task['authorKey'] = $authorKey;
 				}
-				//insert a new task for selected executer
-				$sql = 'INSERT INTO uatme_oa_workflow_task(document_typelv1_id, document_id, employee_id, author_key, orderby, created_date, updated_date)
-						VALUES ("'.$document_typelv1_id.'", "'.$apply_id.'", "'.$executer_employee_id.'", "'.$task['authorKey'].'", "'.$array_workflow_template['orderby'].'", "'.Date('Y-m-d H:i:s').'", "'.Date('Y-m-d H:i:s').'")';
-						//echo $sql;
-				$mysqli->query($sql);
 			}
 		}
 		if($task_counter != 0){

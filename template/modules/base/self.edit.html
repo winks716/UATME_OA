@@ -1,60 +1,79 @@
 <{include file="header.html"}>
 <{include file="topnav.html"}>
 
-<div style="margin: 20px auto; width:260px;">
-<p><strong>密码修改</strong></p>
-<table style="width:260px;">
-	<tr>
-		<th>原密码</th><td><input id="<{$id_prefix}>oldPassword" type="password"/></td>
-	</tr>
-	<tr>
-		<th>新密码</th><td><input id="<{$id_prefix}>newPassword" type="password"/></td>
-	</tr>
-	<tr>
-		<th>重复新密码</th><td><input id="<{$id_prefix}>confirmNewPassword" type="password"/></td>
-	</tr>
+<div style="margin: 20px auto; width:660px;">
+
+<table>
+<tr>
+<td>
+	<p><strong>密码修改</strong></p>
+	<table style="width:260px;">
+		<tr>
+			<th>原密码</th><td><input id="oldPassword" type="password"/></td>
+		</tr>
+		<tr>
+			<th>新密码</th><td><input id="newPassword" type="password"/></td>
+		</tr>
+		<tr>
+			<th>重复新密码</th><td><input id="confirmNewPassword" type="password"/></td>
+		</tr>
+	</table>
+	<span id="confirmBtn" class="clickbtn"> [确认修改] </span>
+</td>
+
+<td style="border-left:solid 2px #CCCCCC;">
+	<table style="width:400px;">
+	<tr><th>中文名</th><td><{$employee.namezh}></td></tr>
+	<tr><th>英文名</th><td><{$employee.name}></td></tr>
+	<tr><th>电子邮箱</th><td><{$employee.email}></td></tr>
+	<tr><th>所属部门</th><td><{$employee.department_name}></td></tr>
+	</table>
+</td>
+</tr>
 </table>
-<span id="<{$id_prefix}>confirmBtn" class="clickbtn"> [确认修改] </span>
+
 </div>
+
+
 
 <{include file="declaration.html"}>
 <{include file="footer.html"}>
 
 <script type="text/javascript">
 $(function(){
-	$('#<{$id_prefix}>confirmNewPassword').keyup(function(){
-		if($(this).val()==$('#<{$id_prefix}>newPassword').val()){
+	$('#confirmNewPassword').keyup(function(){
+		if($(this).val()==$('#newPassword').val()){
 			$(this).css('background-color','green');
 		}else{
 			$(this).css('background-color','red');
 		}
 	})
 	
-	$('#<{$id_prefix}>confirmBtn').click(function(){
-		var oldPassword = $('#<{$id_prefix}>oldPassword').val();
-		var newPassword = $('#<{$id_prefix}>newPassword').val();
-		var confirmNewPassword = $('#<{$id_prefix}>confirmNewPassword').val();
+	$('#confirmBtn').click(function(){
+		var oldPassword = $('#oldPassword').val();
+		var newPassword = $('#newPassword').val();
+		var confirmNewPassword = $('#confirmNewPassword').val();
 		if(oldPassword==''){
 			alert('原密码必须填写！');
-			$('#<{$id_prefix}>oldPassword').get(0).focus();
+			$('#oldPassword').get(0).focus();
 		}else if(newPassword==''){
 			alert('新密码必须填写！');
-			$('#<{$id_prefix}>newPassword').get(0).focus();
+			$('#newPassword').get(0).focus();
 		}else if(confirmNewPassword==''){
 			alert('重复新密码必须填写！');
-			$('#<{$id_prefix}>confirmNewPassword').get(0).focus();
+			$('#confirmNewPassword').get(0).focus();
 		}else if(confirmNewPassword!=newPassword){
 			alert('两次输入的新密码必须一致！');
-			$('#<{$id_prefix}>confirmNewPassword').get(0).focus();
+			$('#confirmNewPassword').get(0).focus();
 		}else{
 			$.post('index.php?m=base&s=self&a=save',{'oldPassword':oldPassword,'newPassword':newPassword,'confirmNewPassword':confirmNewPassword},function(data){
 				var json = eval("(" + data + ")");
 				if(json.httpstatus == 200){
 					alert('密码修改成功');
-					$('#<{$id_prefix}>oldPassword, #<{$id_prefix}>newPassword, #<{$id_prefix}>confirmNewPassword').val('');
+					$('#oldPassword, #newPassword, #confirmNewPassword').val('');
 				}else if(json.httpstatus == 500){
 					alert('您的原密码不正确!');
-					$('#<{$id_prefix}>oldPassword').get(0).focus();
+					$('#oldPassword').get(0).focus();
 				}
 			})
 		}

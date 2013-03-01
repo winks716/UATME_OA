@@ -21,6 +21,9 @@ switch($A){
 	case 'doc.tech_handbook':
 		$assign['list_type'] = '技术文档';
 		break;
+	case 'doc.purchase_handbook':
+		$assign['list_type'] = '采购文档';
+		break;
 }
 
 if(isset($assign['list_type']) && $assign['list_type']!=''){

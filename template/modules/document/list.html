@@ -2,8 +2,9 @@
 <{include file="topnav.html"}>
 
 <div class="container">
-	<{if ($session.if_document_admin==1 && $request_action!='doc.tech_handbook') 
-			|| ($request_action=='doc.tech_handbook' && $session.if_tech_admin==1)}>
+	<{if ($session.if_document_admin==1 && $request_action!='doc.tech_handbook' && $request_action!='doc.purchase_handbook') 
+			|| ($request_action=='doc.tech_handbook' && $session.if_tech_admin==1)
+			|| ($request_action=='doc.purchase_handbook' && $session.if_purchase_admin==1)}>
 	<div class="toolbar clear">
 		<div class="right">
 			<img id="loading" src="images/global/loading.gif" style="display:none;">
@@ -14,8 +15,9 @@
 						文档类型<select id="document_type_id">
 									<{foreach from=$type item=t}>
 									
-									<{if ($session.if_document_admin==1 && $t.name!='技术文档')
-											|| ($t.name=='技术文档' && $session.if_tech_admin==1)}>
+									<{if ($session.if_document_admin==1 && $t.name!='技术文档' && $t.name!='采购文档')
+											|| ($t.name=='技术文档' && $session.if_tech_admin==1)
+											|| ($t.name=='采购文档' && $session.if_purchase_admin==1)}>
 									<option value="<{$t.id}>" <{if $t.name==$list_type}>selected<{/if}>><{$t.name}></option>
 									<{/if}>
 									<{/foreach}>
@@ -30,12 +32,17 @@
 	</div>
 	<{/if}>
 	
+	
+	<{if ($request_action!='doc.tech_handbook' && $request_action!='doc.purchase_handbook') 
+			|| ($request_action=='doc.tech_handbook' && ($session.if_tech_admin==1 || $session.if_tech_reader==1))
+			|| ($request_action=='doc.purchase_handbook' && ($session.if_purchase_admin==1 || $session.if_purchase_reader==1))}>
 	<table>
 		<thead>
 			<tr>
 				<th>文档名称</th>
-				<{if ($session.if_document_admin==1 && $request_action!='doc.tech_handbook') 
-						|| ($request_action=='doc.tech_handbook' && $session.if_tech_admin==1)}>
+				<{if ($session.if_document_admin==1 && $request_action!='doc.tech_handbook' && $request_action!='doc.purchase_handbook') 
+						|| ($request_action=='doc.tech_handbook' && $session.if_tech_admin==1)
+						|| ($request_action=='doc.purchase_handbook' && $session.if_purchase_admin==1)}>
 				<th></th>
 				<{/if}>
 			</tr>
@@ -44,14 +51,16 @@
 			<{foreach from=$document item=doc}>
 			<tr class="documentItem">
 				<td><a href="<{$doc.path}>" target="_blank"><{$doc.name}></a></td>
-				<{if ($session.if_document_admin==1 && $request_action!='doc.tech_handbook') 
-						|| ($request_action=='doc.tech_handbook' && $session.if_tech_admin==1)}>
+				<{if ($session.if_document_admin==1 && $request_action!='doc.tech_handbook' && $request_action!='doc.purchase_handbook') 
+						|| ($request_action=='doc.tech_handbook' && $session.if_tech_admin==1)
+						|| ($request_action=='doc.purchase_handbook' && $session.if_purchase_admin==1)}>
 				<td><span i="<{$doc.id}>" class="clickbtn deleteDocumentBtn"> [删除] </span></td>
 				<{/if}>
 			</tr>
 			<{/foreach}>
 		</tbody>
 	</table>
+	<{/if}>
 </div>
 
 <div id="alertDiv"></div>
@@ -60,8 +69,10 @@
 <{include file="footer.html"}>
 
 
-<{if ($session.if_document_admin==1 && $request_action!='doc.tech_handbook') 
-		|| ($request_action=='doc.tech_handbook' && $session.if_tech_admin==1)}>
+
+<{if ($session.if_document_admin==1 && $request_action!='doc.tech_handbook' && $request_action!='doc.purchase_handbook') 
+		|| ($request_action=='doc.tech_handbook' && $session.if_tech_admin==1)
+		|| ($request_action=='doc.purchase_handbook' && $session.if_purchase_admin==1)}>
 <script type="text/javascript" src="js/ajaxfileupload.js"></script>
 <script type="text/javascript">
 function ajaxFileUpload(){

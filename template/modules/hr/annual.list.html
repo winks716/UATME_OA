@@ -1,0 +1,52 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+
+<div class="container ">
+	<table>
+		<tr>
+			<th>姓名</th>
+			<th>总年假</th>
+			<th>已使用年假</th>
+			<th>剩余年假</th>
+			<th>操作</th>
+		</tr>
+		<{foreach from=$employee item=e}>
+		<tr>
+			<td><{$e.namezh}> ( <{$e.name}> )</td>
+			<td><input value="<{$total[$e.id]}>" class="span-1 annualLeaveTotal"/></td>
+			<td><{$used[$e.id]}></td>
+			<td><{$total[$e.id] - $used[$e.id]}></td>
+			<td><span class="clickbtn saveAnnualLeave" i="<{$e.id}>"> [保存] </span></td>
+		</tr>
+		<{/foreach}>
+	</table>
+</div>
+
+<div id="alertDiv">数据处理中，请稍候……</div>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#alertDiv').dialog({
+		'modal':true,
+		'autoOpen':false
+	});
+	
+	$('.saveAnnualLeave').click(function(){
+		$('#alertDiv').dialog('open');
+		$.post('index.php?m=hr&s=setup&a=annual.save',{'id':$(this).attr('i'),'count':($(this).parents('tr').find('.annualLeaveTotal').val()-0)},function(data){
+			var json = eval('(' + data + ')');
+			if(json.httpstatus == 200){
+				alert(json.msg);
+				window.location.reload();
+			}else{
+				alert(json.error);
+				$('#alertDiv').dialog('close');
+			}
+		})
+	})	
+})
+</script>
