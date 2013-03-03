@@ -1,4 +1,16 @@
 <?php
+/*
+*  Config.php
+*
+*  Main config file.
+*
+*  @author UATME studio <uatmestudio@163.com>
+*  @copyright  2012-2013 UATME studio
+*  @version  Release: $Revision: 1.0 $
+*/
+
+
+
 /* 
  * 主配置文件
  */

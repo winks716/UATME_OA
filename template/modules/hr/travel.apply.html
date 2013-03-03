@@ -10,15 +10,15 @@
 <div class="container applyTable">
 <form id="applyForm">
 	<table>
-		<tr><th>目的地</th><td><input id="travelTarget"/></td></tr>
-		<tr><th>起始日期</th><td><input id="travelStartDate" readonly/>
-								<select id="travelStartTime"><option value="09:00:00">上午</option><option value="13:00:00">下午</option></select></td></tr>
-		<tr><th>结束日期</th><td><input id="travelEndDate" readonly/>
-								<select id="travelEndTime"><option value="13:00:00">上午</option><option value="17:00:00">下午</option></select></td></tr>
-		<tr><th>出差事由</th><td><textarea id="travelReason"></textarea></td></tr>
-		<tr><th>费用预算</th><td><select id="travelExpenseCurrencyId"><option value="1">人民币</option></select>
-								<input id="travelExpense"/></td></tr>
-		<tr><th>指定代办</th><td><select id="leaveAlter" name="travelAlter">
+		<tr><th>目的地</th><td><input id="travelTarget" name="travelTarget"/></td></tr>
+		<tr><th>起始日期</th><td><input id="travelStartDate" name="travelStartDate" readonly/>
+								<select id="travelStartTime" name="travelStartTime"><option value="09:00:00">上午</option><option value="13:00:00">下午</option></select></td></tr>
+		<tr><th>结束日期</th><td><input id="travelEndDate" name="travelEndDate" readonly/>
+								<select id="travelEndTime" name="travelEndTime"><option value="13:00:00">上午</option><option value="17:00:00">下午</option></select></td></tr>
+		<tr><th>出差事由</th><td><textarea id="travelReason" name="travelReason"></textarea></td></tr>
+		<tr><th>费用预算</th><td><select id="travelCurrencyId" name="travelCurrencyId"><option value="1">人民币</option></select>
+								<input id="travelExpense" name="travelExpense"/></td></tr>
+		<tr><th>不在公司期间<br/>的指定代办人</th><td><select id="travelAlter" name="travelAlter">
 									<option value="0">-请选择指定代办员工-</option>
 									<{foreach from=$employee item=e}>
 									<option value="<{$e.id}>"><{$e.name}> - <{$e.namezh}></option>
@@ -29,7 +29,7 @@
 </form>
 </div>
 
-<div id="alertDiv">差旅申请处理中，请耐心等待，切勿关闭此窗口，谢谢！</div>
+<div id="alertDiv">差旅申请处理中，请耐心等待近12秒，切勿关闭此窗口，谢谢！</div>
 
 <{include file="declaration.html"}>
 <{include file="footer.html"}>
@@ -47,16 +47,20 @@
 		
 		$('#applyConfirm').click(function(){
 			if(confirm('确认递交申请？')){
-				$('#alertDiv').dialog('open');
-				$.post('index.php?m=hr&s=travel&a=submit', $('#applyForm').serialize(), function(data){
-					var json = eval('(' + data + ')');
-					if(json.httpstatus == 200){
-						alert(json.msg);
-						window.location = 'index.php?m=hr&s=travel&a=list';
-					}else{
-						alert(json.error);
-					}
-				})				
+				if($('#travelTarget').val()==0 || $('#travelStartDate').val()=='' || $('#travelEndDate').val()=='' || $('#travelAlter').val()==0 || $('#travelCurrencyId').val()==0 || $('#travelExpense').val()==0){
+					alert('目的地、起始-结束日期、指定代办员工、预估费用为必填项，请检查！');
+				}else{
+					$('#alertDiv').dialog('open');
+					$.post('index.php?m=hr&s=travel&a=submit', $('#applyForm').serialize(), function(data){
+						var json = eval('(' + data + ')');
+						if(json.httpstatus == 200){
+							alert(json.msg);
+							window.location = 'index.php?m=hr&s=travel&a=list';
+						}else{
+							alert(json.error);
+						}
+					})
+				}
 			}
 		})
 	})

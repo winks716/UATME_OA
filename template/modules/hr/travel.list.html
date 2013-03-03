@@ -7,7 +7,9 @@
 			<tr><th>申请人</th><th>差旅目的地</th><th>起始-结束</th><th>预算费用</th><th>代办</th><th>状态</th><th>操作</th></tr>
 		</thead>
 		<tbody>
-			<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+		<{foreach from=$apply item=a}>
+			<tr><td><{$a.applyer}></td><td><{$a.target}></td><td><{$a.start}> ~ <{$a.end}></td><td><{$a.currencyName}><{$a.expense}></td><td><{$a.alter}></td><td><{$a.status}></td><td></td></tr>
+		<{/foreach}>
 		</tbody>
 	</table>
 </div>
