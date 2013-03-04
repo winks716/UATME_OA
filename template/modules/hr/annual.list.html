@@ -14,7 +14,7 @@
 		<{foreach from=$employee item=e}>
 		<tr>
 			<td><{$e.namezh}> ( <{$e.name}> )</td>
-			<td><input value="<{$total[$e.id]}>" class="span-1 annualLeaveTotal"/></td>
+			<td><input value="<{$total[$e.id]}>" class="span-2 annualLeaveTotal"/></td>
 			<td><{$used[$e.id]}></td>
 			<td><{$total[$e.id] - $used[$e.id]}></td>
 			<td><span class="clickbtn saveAnnualLeave" i="<{$e.id}>"> [保存] </span></td>
