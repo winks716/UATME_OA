@@ -143,10 +143,10 @@ function workflowInit($apply_employee_id, $apply_type_english, $apply_id){
 		}
 		if($task_counter != 0){
 			//mark the first task as proceeding status, means status=1
-			$sql = 'UPDATE uatme_oa_workflow_task SET status=1 WHERE document_id="'.$apply_id.'" ORDER BY orderby ASC LIMIT 1';
+			$sql = 'UPDATE uatme_oa_workflow_task SET status=1 WHERE document_id="'.$apply_id.'" AND document_typelv1_id="'.$document_typelv1_id.'" ORDER BY orderby ASC LIMIT 1';
 			$mysqli->query($sql);
 			//mark the last task as end point
-			$sql = 'UPDATE uatme_oa_workflow_task SET ifend=1 WHERE document_id="'.$apply_id.'" ORDER BY orderby DESC LIMIT 1';
+			$sql = 'UPDATE uatme_oa_workflow_task SET ifend=1 WHERE document_id="'.$apply_id.'" AND document_typelv1_id="'.$document_typelv1_id.'" ORDER BY orderby DESC LIMIT 1';
 			$mysqli->query($sql);
 		}else{
 			//just update document status as approved
