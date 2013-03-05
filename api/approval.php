@@ -89,7 +89,7 @@ if($result->num_rows == 1){
 													<tr><td>'.$leaveType[$apply["type"]].'</td><td>'.$apply['start'].' 至 '.$apply['end'].'</td><td>'.$employee[$apply['alternative_employee_id']]['namezh'].'('.$employee[$apply['alternative_employee_id']]['name'].')</td><td>'.$apply['reason'].'</td></tr>
 													<tr><th colspan="4">
 														审批备注:<br/>
-														'.$_POST['comment'].'
+														'.$employee[$apply['apply_employee_id']]['namezh'].'('.$employee[$apply['apply_employee_id']]['name'].')："'.$_POST['comment'].'"
 														</th></tr>
 												</table></p>
 												</body>');
@@ -176,7 +176,7 @@ if($result->num_rows == 1){
 													<tr><td>'.$leaveType[$apply["type"]].'</td><td>'.$apply['start'].' 至 '.$apply['end'].'</td><td>'.$employee[$apply['alternative_employee_id']]['namezh'].'('.$employee[$apply['alternative_employee_id']]['name'].')</td><td>'.$apply['reason'].'</td></tr>
 													<tr><th colspan="4">
 														审批备注:<br/>
-														'.$_POST['comment'].'
+														'.$employee[$apply['apply_employee_id']]['namezh'].'('.$employee[$apply['apply_employee_id']]['name'].')："'.$_POST['comment'].'"
 														</th></tr>
 												</table></p>
 												</body>');
@@ -270,7 +270,7 @@ if($result->num_rows == 1){
 													<tr><td>'.$apply["target"].'</td><td>'.$apply['start'].' 至 '.$apply['end'].'</td><td>'.$currency[$apply["currency_id"]].$apply["expense"].'</td><td>'.$employee[$apply['alternative_employee_id']]['namezh'].'('.$employee[$apply['alternative_employee_id']]['name'].')</td><td>'.$apply['reason'].'</td></tr>
 													<tr><th colspan="4">
 														审批备注:<br/>
-														'.$_POST['comment'].'
+														'.$employee[$apply['apply_employee_id']]['namezh'].'('.$employee[$apply['apply_employee_id']]['name'].')："'.$_POST['comment'].'"
 														</th></tr>
 												</table></p>
 												</body>');
@@ -357,7 +357,7 @@ if($result->num_rows == 1){
 													<tr><td>'.$apply['target'].'</td><td>'.$apply['start'].' 至 '.$apply['end'].'</td><td>'.$currency[$apply['currency_id']].$apply['expense'].'</td><td>'.$employee[$apply['alternative_employee_id']]['namezh'].'('.$employee[$apply['alternative_employee_id']]['name'].')</td><td>'.$apply['reason'].'</td></tr>
 													<tr><th colspan="4">
 														审批备注:<br/>
-														'.$_POST['comment'].'
+														'.$employee[$apply['apply_employee_id']]['namezh'].'('.$employee[$apply['apply_employee_id']]['name'].')："'.$_POST['comment'].'"
 														</th></tr>
 												</table></p>
 												</body>');
