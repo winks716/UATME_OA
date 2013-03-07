@@ -3,7 +3,7 @@
 
 if($_SESSION['if_hr_admin'] == 1){
 	switch($A){
-		case 'annual.list':
+		case 'annual.setup':
 			//all employee
 			$sql = 'SELECT id,name,namezh FROM uatme_oa_system_employee WHERE ifleave=0 AND id!=1 ORDER BY name';
 			$result = $mysqli->query($sql);
