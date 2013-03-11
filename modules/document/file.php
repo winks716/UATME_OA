@@ -1,5 +1,5 @@
 <?php
-if($_SESSION['if_document_admin'] == 1 || $_SESSION['if_tech_admin']==1 || $_SESSION['if_purchase_admin']==1){
+if($_SESSION['if_document_admin'] == 1 || $_SESSION['if_tech_admin']==1 || $_SESSION['if_purchase_admin']==1 || $_SESSION['if_hr_admin']==1){
 	switch($A){
 		case 'upload':
 				$error = "";
@@ -67,6 +67,12 @@ if($_SESSION['if_document_admin'] == 1 || $_SESSION['if_tech_admin']==1 || $_SES
 						}
 					}
 				}
+		break;
+		case 'sort':
+			$sql = 'UPDATE uatme_oa_document_document SET orderby="'.$_POST['orderby'].'" WHERE id="'.$_POST['id'].'"';
+			if($mysqli->query($sql)){
+				$msg = '文档排序设定成功！';
+			}
 		break;
 	}		
 }else{

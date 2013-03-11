@@ -18,8 +18,8 @@ switch($A){
 		break;
 	case 'submit':
 		//save apply to db
-		$sql = 'INSERT INTO uatme_oa_hr_travel_apply(target, start, end, reason, currency_id, expense, employee_id, alternative_employee_id, apply_date) 
-				 VALUES ("'.$_POST['travelTarget'].'", "'.$_POST['travelStartDate'].' '.$_POST['travelStartTime'].'", "'.$_POST['travelEndDate'].' '.$_POST['travelEndTime'].'", "'.$_POST['travelReason'].'", "'.$_POST['travelCurrencyId'].'", "'.$_POST['travelExpense'].'", "'.$_SESSION['employee_id'].'", "'.$_POST['travelAlter'].'", "'.Date('Y-m-d H:i:s').'")';
+		$sql = 'INSERT INTO uatme_oa_hr_travel_apply(target, start, end, reason, currency_id, expense, employee_id, alternative_employee_id, copy_employee_id, apply_date) 
+				 VALUES ("'.$_POST['travelTarget'].'", "'.$_POST['travelStartDate'].' '.$_POST['travelStartTime'].'", "'.$_POST['travelEndDate'].' '.$_POST['travelEndTime'].'", "'.$_POST['travelReason'].'", "'.$_POST['travelCurrencyId'].'", "'.$_POST['travelExpense'].'", "'.$_SESSION['employee_id'].'", "'.$_POST['travelAlter'].'", "'.implode(',', $_POST['travelCopy']).'", "'.Date('Y-m-d H:i:s').'")';
 		if($mysqli->query($sql)){
 			//init work flow
 			$task = workflowInit($_SESSION['employee_id'], 'travel.apply', $mysqli->insert_id);

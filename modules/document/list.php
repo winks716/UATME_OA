@@ -6,9 +6,6 @@ switch($A){
 	case 'doc.employee_handbook':
 		$assign['list_type'] = '员工手册';
 		break;
-	case 'doc.annual_leave':
-		$assign['list_type'] = '年假记录';
-		break;
 	case 'doc.branch_guide':
 		$assign['list_type'] = '各地分公司指南';
 		break;
@@ -24,11 +21,14 @@ switch($A){
 	case 'doc.purchase_handbook':
 		$assign['list_type'] = '采购文档';
 		break;
+	case 'doc.hr_handbook':
+		$assign['list_type'] = '人事文档';
+		break;
 }
 
 if(isset($assign['list_type']) && $assign['list_type']!=''){
 	//数据查询
-	$sql = 'SELECT a.* FROM uatme_oa_document_document a LEFT JOIN uatme_oa_document_type b ON a.type_id=b.id WHERE b.name="'.$assign['list_type'].'"';
+	$sql = 'SELECT a.* FROM uatme_oa_document_document a LEFT JOIN uatme_oa_document_type b ON a.type_id=b.id WHERE b.name="'.$assign['list_type'].'" ORDER BY orderby ASC';
 	$result = $mysqli->query($sql);
 	if($result->num_rows > 0){
 		while($array = $result->fetch_assoc()){

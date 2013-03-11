@@ -68,6 +68,15 @@ if($result->num_rows == 1){
 												$employee[$array['id']] = array('name'=>$array['name'],'namezh'=>$array['namezh']);
 											}
 										}
+										//get email, name info of mail copier
+										$sql = 'SELECT email,name FROM uatme_oa_system_employee WHERE id in ('.$apply['copy_employee_id'].')';
+										$result = $mysqli->query($sql);
+										if($result->num_rows > 0){
+											while($array = $result->fetch_assoc()){
+												$copy[] = $array('mail'=>$array['email'],'name'=>$array['name']);
+											}
+										}
+										
 										//get email, name info of applyer
 										$sql = 'SELECT email,name,namezh FROM uatme_oa_system_employee WHERE id="'.$apply['employee_id'].'"';
 										//echo $sql;
@@ -93,9 +102,11 @@ if($result->num_rows == 1){
 														</th></tr>
 												</table></p>
 												</body>');
-												//echo '<pre>';
-												//print_r($SMTPConfig);
-												//echo '</pre>';
+												//add mail copier to sendto
+												foreach($copy as $c){
+													$SMTPConfig['sendto'][] = $c;
+												}
+												
 												mailSendMail($SMTPConfig);
 												echo '<head>
 												<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
@@ -155,6 +166,14 @@ if($result->num_rows == 1){
 												$employee[$array['id']] = array('name'=>$array['name'],'namezh'=>$array['namezh']);
 											}
 										}
+										//get email, name info of mail copier
+										$sql = 'SELECT email,name FROM uatme_oa_system_employee WHERE id in ('.$apply['copy_employee_id'].')';
+										$result = $mysqli->query($sql);
+										if($result->num_rows > 0){
+											while($array = $result->fetch_assoc()){
+												$copy[] = $array('mail'=>$array['email'],'name'=>$array['name']);
+											}
+										}
 										//get email, name info of applyer
 										$sql = 'SELECT email,name,namezh FROM uatme_oa_system_employee WHERE id="'.$apply['employee_id'].'"';
 										//echo $sql;
@@ -180,9 +199,11 @@ if($result->num_rows == 1){
 														</th></tr>
 												</table></p>
 												</body>');
-												//echo '<pre>';
-												//print_r($SMTPConfig);
-												//echo '</pre>';
+												//add mail copier to sendto
+												//foreach($copy as $c){
+												//	$SMTPConfig['sendto'][] = $c;
+												//}
+												
 												mailSendMail($SMTPConfig);
 												echo '<head>
 												<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
@@ -249,6 +270,14 @@ if($result->num_rows == 1){
 												$employee[$array['id']] = array('name'=>$array['name'],'namezh'=>$array['namezh']);
 											}
 										}
+										//get email, name info of mail copier
+										$sql = 'SELECT email,name FROM uatme_oa_system_employee WHERE id in ('.$apply['copy_employee_id'].')';
+										$result = $mysqli->query($sql);
+										if($result->num_rows > 0){
+											while($array = $result->fetch_assoc()){
+												$copy[] = $array('mail'=>$array['email'],'name'=>$array['name']);
+											}
+										}
 										//get email, name info of applyer
 										$sql = 'SELECT email,name,namezh FROM uatme_oa_system_employee WHERE id="'.$apply['employee_id'].'"';
 										//echo $sql;
@@ -274,9 +303,11 @@ if($result->num_rows == 1){
 														</th></tr>
 												</table></p>
 												</body>');
-												//echo '<pre>';
-												//print_r($SMTPConfig);
-												//echo '</pre>';
+												//add mail copier to sendto
+												foreach($copy as $c){
+													$SMTPConfig['sendto'][] = $c;
+												}
+												
 												mailSendMail($SMTPConfig);
 												echo '<head>
 												<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
@@ -336,6 +367,14 @@ if($result->num_rows == 1){
 												$employee[$array['id']] = array('name'=>$array['name'],'namezh'=>$array['namezh']);
 											}
 										}
+										//get email, name info of mail copier
+										$sql = 'SELECT email,name FROM uatme_oa_system_employee WHERE id in ('.$apply['copy_employee_id'].')';
+										$result = $mysqli->query($sql);
+										if($result->num_rows > 0){
+											while($array = $result->fetch_assoc()){
+												$copy[] = $array('mail'=>$array['email'],'name'=>$array['name']);
+											}
+										}
 										//get email, name info of applyer
 										$sql = 'SELECT email,name,namezh FROM uatme_oa_system_employee WHERE id="'.$apply['employee_id'].'"';
 										//echo $sql;
@@ -361,9 +400,11 @@ if($result->num_rows == 1){
 														</th></tr>
 												</table></p>
 												</body>');
-												//echo '<pre>';
-												//print_r($SMTPConfig);
-												//echo '</pre>';
+												//add mail copier to sendto
+												//foreach($copy as $c){
+												//	$SMTPConfig['sendto'][] = $c;
+												//}
+												
 												mailSendMail($SMTPConfig);
 												echo '<head>
 												<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">

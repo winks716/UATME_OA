@@ -28,6 +28,11 @@
 									<option value="<{$e.id}>"><{$e.name}> - <{$e.namezh}></option>
 									<{/foreach}>
 								</select></td></tr>
+		<tr><th>申请结果抄送</th><td><select id="leaveCopy" name="leaveCopy[]" multiple="multiple">
+									<{foreach from=$employee item=e}>
+									<option value="<{$e.id}>"><{$e.name}> - <{$e.namezh}></option>
+									<{/foreach}>
+								</select></td></tr>
 		<tr><td></td><td><span class="clickbtn" id="applyConfirm">[确认申请]</span></td></tr>
 	</table>
 </form>
@@ -62,6 +67,7 @@
 							window.location = 'index.php?m=hr&s=leave&a=list';
 						}else{
 							alert(json.error);
+							$('#alertDiv').dialog('close');
 						}
 					})					
 				}				

@@ -25,8 +25,8 @@ switch($A){
 		break;
 	case 'submit':
 		//save apply to db
-		$sql = 'INSERT INTO uatme_oa_hr_leave_apply(type, start, end, reason, employee_id, alternative_employee_id) 
-				 VALUES ("'.$_POST['leaveType'].'", "'.$_POST['leaveStartDate'].' '.$_POST['leaveStartTime'].'", "'.$_POST['leaveEndDate'].' '.$_POST['leaveEndTime'].'", "'.$_POST['leaveReason'].'", "'.$_SESSION['employee_id'].'", "'.$_POST['leaveAlter'].'")';
+		$sql = 'INSERT INTO uatme_oa_hr_leave_apply(type, start, end, reason, employee_id, alternative_employee_id, copy_employee_id, apply_date) 
+				 VALUES ("'.$_POST['leaveType'].'", "'.$_POST['leaveStartDate'].' '.$_POST['leaveStartTime'].'", "'.$_POST['leaveEndDate'].' '.$_POST['leaveEndTime'].'", "'.$_POST['leaveReason'].'", "'.$_SESSION['employee_id'].'", "'.$_POST['leaveAlter'].'", "'.implode(',', $_POST['leaveCopy']).'", "'.Date('Y-m-d H:i:s').'")';
 		if($mysqli->query($sql)){
 			//init work flow
 			$task = workflowInit($_SESSION['employee_id'], 'leave.apply', $mysqli->insert_id);
