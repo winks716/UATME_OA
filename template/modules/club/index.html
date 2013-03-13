@@ -9,24 +9,29 @@
 </style>
 
 <{if $session.if_club_admin==1}>
-<div class="toolBar">
-	宽<input id="styleWidth" style="width:50px;"/>
-	高<input id="styleHeight" style="width:50px;"/>
-	左<input id="styleLeft" style="width:50px;"/>
-	顶<input id="styleTop" style="width:50px;"/>
-	背景色<input id="styleBgcolor" style="width:100px;"/>
+<div class="toolBar" style="margin-left:20px;">
+	<strong>添加相框</strong><span style="color:red;font:10px arial;">更新了相框创建方法，只需输入数值即可</span><br/>
+	<strong>宽</strong><input id="styleWidth" style="width:30px;"/>px<br/>
+	<strong>高</strong><input id="styleHeight" style="width:30px;"/>px<br/>
+	<strong>左</strong><input id="styleLeft" style="width:30px;"/>px<br/>
+	<strong>顶</strong><input id="styleTop" style="width:30px;"/>px<br/>
+	<strong>背景色</strong><input id="styleBgcolor" style="width:100px;"/><br/>
 	<span class="clickbtn boxAdd"> [添加] </span>
 	<span class="clickbtn" id="hideButton"> [隐藏按钮] </span>
 </div>
-<div class="toolBar">
+
+<div class="toolBar" style="margin-left:300px;margin-top:-150px;">
 	<img id="loading" src="images/global/loading.gif" style="display:none;">
 	<form name="form" action="" method="POST" enctype="multipart/form-data">
 		<table cellpadding="0" cellspacing="0" class="tableForm">
 			<tr>
 				<td>
-				照片标题<input id="image_name" size="30"/>
-				&nbsp;&nbsp;照片详情<textarea id="image_detail" style="height:50px;width:300px;"></textarea>
-				&nbsp;&nbsp;<input id="fileToUpload" type="file" size="20" name="fileToUpload" class="input">
+				<strong>添加照片</strong><br/>
+				<strong>标题</strong><br/>
+				<input id="image_name" size="30"/><br/>
+				<strong>描述</strong><br/>
+				<textarea id="image_detail" style="height:50px;width:300px;"></textarea><br/>
+				<input id="fileToUpload" type="file" size="20" name="fileToUpload" class="input">
 				<button class="button" id="buttonUpload" onclick="return ajaxFileUpload();">上传</button></td>
 			</tr>
 		</table>
@@ -38,7 +43,7 @@
 <div style="width:1px; height:1px; padding:5px; position:absolute; margin:auto;">
 <{foreach from=$box item=b}>
 
-<div i="<{$b.id}>" class="item <{if $session.if_club_admin!=1 && $b.style_bgimage!=''}>containDetail<{/if}>" title="<{$b.title}>" style="width:<{$b.style_width}>; height:<{$b.style_height}>; position:absolute; left:<{$b.style_left}>; top:<{$b.style_top}>; background:<{$b.style_bgcolor}> url('<{$b.style_bgimage}>');">
+<div i="<{$b.id}>" class="item <{if $session.if_club_admin!=1 && $b.style_bgimage!=''}>containDetail<{/if}>" title="<{$b.title}>" style="width:<{$b.style_width}>px; height:<{$b.style_height}>px; position:absolute; left:<{$b.style_left}>px; top:<{$b.style_top}>px; background:<{$b.style_bgcolor}> url('<{$b.style_bgimage}>');">
 <{if $session.if_club_admin==1}>
 <span class="clickbtn imageEdit" i="<{$b.id}>"> [关联照片] </span><br/>
 <span class="clickbtn boxEdit" i="<{$b.id}>"> [编辑模块] </span><br/>
@@ -78,10 +83,10 @@ $(function(){
 	})
 	
 	$('.boxAdd').click(function(){
-		var styleHeight = $('#styleHeight').val(),
-		styleWidth = $('#styleWidth').val(),
-		styleLeft = $('#styleLeft').val(),
-		styleTop = $('#styleTop').val(),
+		var styleHeight = $('#styleHeight').val()-0,
+		styleWidth = $('#styleWidth').val()-0,
+		styleLeft = $('#styleLeft').val()-0,
+		styleTop = $('#styleTop').val()-0,
 		styleBgcolor = $('#styleBgcolor').val();
 		$.post('index.php?m=club&s=box&a=add',{'styleHeight':styleHeight,'styleWidth':styleWidth,'styleLeft':styleLeft,'styleTop':styleTop,'styleBgcolor':styleBgcolor},function(data){
 			var json = eval("(" + data + ")");

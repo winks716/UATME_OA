@@ -1,0 +1,37 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+<div class="container">
+<table>
+	<tr><th>标题</th><th>是否封面</th><th>所属相框</th><th>操作</th></tr>
+	<{foreach from=$image item=im}>
+	<tr style="border-bottom:dashed 1px #CCCCCC;">
+		<td><a href="<{$im.image}>" target="_blank" title="<{$im.detail}>"><{$im.title}></a></td>
+		<td><{if $im.ifthumbnail == 1}>是<{/if}></td>
+		<td><{$box[$im.box_id].title}></td>
+		<td><span class="clickbtn deleteImage" i="<{$im.id}>"> [删除] </span></td>
+	</tr>
+	<{/foreach}>
+</table>
+</div>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>
+
+<script type="text/javascript">
+$(function(){
+	$('.deleteImage').click(function(){
+		if(confirm('确认删除此图片？')){
+			var id = $(this).attr('i');
+			$.post('index.php?m=club&s=image&a=club.image.delete',{'id':id},function(data){
+				var json = eval('(' + data + ')');
+				if(json.httpstatus == 200){
+					window.location.reload();
+				}else{
+					alert(json.error);
+				}
+			})
+		}
+	})
+})
+</script>

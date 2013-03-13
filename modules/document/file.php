@@ -1,5 +1,5 @@
 <?php
-if($_SESSION['if_document_admin'] == 1 || $_SESSION['if_tech_admin']==1 || $_SESSION['if_purchase_admin']==1 || $_SESSION['if_hr_admin']==1){
+if($_SESSION['if_document_admin'] == 1 || $_SESSION['if_techdoc_admin']==1 || $_SESSION['if_purchasedoc_admin']==1 || $_SESSION['if_hrdoc_admin']==1){
 	switch($A){
 		case 'upload':
 				$error = "";
@@ -59,10 +59,12 @@ if($_SESSION['if_document_admin'] == 1 || $_SESSION['if_tech_admin']==1 || $_SES
 				$result = $mysqli->query($sql);
 				if($result->num_rows == 1){
 					while($array = $result->fetch_assoc()){
-						$file_path = DOCROOT.'/'.$array['path'];
+						$extend = explode('.',$array['path']);
+						$old_path = DOCROOT.'/'.$array['path'];
+						$new_path = DOCROOT.'/upload/documentrecycle/'.Date('YmdHis').'.'.$extend[1];
 						$sql = 'DELETE FROM uatme_oa_document_document WHERE id="'.$_POST['id'].'"';
 						if($mysqli->query($sql)){
-							@unlink($file_path);
+							rename($old_path, $new_path);
 							$msg = '文档删除成功！';
 						}
 					}

@@ -31,11 +31,12 @@
 <{foreach from=$menu item=m}>
 <tr class="subNavigation <{if $m.module==$request_module}>active<{else}>disactive<{/if}>">
 	<{foreach from=$submenu[$m.id] item=sm}>
-		<{if ($sm.action!='doc.tech_handbook' && $sm.action!='doc.purchase_handbook' && $sm.action!='annual.setup' && $sm.action!='doc.hr_handbook') 
-			|| ($sm.action=='doc.tech_handbook' && ($session.if_tech_reader==1 || $session.if_tech_admin==1))
-			|| ($sm.action=='doc.purchase_handbook' && ($session.if_purchase_reader==1 || $session.if_purchase_admin==1)) 
-			|| ($sm.action=='doc.hr_handbook' && ($session.if_hr_reader==1 || $session.if_hr_admin==1)) 
-			|| ($sm.action=='annual.setup' && ($session.if_hr_admin==1 || $session.if_hr_admin==1))}>
+		<{if ($sm.action!='doc.tech_handbook' && $sm.action!='doc.purchase_handbook' && $sm.action!='annual.setup' && $sm.action!='doc.hr_handbook' && $sm.action!='club.image.setup') 
+			|| ($sm.action=='doc.tech_handbook' && ($session.if_techdoc_reader==1 || $session.if_techdoc_admin==1))
+			|| ($sm.action=='doc.purchase_handbook' && ($session.if_purchasedoc_reader==1 || $session.if_purchasedoc_admin==1)) 
+			|| ($sm.action=='doc.hr_handbook' && ($session.if_hrdoc_reader==1 || $session.if_hrdoc_admin==1)) 
+			|| ($sm.action=='annual.setup' && $session.if_hr_admin==1) 
+			|| ($sm.action=='club.image.setup' && $session.if_club_admin==1)}>
 		<td class="menu">
 			<a href="<{$sm.href}>" i="<{$sm.id}>" p="<{$m.id}>" <{if $sm.module==$request_module && $sm.submodule==$request_submodule && $sm.action==$request_action}>class="ui-state-active"<{/if}>><{$sm.label}></a>
 		</td>
