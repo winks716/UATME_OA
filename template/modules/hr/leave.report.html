@@ -1,0 +1,32 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+<style>
+#report tr.location td{background-color:#6699cc;color:#ffffff;cursor:pointer;}
+#report tr.department td{background-color:#99ccff;cursor:pointer;}
+#report tr.employee td{background-color:#eeeeee;display:;cursor:pointer;}
+#report tr.employee td.nonestyle{background:none;cursor:normal;}
+#report tr.employee td:hover{background-color:pink;display:;cursor:pointer;}
+#report tr.employee td.nonestyle:hover{background:none;cursor:normal;}
+</style>
+
+<div class="container">
+<table id="report">
+<{foreach from=$location item=l}>
+<tr class="location"><td class="span-3"><{$l.name}> <{if $count["location_`$l.id`"]['count']!=0}><{$count["location_`$l.id`"]['count']}><{else}>0<{/if}></td><td></td></tr>
+	<{foreach from=$department item=d}>
+	<{if $d.location_id==$l.id}>
+	<tr class="department"><td><{$d.name}> <{if $count["department_`$d.id`"]['count']!=0}><{$count["department_`$d.id`"]['count']}><{else}>0<{/if}></td><td></td></tr>
+		<{foreach from=$employee item=e}>
+		<{if $e.department_id==$d.id}>
+		<tr class="employee"><td class="nonestyle"></td><td><{$e.namezh}> (<{$e.name}>)  <{if $count["employee_`$e.id`"]['count']!=0}><{$count["employee_`$e.id`"]['count']}><{else}>0<{/if}></td></tr>
+		<{/if}>
+		<{/foreach}>
+	<{/if}>
+	<{/foreach}>
+<{/foreach}>
+</table>
+</div>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>

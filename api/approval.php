@@ -73,7 +73,7 @@ if($result->num_rows == 1){
 										$result = $mysqli->query($sql);
 										if($result->num_rows > 0){
 											while($array = $result->fetch_assoc()){
-												$copy[] = $array('mail'=>$array['email'],'name'=>$array['name']);
+												$copy[] = array('mail'=>$array['email'],'name'=>$array['name']);
 											}
 										}
 										
@@ -98,7 +98,7 @@ if($result->num_rows == 1){
 													<tr><td>'.$leaveType[$apply["type"]].'</td><td>'.$apply['start'].' 至 '.$apply['end'].'</td><td>'.$employee[$apply['alternative_employee_id']]['namezh'].'('.$employee[$apply['alternative_employee_id']]['name'].')</td><td>'.$apply['reason'].'</td></tr>
 													<tr><th colspan="4">
 														审批备注:<br/>
-														'.$employee[$apply['apply_employee_id']]['namezh'].'('.$employee[$apply['apply_employee_id']]['name'].')："'.$_POST['comment'].'"
+														'.$employee[$executerId]['namezh'].'('.$employee[$executerId]['name'].')："'.$_POST['comment'].'"
 														</th></tr>
 												</table></p>
 												</body>');
@@ -108,10 +108,7 @@ if($result->num_rows == 1){
 												}
 												
 												mailSendMail($SMTPConfig);
-												echo '<head>
-												<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-												</head>
-												<body>假期申请审批通过</body>';
+												echo $SMTPConfig['body'];
 											}
 										}
 									}
@@ -167,13 +164,13 @@ if($result->num_rows == 1){
 											}
 										}
 										//get email, name info of mail copier
-										$sql = 'SELECT email,name FROM uatme_oa_system_employee WHERE id in ('.$apply['copy_employee_id'].')';
-										$result = $mysqli->query($sql);
-										if($result->num_rows > 0){
-											while($array = $result->fetch_assoc()){
-												$copy[] = $array('mail'=>$array['email'],'name'=>$array['name']);
-											}
-										}
+										//$sql = 'SELECT email,name FROM uatme_oa_system_employee WHERE id in ('.$apply['copy_employee_id'].')';
+										//$result = $mysqli->query($sql);
+										//if($result->num_rows > 0){
+										//	while($array = $result->fetch_assoc()){
+										//		$copy[] = array('mail'=>$array['email'],'name'=>$array['name']);
+										//	}
+										//}
 										//get email, name info of applyer
 										$sql = 'SELECT email,name,namezh FROM uatme_oa_system_employee WHERE id="'.$apply['employee_id'].'"';
 										//echo $sql;
@@ -195,7 +192,7 @@ if($result->num_rows == 1){
 													<tr><td>'.$leaveType[$apply["type"]].'</td><td>'.$apply['start'].' 至 '.$apply['end'].'</td><td>'.$employee[$apply['alternative_employee_id']]['namezh'].'('.$employee[$apply['alternative_employee_id']]['name'].')</td><td>'.$apply['reason'].'</td></tr>
 													<tr><th colspan="4">
 														审批备注:<br/>
-														'.$employee[$apply['apply_employee_id']]['namezh'].'('.$employee[$apply['apply_employee_id']]['name'].')："'.$_POST['comment'].'"
+														'.$employee[$executerId]['namezh'].'('.$employee[$executerId]['name'].')："'.$_POST['comment'].'"
 														</th></tr>
 												</table></p>
 												</body>');
@@ -205,10 +202,7 @@ if($result->num_rows == 1){
 												//}
 												
 												mailSendMail($SMTPConfig);
-												echo '<head>
-												<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-												</head>
-												<body>假期申请审批拒绝</body>';
+												echo $SMTPConfig['body'];
 											}
 										}
 									}
@@ -275,7 +269,7 @@ if($result->num_rows == 1){
 										$result = $mysqli->query($sql);
 										if($result->num_rows > 0){
 											while($array = $result->fetch_assoc()){
-												$copy[] = $array('mail'=>$array['email'],'name'=>$array['name']);
+												$copy[] = array('mail'=>$array['email'],'name'=>$array['name']);
 											}
 										}
 										//get email, name info of applyer
@@ -299,7 +293,7 @@ if($result->num_rows == 1){
 													<tr><td>'.$apply["target"].'</td><td>'.$apply['start'].' 至 '.$apply['end'].'</td><td>'.$currency[$apply["currency_id"]].$apply["expense"].'</td><td>'.$employee[$apply['alternative_employee_id']]['namezh'].'('.$employee[$apply['alternative_employee_id']]['name'].')</td><td>'.$apply['reason'].'</td></tr>
 													<tr><th colspan="4">
 														审批备注:<br/>
-														'.$employee[$apply['apply_employee_id']]['namezh'].'('.$employee[$apply['apply_employee_id']]['name'].')："'.$_POST['comment'].'"
+														'.$employee[$executerId]['namezh'].'('.$employee[$executerId]['name'].')："'.$_POST['comment'].'"
 														</th></tr>
 												</table></p>
 												</body>');
@@ -309,10 +303,7 @@ if($result->num_rows == 1){
 												}
 												
 												mailSendMail($SMTPConfig);
-												echo '<head>
-												<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-												</head>
-												<body>差旅申请审批通过</body>';
+												echo $SMTPConfig['body'];
 											}
 										}
 									}
@@ -368,13 +359,13 @@ if($result->num_rows == 1){
 											}
 										}
 										//get email, name info of mail copier
-										$sql = 'SELECT email,name FROM uatme_oa_system_employee WHERE id in ('.$apply['copy_employee_id'].')';
-										$result = $mysqli->query($sql);
-										if($result->num_rows > 0){
-											while($array = $result->fetch_assoc()){
-												$copy[] = $array('mail'=>$array['email'],'name'=>$array['name']);
-											}
-										}
+										//$sql = 'SELECT email,name FROM uatme_oa_system_employee WHERE id in ('.$apply['copy_employee_id'].')';
+										//$result = $mysqli->query($sql);
+										//if($result->num_rows > 0){
+										//	while($array = $result->fetch_assoc()){
+										//		$copy[] = array('mail'=>$array['email'],'name'=>$array['name']);
+										//	}
+										//}
 										//get email, name info of applyer
 										$sql = 'SELECT email,name,namezh FROM uatme_oa_system_employee WHERE id="'.$apply['employee_id'].'"';
 										//echo $sql;
@@ -396,7 +387,7 @@ if($result->num_rows == 1){
 													<tr><td>'.$apply['target'].'</td><td>'.$apply['start'].' 至 '.$apply['end'].'</td><td>'.$currency[$apply['currency_id']].$apply['expense'].'</td><td>'.$employee[$apply['alternative_employee_id']]['namezh'].'('.$employee[$apply['alternative_employee_id']]['name'].')</td><td>'.$apply['reason'].'</td></tr>
 													<tr><th colspan="4">
 														审批备注:<br/>
-														'.$employee[$apply['apply_employee_id']]['namezh'].'('.$employee[$apply['apply_employee_id']]['name'].')："'.$_POST['comment'].'"
+														'.$employee[$executerId]['namezh'].'('.$employee[$executerId]['name'].')："'.$_POST['comment'].'"
 														</th></tr>
 												</table></p>
 												</body>');
@@ -406,10 +397,7 @@ if($result->num_rows == 1){
 												//}
 												
 												mailSendMail($SMTPConfig);
-												echo '<head>
-												<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-												</head>
-												<body>差旅申请审批拒绝</body>';
+												echo $SMTPConfig['body'];
 											}
 										}
 									}
