@@ -1,7 +1,9 @@
 <?php
-if($_SESSION['if_hrreport_admin'] == 1){
 switch($A){
 	case 'get.employee.travel':
+		if(!privilegeCheck(array('hr_travel_report_reader'))){
+				exit('您无权访问此页面');
+		}
 		//get status
 		$status = array('待审批','已通过','已拒绝');
 		//get travel apply
@@ -21,6 +23,9 @@ switch($A){
 		sendResponse($httpstatus, $error, $msg);
 		break;
 	case 'get.employee.leave':
+		if(!privilegeCheck(array('hr_leave_report_reader'))){
+				exit('您无权访问此页面');
+		}
 		//get status
 		$status = array('待审批','已通过','已拒绝');
 		//get leave type
@@ -42,6 +47,9 @@ switch($A){
 		sendResponse($httpstatus, $error, $msg);
 		break;
 	case 'leave.apply.report': 
+		if(!privilegeCheck(array('hr_leave_report_reader'))){
+				exit('您无权访问此页面');
+		}
 		//get location
 		$location = basicMysqliQuery('uatme_oa_system_location');
 		//get department
@@ -83,6 +91,9 @@ switch($A){
 			while($array = $result->fetch_assoc()){
 				$apply[] = $array;
 				if($array['status']==0 or $array['status']==1){
+					//whole company
+					$count['whole_company']++;
+					$assign['count']['whole_company'] = array('name'=>'全公司', 'count'=>$count['whole_company']);
 					//location
 					$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]++;
 					$assign['count']['location_'.$department[$employee[$array['employee_id']]['department_id']]['location_id']] = array('name'=>$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name'], 'count'=>$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]);
@@ -93,7 +104,6 @@ switch($A){
 					$count[$employee[$array['employee_id']]['namezh']]['已使用']++;
 					$assign['count']['employee_'.$array['employee_id']] = array('name'=>$employee[$array['employee_id']]['namezh'], 'count'=>$count[$employee[$array['employee_id']]['namezh']]['已使用']);
 				}
-				$count[$employee[$array['employee_id']]['namezh']][$type[$array['type']]['name']][$status[$array['status']]]++;
 			}
 		}
 		$assign['location'] = $location;
@@ -104,6 +114,9 @@ switch($A){
 		$smarty->display('hr/leave.report.html');
 		break;
 	case 'travel.apply.report': 
+		if(!privilegeCheck(array('hr_travel_report_reader'))){
+				exit('您无权访问此页面');
+		}
 		//get location
 		$location = basicMysqliQuery('uatme_oa_system_location');
 		//get department
@@ -143,17 +156,19 @@ switch($A){
 			while($array = $result->fetch_assoc()){
 				$apply[] = $array;
 				if($array['status']==0 or $array['status']==1){
+					//whole company
+					$count['whole_company']+=$array['expense'];
+					$assign['count']['whole_company'] = array('name'=>'全公司','count'=>number_format($count['whole_company'],2));
 					//location
 					$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]+=$array['expense'];
-					$assign['count']['location_'.$department[$employee[$array['employee_id']]['department_id']]['location_id']] = array('name'=>$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name'], 'count'=>$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]);
+					$assign['count']['location_'.$department[$employee[$array['employee_id']]['department_id']]['location_id']] = array('name'=>$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name'], 'count'=>number_format($count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']],2));
 					//department
 					$count[$department[$employee[$array['employee_id']]['department_id']]['name']]+=$array['expense'];
-					$assign['count']['department_'.$employee[$array['employee_id']]['department_id']] = array('name'=>$department[$employee[$array['employee_id']]['department_id']]['name'], 'count'=>$count[$department[$employee[$array['employee_id']]['department_id']]['name']]);
+					$assign['count']['department_'.$employee[$array['employee_id']]['department_id']] = array('name'=>$department[$employee[$array['employee_id']]['department_id']]['name'], 'count'=>number_format($count[$department[$employee[$array['employee_id']]['department_id']]['name']],2));
 					//employee
 					$count[$employee[$array['employee_id']]['namezh']]['已申请']+=$array['expense'];
-					$assign['count']['employee_'.$array['employee_id']] = array('name'=>$employee[$array['employee_id']]['namezh'], 'count'=>$count[$employee[$array['employee_id']]['namezh']]['已申请']);
+					$assign['count']['employee_'.$array['employee_id']] = array('name'=>$employee[$array['employee_id']]['namezh'], 'count'=>number_format($count[$employee[$array['employee_id']]['namezh']]['已申请'],2));
 				}
-				$count[$employee[$array['employee_id']]['namezh']][$type[$array['type']]['name']][$status[$array['status']]]+=$array['expense'];
 			}
 		}
 		$assign['location'] = $location;
@@ -162,7 +177,4 @@ switch($A){
 		$smarty->assign($assign);
 		$smarty->display('hr/travel.report.html');
 		break;
-}
-}else{
-	echo exit('您无权访问此页面!');
 }

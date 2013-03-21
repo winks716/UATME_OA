@@ -51,9 +51,17 @@ if(isset($_SESSION['employee_id']) && $_SESSION['employee_id']>0){
 		}
 	}
 	
-	//define privilege
-	foreach($_SESSION['privilege'] as $p){
+	//define privilege session
+	//define privilege condition search for menu and submenu
+	$menu_sql = ' AND ( privilege_acceptable="" OR privilege_acceptable="0" ';
+	foreach($_SESSION['privilege'] as $k => $p){
 		$_SESSION['if_'.$p] = 1;
+		$privilege_sql .= ' OR privilege_acceptable LIKE "'.$k.'" OR privilege_acceptable LIKE "%,'.$k.'" OR privilege_acceptable LIKE "'.$k.',%" OR privilege_acceptable LIKE "%,'.$k.',%" ';
+	}
+	if($privilege_sql != ''){
+		$menu_sql .= $privilege_sql.')';
+	}else{
+		$menu_sql .= ')';
 	}
 	
 	//assign session value into template
@@ -61,13 +69,14 @@ if(isset($_SESSION['employee_id']) && $_SESSION['employee_id']>0){
 	
 	//initial topNavigation data
 	//search module
-	$sql = 'SELECT * FROM uatme_oa_system_module WHERE available=1 and parent_id=0 ORDER BY orderby ASC';
+	//echo 'SELECT * FROM uatme_oa_system_module WHERE available=1 AND parent_id=0 '.$privilege_menu_sql.' ORDER BY orderby ASC';
+	$sql = 'SELECT * FROM uatme_oa_system_module WHERE available=1 AND parent_id=0 '.$menu_sql.' ORDER BY orderby ASC';
 	$result = $mysqli->query($sql);
 	if($result->num_rows > 0){
 		while($array = $result->fetch_assoc()){
 			$assign['tab'][] = $array;
 			$assign['menu'][] = $array;
-			$sql_submenu = 'SELECT * FROM uatme_oa_system_module WHERE available=1 and parent_id="'.$array['id'].'" ORDER BY orderby ASC';
+			$sql_submenu = 'SELECT * FROM uatme_oa_system_module WHERE available=1 and parent_id="'.$array['id'].'" '.$menu_sql.' ORDER BY orderby ASC';
 			$result_submenu = $mysqli->query($sql_submenu);
 			if($result_submenu->num_rows > 0){
 				while($array_submenu = $result_submenu->fetch_assoc()){

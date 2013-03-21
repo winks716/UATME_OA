@@ -15,12 +15,9 @@
 <table id="mainNavigation">
 	<tr>
 	<{foreach from=$menu item=m}>
-		<{if $m.module!='system' 
-			|| ($m.module=='system' && $session.if_system_admin==1)}>
 		<td class="menu ui-state-default ui-corner-top <{if $m.module==$request_module}>ui-state-active<{/if}>">
 			<a href="<{$m.href}>" i="<{$m.id}>" p="0" class="ui-tabs-anchor"><{$m.label}></a>
 		</td>
-		<{/if}>
 	<{/foreach}>
 	<td></td>
 	</tr>
@@ -31,17 +28,9 @@
 <{foreach from=$menu item=m}>
 <tr class="subNavigation <{if $m.module==$request_module}>active<{else}>disactive<{/if}>">
 	<{foreach from=$submenu[$m.id] item=sm}>
-		<{if ($sm.action!='doc.tech_handbook' && $sm.action!='doc.purchase_handbook' && $sm.action!='annual.setup' && $sm.action!='doc.hr_handbook' && $sm.action!='club.image.setup' && $sm.action!='leave.apply.report' && $sm.action!='travel.apply.report') 
-			|| ($sm.action=='doc.tech_handbook' && ($session.if_techdoc_reader==1 || $session.if_techdoc_admin==1))
-			|| ($sm.action=='doc.purchase_handbook' && ($session.if_purchasedoc_reader==1 || $session.if_purchasedoc_admin==1)) 
-			|| ($sm.action=='doc.hr_handbook' && ($session.if_hrdoc_reader==1 || $session.if_hrdoc_admin==1)) 
-			|| ($sm.action=='annual.setup' && $session.if_hr_admin==1) 
-			|| (($sm.action=='leave.apply.report' || $sm.action=='travel.apply.report') && $session.if_hrreport_admin==1)
-			|| ($sm.action=='club.image.setup' && $session.if_club_admin==1)}>
 		<td class="menu">
 			<a href="<{$sm.href}>" i="<{$sm.id}>" p="<{$m.id}>" <{if $sm.module==$request_module && $sm.submodule==$request_submodule && $sm.action==$request_action}>class="ui-state-active"<{/if}>><{$sm.label}></a>
 		</td>
-		<{/if}>
 	<{/foreach}>
 	<td class="menuBlank"></td>
 </tr>

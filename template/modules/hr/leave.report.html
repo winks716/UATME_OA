@@ -2,8 +2,9 @@
 <{include file="topnav.html"}>
 
 <style>
-#report tr.location td{background-color:#6699cc;color:#ffffff;cursor:pointer;}
-#report tr.department td{background-color:#99ccff;cursor:pointer;}
+#report tr.company td{background-color:#336699;color:#ffffff;font-weight:bold;cursor:normal;}
+#report tr.location td{background-color:#6699cc;color:#ffffff;cursor:normal;}
+#report tr.department td{background-color:#99ccff;cursor:normal;}
 #report tr.employee td{background-color:#eeeeee;display:;}
 #report tr.employee td.nonestyle{background:none;cursor:normal;}
 #report tr.employee td.employee:hover{background-color:pink;display:;cursor:pointer;}
@@ -52,15 +53,16 @@
 
 <div class="container">
 <table id="report">
+<tr class="company"><td class="span-3"><{$count['whole_company']['name']}></td><td><{if $count['whole_company']['count']!=0}><{$count['whole_company']['count']}><{else}>0<{/if}>天</td></tr>
 <{foreach from=$location item=l}>
 <{if $count["location_`$l.id`"]['count']!=0}>
-<tr class="location"><td class="span-3"><{$l.name}> <{if $count["location_`$l.id`"]['count']!=0}><{$count["location_`$l.id`"]['count']}><{else}>0<{/if}></td><td></td></tr>
+<tr class="location"><td class="span-3"><{$l.name}></td><td><{$count["location_`$l.id`"]['count']}>天</td></tr>
 	<{foreach from=$department item=d}>
 	<{if $d.location_id==$l.id && $count["department_`$d.id`"]['count']!=0}>
-	<tr class="department"><td><{$d.name}> <{if $count["department_`$d.id`"]['count']!=0}><{$count["department_`$d.id`"]['count']}><{else}>0<{/if}></td><td></td></tr>
+	<tr class="department"><td><{$d.name}></td><td><{$count["department_`$d.id`"]['count']}>天</td></tr>
 		<{foreach from=$employee item=e}>
 		<{if $e.department_id==$d.id && $count["employee_`$e.id`"]['count']!=0}>
-		<tr class="employee"><td class="nonestyle"></td><td class="employee" i="<{$e.id}>"><{$e.namezh}> (<{$e.name}>)  <{if $count["employee_`$e.id`"]['count']!=0}><{$count["employee_`$e.id`"]['count']}><{else}>0<{/if}></td></tr>
+		<tr class="employee"><td class="nonestyle"></td><td class="employee" i="<{$e.id}>"><{$e.namezh}> (<{$e.name}>)  <{$count["employee_`$e.id`"]['count']}>天</td></tr>
 		<{/if}>
 		<{/foreach}>
 	<{/if}>
