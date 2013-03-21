@@ -6,41 +6,41 @@ author: vincent.shi
 path: /include/
 
 description:
-general function list
+general function set
 
-usage:
-curl_post			//post method built by curl function in PHP
-
-
+List:
+-------------------------------------------------------
+sendResponse($httpstatus, $error, $msg)
+//Description: send the response with JSON format
+//Acception: $httpstatus=200/500; $error='error msg'; $msg='successful msg'
+//Return: string in JSON format, like "{httpstatus:200, error:'server busy, try again later', msg:'save done'}"
+--------------------------------------------------------
+basicMysqliQuery  
+//Description: carry out basic mysql query by mysqli function
+//Acception: $dbtable='database tablename'; $where='query condition string'
+//Return: 2D array indexed by id, like array('1'=>array('id'=>1,'name'=>'vincent'),'3'=>array('id'=>3,'name'=>'winky'))
 */
 
-function curl_post($url, array $post = NULL, array $options = array())
-{
-	$defaults = array(
-		CURLOPT_POST => 1,
-		CURLOPT_HEADER => 0,
-		CURLOPT_URL => $url,
-		CURLOPT_FRESH_CONNECT => 1,
-		CURLOPT_RETURNTRANSFER => 1,
-		CURLOPT_FORBID_REUSE => 1,
-		CURLOPT_TIMEOUT => 4,
-		CURLOPT_POSTFIELDS => http_build_query($post)
-	);
 
-	$ch = curl_init();
-	curl_setopt_array($ch, ($options + $defaults));
-	if( ! $result = curl_exec($ch))
-	{
-		trigger_error(curl_error($ch));
-	}
-	curl_close($ch);
-	return $result;
-} 
-
-function sendResponse($httpstatus, $error, $msg){
+//send the response with JSON format
+function sendResponse($httpstatus=200, $error='', $msg=''){
 echo "{";
 echo 	"httpstatus: " . $httpstatus . ",\n";
 echo	"error: '" . $error . "',\n";
 echo	"msg: '" . $msg . "'\n";
 echo "}";
+}
+
+//carry out basic mysql query by mysqli function
+function basicMysqliQuery($dbtable, $where){
+	global $mysqli;
+	$return = array();
+	$sql = 'SELECT * FROM '.$dbtable.' '.$where;
+	$result = $mysqli->query($sql);
+	if($result->num_rows > 0){
+		while($array = $result->fetch_assoc()){
+			$return[$array['id']] = $array;
+		}
+	}
+	return $return;
 }

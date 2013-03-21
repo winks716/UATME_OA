@@ -24,13 +24,7 @@ switch($A){
 		//get status
 		$status = array('待审批','已通过','已拒绝');
 		//get leave type
-		$sql = 'SELECT * FROM uatme_oa_hr_leave_type';
-		$result = $mysqli->query($sql);
-		if($result->num_rows > 0){
-			while($array = $result->fetch_assoc()){
-				$type[$array['id']] = $array;
-			}
-		}
+		$type = basicMysqliQuery('uatme_oa_hr_leave_type');
 		//get leave apply
 		$sql = 'SELECT * FROM uatme_oa_hr_leave_apply WHERE employee_id="'.$_POST['id'].'"';
 		$result = $mysqli->query($sql);
@@ -49,37 +43,13 @@ switch($A){
 		break;
 	case 'leave.apply.report': 
 		//get location
-		$sql = 'SELECT * FROM uatme_oa_system_location';
-		$result = $mysqli->query($sql);
-		if($result->num_rows > 0){
-			while($array = $result->fetch_assoc()){
-				$location[$array['id']] = $array;
-			}
-		} 
+		$location = basicMysqliQuery('uatme_oa_system_location');
 		//get department
-		$sql = 'SELECT * FROM uatme_oa_system_department';
-		$result = $mysqli->query($sql);
-		if($result->num_rows > 0){
-			while($array = $result->fetch_assoc()){
-				$department[$array['id']] = $array;
-			}
-		} 
+		$department = basicMysqliQuery('uatme_oa_system_department');
 		//get employee
-		$sql = 'SELECT * FROM uatme_oa_system_employee WHERE id>1';
-		$result = $mysqli->query($sql);
-		if($result->num_rows > 0){
-			while($array = $result->fetch_assoc()){
-				$employee[$array['id']] = $array;
-			}
-		}
+		$employee = basicMysqliQuery('uatme_oa_system_employee','WHERE id>1');
 		//get leave type
-		$sql = 'SELECT * FROM uatme_oa_hr_leave_type';
-		$result = $mysqli->query($sql);
-		if($result->num_rows > 0){
-			while($array = $result->fetch_assoc()){
-				$type[$array['id']] = $array;
-			}
-		}
+		$type = basicMysqliQuery('uatme_oa_hr_leave_type');
 		//set status type
 		$status = array('待审批','已通过','已拒绝');
 		//init data request sql
@@ -108,7 +78,6 @@ switch($A){
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
 		//get leave apply
 		$sql = 'SELECT * FROM uatme_oa_hr_leave_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$typesql.$employeesql;
-
 		$result = $mysqli->query($sql);
 		if($result->num_rows > 0){
 			while($array = $result->fetch_assoc()){
@@ -136,37 +105,11 @@ switch($A){
 		break;
 	case 'travel.apply.report': 
 		//get location
-		$sql = 'SELECT * FROM uatme_oa_system_location';
-		$result = $mysqli->query($sql);
-		if($result->num_rows > 0){
-			while($array = $result->fetch_assoc()){
-				$location[$array['id']] = $array;
-			}
-		} 
+		$location = basicMysqliQuery('uatme_oa_system_location');
 		//get department
-		$sql = 'SELECT * FROM uatme_oa_system_department';
-		$result = $mysqli->query($sql);
-		if($result->num_rows > 0){
-			while($array = $result->fetch_assoc()){
-				$department[$array['id']] = $array;
-			}
-		} 
+		$department = basicMysqliQuery('uatme_oa_system_department');
 		//get employee
-		$sql = 'SELECT * FROM uatme_oa_system_employee WHERE id>1';
-		$result = $mysqli->query($sql);
-		if($result->num_rows > 0){
-			while($array = $result->fetch_assoc()){
-				$employee[$array['id']] = $array;
-			}
-		}
-		//get leave type
-		$sql = 'SELECT * FROM uatme_oa_hr_leave_type';
-		$result = $mysqli->query($sql);
-		if($result->num_rows > 0){
-			while($array = $result->fetch_assoc()){
-				$type[$array['id']] = $array;
-			}
-		}
+		$employee = basicMysqliQuery('uatme_oa_system_employee','WHERE id>1');
 		//set status type
 		$status = array('待审批','已通过','已拒绝');
 		//init data request sql
@@ -216,7 +159,6 @@ switch($A){
 		$assign['location'] = $location;
 		$assign['department'] = $department;
 		$assign['employee'] = $employee;
-		$assign['type'] = $type;
 		$smarty->assign($assign);
 		$smarty->display('hr/travel.report.html');
 		break;
