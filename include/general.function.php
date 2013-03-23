@@ -61,3 +61,38 @@ function privilegeCheck($privilege=array()){
 	}
 	return $return;
 }
+
+//check if visitor meets the privilege request of module,submodule and action.
+//this should be an update of function privilegeCheck
+function msaAuth($M, $S, $A, $session){
+	$return = 0;
+	if($M == '' && $S == '' && $A == ''){
+		$return = 1;
+	}else{
+		global $mysqli;
+		$sql = 'SELECT DISTINCT privilege_acceptable FROM uatme_oa_system_module WHERE module="'.$M.'" AND submodule="'.$S.'" AND action="'.$A.'" AND available="1" AND privilege_acceptable!="" AND privilege_acceptable!="0"';
+		if($result = $mysqli->query($sql)){
+			if($result->num_rows == 1){
+				while($array = $result->fetch_assoc()){
+					$privilege = explode(',',$array['privilege_acceptable'].',');
+					foreach($session as $k => $p){
+						if(in_array($k,$privilege)){
+							$return = 1; //visitor's privilege session has at least one match the module privilege setting.
+						}
+					}
+				}
+			}else{
+				if($result->num_rows > 1){
+					$return = 0; //module privilege setting not unique, this is a big error!
+					exit('系统0认证服务忙，请联系管理员');
+				}else{
+					$return = 1; //no module privilege setting, means everyone could visit, if it's there.
+				}
+			}		
+		}else{
+			$return = 0; //means db action wrong
+			exit('系统0数据服务忙，请联系管理员');
+		}
+	}
+	return $return;
+}

@@ -33,6 +33,13 @@ $smarty->assign('request_action',$A);
 
 //判断用户准入
 if(isset($_SESSION['employee_id']) && $_SESSION['employee_id']>0){
+	
+	//判断用户是否有权限访问他输入的地址模块
+	if(!msaAuth($M, $S, $A, $_SESSION['privilege'])){
+		header('Location: 401.html');
+	}
+	
+	
     //设定模板的帐套变量
     //此地如果如此运用，需要account.config.php中的帐套字段o严格唯一！！
     //foreach($accountlist as $a){
@@ -69,8 +76,7 @@ if(isset($_SESSION['employee_id']) && $_SESSION['employee_id']>0){
 	
 	//initial topNavigation data
 	//search module
-	//echo 'SELECT * FROM uatme_oa_system_module WHERE available=1 AND parent_id=0 '.$privilege_menu_sql.' ORDER BY orderby ASC';
-	$sql = 'SELECT * FROM uatme_oa_system_module WHERE available=1 AND parent_id=0 '.$menu_sql.' ORDER BY orderby ASC';
+	$sql = 'SELECT * FROM uatme_oa_system_module WHERE available=1 AND ifnav=1 AND parent_id=0 '.$menu_sql.' ORDER BY orderby ASC';
 	$result = $mysqli->query($sql);
 	if($result->num_rows > 0){
 		while($array = $result->fetch_assoc()){
