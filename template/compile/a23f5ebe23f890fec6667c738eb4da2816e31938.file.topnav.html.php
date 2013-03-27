@@ -1,17 +1,17 @@
-<?php /* Smarty version Smarty-3.0.7, created on 2013-01-31 23:43:10
+<?php /* Smarty version Smarty-3.0.7, created on 2013-03-27 21:36:20
          compiled from "E:\UATME_OA/template/modules\topnav.html" */ ?>
-<?php /*%%SmartyHeaderCode:24453510a910eddaad3-54058120%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:219085152f5d40d7c19-93392824%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
     'a23f5ebe23f890fec6667c738eb4da2816e31938' => 
     array (
       0 => 'E:\\UATME_OA/template/modules\\topnav.html',
-      1 => 1359646985,
+      1 => 1363872776,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '24453510a910eddaad3-54058120',
+  'nocache_hash' => '219085152f5d40d7c19-93392824',
   'function' => 
   array (
   ),
@@ -46,14 +46,12 @@ if ($_smarty_tpl->_count($_from) > 0){
 if ($_smarty_tpl->_count($_from) > 0){
     foreach ($_from as $_smarty_tpl->tpl_vars['m']->key => $_smarty_tpl->tpl_vars['m']->value){
 ?>
-		<?php if ($_smarty_tpl->tpl_vars['m']->value['module']!='system'||($_smarty_tpl->tpl_vars['m']->value['module']=='system'&&$_smarty_tpl->getVariable('session')->value['if_system_admin']==1)){?>
 		<td class="menu ui-state-default ui-corner-top <?php if ($_smarty_tpl->tpl_vars['m']->value['module']==$_smarty_tpl->getVariable('request_module')->value){?>ui-state-active<?php }?>">
 			<a href="<?php echo $_smarty_tpl->tpl_vars['m']->value['href'];?>
 " i="<?php echo $_smarty_tpl->tpl_vars['m']->value['id'];?>
 " p="0" class="ui-tabs-anchor"><?php echo $_smarty_tpl->tpl_vars['m']->value['label'];?>
 </a>
 		</td>
-		<?php }?>
 	<?php }} ?>
 	<td></td>
 	</tr>
@@ -72,7 +70,6 @@ if ($_smarty_tpl->_count($_from) > 0){
 if ($_smarty_tpl->_count($_from) > 0){
     foreach ($_from as $_smarty_tpl->tpl_vars['sm']->key => $_smarty_tpl->tpl_vars['sm']->value){
 ?>
-		<?php if ($_smarty_tpl->tpl_vars['sm']->value['action']!='doc.tech_handbook'||($_smarty_tpl->tpl_vars['sm']->value['action']=='doc.tech_handbook'&&($_smarty_tpl->getVariable('session')->value['if_tech_reader']==1||$_smarty_tpl->getVariable('session')->value['if_tech_admin']==1))){?>
 		<td class="menu">
 			<a href="<?php echo $_smarty_tpl->tpl_vars['sm']->value['href'];?>
 " i="<?php echo $_smarty_tpl->tpl_vars['sm']->value['id'];?>
@@ -80,7 +77,6 @@ if ($_smarty_tpl->_count($_from) > 0){
 " <?php if ($_smarty_tpl->tpl_vars['sm']->value['module']==$_smarty_tpl->getVariable('request_module')->value&&$_smarty_tpl->tpl_vars['sm']->value['submodule']==$_smarty_tpl->getVariable('request_submodule')->value&&$_smarty_tpl->tpl_vars['sm']->value['action']==$_smarty_tpl->getVariable('request_action')->value){?>class="ui-state-active"<?php }?>><?php echo $_smarty_tpl->tpl_vars['sm']->value['label'];?>
 </a>
 		</td>
-		<?php }?>
 	<?php }} ?>
 	<td class="menuBlank"></td>
 </tr>
@@ -98,7 +94,7 @@ if ($_smarty_tpl->_count($_from) > 0){
 		<div class="title"><label><?php echo $_smarty_tpl->tpl_vars['a']->value['title'];?>
 </label>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $_smarty_tpl->tpl_vars['a']->value['update_date'];?>
 </div>
-		<div class="detail"><textarea readonly=readonly><?php echo $_smarty_tpl->tpl_vars['a']->value['detail'];?>
+		<div class="detail"><textarea readonly=readonly style="width:635px;height:235px"><?php echo $_smarty_tpl->tpl_vars['a']->value['detail'];?>
 </textarea></div>
 	</div>
 	<?php }} ?>

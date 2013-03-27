@@ -1,17 +1,17 @@
-<?php /* Smarty version Smarty-3.0.7, created on 2013-02-20 08:37:25
+<?php /* Smarty version Smarty-3.0.7, created on 2013-03-27 21:32:36
          compiled from "E:\UATME_OA/template/modules\base/login.html" */ ?>
-<?php /*%%SmartyHeaderCode:1362251241ac5054d80-90422304%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:146205152f4f4d076f0-84755165%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
     'e612dae6c23b66186b1181d4df6934c6074c227d' => 
     array (
       0 => 'E:\\UATME_OA/template/modules\\base/login.html',
-      1 => 1361320639,
+      1 => 1362311976,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '1362251241ac5054d80-90422304',
+  'nocache_hash' => '146205152f4f4d076f0-84755165',
   'function' => 
   array (
   ),
@@ -23,22 +23,31 @@ $_smarty_tpl->decodeProperties(array (
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript">
+	function login(){
+		var email = $('#email').val();
+		var password = $('#password').val();
+		$.post('index.php?m=base&s=verify', {'email':email, 'password':password}, function(data){
+			var json = eval("(" + data + ")");
+			if(json.httpstatus == 200){
+				self.location = 'index.php';
+			}else if(json.httpstatus == 503){
+				self.location = '503.html';
+			}
+		})
+	}
 	$(function(){
 		$('#submit').click(function(){
-			var email = $('#email').val();
-			var password = $('#password').val();
-			$.post('index.php?m=base&s=verify', {'email':email, 'password':password}, function(data){
-				var json = eval("(" + data + ")");
-				if(json.httpstatus == 200){
-					self.location = 'index.php';
-				}else if(json.httpstatus == 503){
-					self.location = '503.html';
-				}
-			})
+			login();
+		})
+		$('#email, #password').keyup(function(event){
+			var keyCode = event.which;
+			if(keyCode == 13){
+				login();
+			}
 		})
 	})
 </script>
-<title>汉盛科技OA</title>
+<title>欢迎使用UATME_OA</title>
 <style>
 .header{
 	background: url('images/base/login/header.bg.gif');

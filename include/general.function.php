@@ -74,7 +74,7 @@ function msaAuth($M, $S, $A, $session){
 		if($result = $mysqli->query($sql)){
 			if($result->num_rows == 1){
 				while($array = $result->fetch_assoc()){
-					$privilege = explode(',',$array['privilege_acceptable'].',');
+					$privilege = explode(',',$array['privilege_acceptable'].',0');
 					foreach($session as $k => $p){
 						if(in_array($k,$privilege)){
 							$return = 1; //visitor's privilege session has at least one match the module privilege setting.
