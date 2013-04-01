@@ -25,6 +25,11 @@ privilegeCheck($privilege=array())
 //Acception: an array like array('club_admin','hr_admin'...)
 //Return: if check passed, return 1;  if check failed, return 0;
 ------------------------------------------------------
+function caculateDay($starttimestamp='0000-00-00 00:00:00', $endtimestamp='0000-00-00 00:00:00'){
+//Description: caculate day number from start timestamp and end timestamp, type='yyyy-mm-dd hh:mm:ss'
+//Acception: timestamp string
+//Return: array containing the data of day, hour, minute, second
+------------------------------------------------------
 */
 
 
@@ -94,5 +99,29 @@ function msaAuth($M, $S, $A, $session){
 			exit('系统0数据服务忙，请联系管理员');
 		}
 	}
+	return $return;
+}
+
+//caculate day number from start timestamp and end timestamp
+function caculateDay($starttimestamp='0000-00-00 00:00:00', $endtimestamp='0000-00-00 00:00:00'){
+	$start = explode(' ', $starttimestamp);
+	$end = explode(' ', $endtimestamp);
+	$startdate = explode('-', $start[0]);
+	$starttime = explode(':', $start[1]);
+	$enddate = explode('-', $end[0]);
+	$endtime = explode(':', $end[1]);
+	
+	$startsecond = mktime($starttime[0],$starttime[1],$starttime[2],$startdate[1],$startdate[2],$startdate[0]);
+	$endsecond = mktime($endtime[0],$endtime[1],$endtime[2],$enddate[1],$enddate[2],$enddate[0]);
+	
+	$second = $endsecond-$startsecond;
+	//echo $second,'秒';
+	$minute = $second/60;
+	//echo $minute,'分';
+	$hour = $minute/60;
+	//echo $hour,'小时';
+	$day = $hour/8;
+	//echo $day,'天';
+	$return = array('second'=>$second, 'minute'=>$minute, 'hour'=>$hour, 'day'=>$day);
 	return $return;
 }

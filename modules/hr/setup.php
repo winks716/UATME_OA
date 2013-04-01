@@ -22,11 +22,12 @@ switch($A){
 			}
 		}
 		//has used annual leave
-		$sql = 'SELECT count(*) as leavecount, employee_id FROM uatme_oa_hr_leave_apply WHERE status=1 AND ((start BETWEEN "'.Date('Y').'-01-01 00:00:00" AND "'.Date('Y').'-12-31 23:59:59") OR (end BETWEEN "'.Date('Y').'-01-01 00:00:00" AND "'.Date('Y').'-12-31 23:59:59")) AND type=(SELECT id FROM uatme_oa_hr_leave_type WHERE name="年假" LIMIT 1) GROUP BY employee_id';
+		$sql = 'SELECT start, end, employee_id FROM uatme_oa_hr_leave_apply WHERE status=1 AND ((start BETWEEN "'.Date('Y').'-01-01 00:00:00" AND "'.Date('Y').'-12-31 23:59:59") OR (end BETWEEN "'.Date('Y').'-01-01 00:00:00" AND "'.Date('Y').'-12-31 23:59:59")) AND type=(SELECT id FROM uatme_oa_hr_leave_type WHERE name="年假" LIMIT 1) GROUP BY employee_id';
 		$result = $mysqli->query($sql);
 		if($result->num_rows > 0){
 			while($array = $result->fetch_assoc()){
-				$assign['used'][$array['employee_id']] = $array['leavecount'];
+				$daynumber = caculateDay($array['start'], $array['end']);
+				$assign['used'][$array['employee_id']] += $daynumber['day'];
 			}
 		}
 		$smarty->assign($assign);

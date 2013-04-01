@@ -164,17 +164,18 @@ switch($A){
 			while($array = $result->fetch_assoc()){
 				$apply[] = $array;
 				if($array['status']==0 or $array['status']==1){
+					$daynumber = caculateDay($array['start'], $array['end']);
 					//whole company
-					$count['whole_company']++;
+					$count['whole_company']+=$daynumber['day'];
 					$assign['count']['whole_company'] = array('name'=>'全公司', 'count'=>$count['whole_company']);
 					//location
-					$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]++;
+					$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]+=$daynumber['day'];
 					$assign['count']['location_'.$department[$employee[$array['employee_id']]['department_id']]['location_id']] = array('name'=>$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name'], 'count'=>$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]);
 					//department
-					$count[$department[$employee[$array['employee_id']]['department_id']]['name']]++;
+					$count[$department[$employee[$array['employee_id']]['department_id']]['name']]+=$daynumber['day'];
 					$assign['count']['department_'.$employee[$array['employee_id']]['department_id']] = array('name'=>$department[$employee[$array['employee_id']]['department_id']]['name'], 'count'=>$count[$department[$employee[$array['employee_id']]['department_id']]['name']]);
 					//employee
-					$count[$employee[$array['employee_id']]['namezh']]['已使用']++;
+					$count[$employee[$array['employee_id']]['namezh']]['已使用']+=$daynumber['day'];
 					$assign['count']['employee_'.$array['employee_id']] = array('name'=>$employee[$array['employee_id']]['namezh'], 'count'=>$count[$employee[$array['employee_id']]['namezh']]['已使用']);
 				}
 			}

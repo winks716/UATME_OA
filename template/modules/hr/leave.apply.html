@@ -21,7 +21,7 @@
 								<select id="leaveStartTime" name="leaveStartTime"><option value="09:00:00">上午</option><option value="13:00:00">下午</option></select></td></tr>
 		<tr><th>结束日期</th><td><input id="leaveEndDate" name="leaveEndDate" readonly/>
 								<select id="leaveEndTime" name="leaveEndTime"><option value="17:00:00">下午</option><option value="13:00:00">上午</option></select></td></tr>
-		<tr><th>请假事由</th><td><textarea id="leaveReason" name="leaveReason"></textarea></td></tr>
+		<tr><th>请假事由</th><td><input id="leaveReason" name="leaveReason" class="span-16"/></td></tr>
 		<tr><th>不在公司期间<br/>的指定代办人</th><td><select id="leaveAlter" name="leaveAlter">
 									<option value="0">-请选择指定代办人-</option>
 									<{foreach from=$employee item=e}>
@@ -45,7 +45,7 @@
 
 <script type="text/javascript">
 	$(function(){
-		$('#alertDiv').dialog({
+		$('#alertDiv').hide().dialog({
 			'modal':true,
 			'autoOpen':false
 		});
