@@ -187,6 +187,70 @@ switch($A){
 		$smarty->assign($assign);
 		$smarty->display('hr/leave.report.html');
 		break;
+	case 'leave.apply.report.export': 
+		//get location
+		$location = basicMysqliQuery('uatme_oa_system_location');
+		//get department
+		$department = basicMysqliQuery('uatme_oa_system_department');
+		//get employee
+		$employee = basicMysqliQuery('uatme_oa_system_employee','WHERE id>1');
+		//get leave type
+		$type = basicMysqliQuery('uatme_oa_hr_leave_type');
+		//set status type
+		$status = array('待审批','已通过','已拒绝');
+		//init data request sql
+		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
+		$assign['timeSelect'] = $_GET['timeSelect'];
+		$assign['typeSelect'] = $_GET['typeSelect'];
+		$assign['employeeSelect'] = $_GET['employeeSelect'];
+		switch($assign['timeSelect']){
+			case '0':
+			case '':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				break;
+			case '1':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				break;
+			case '2':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '3':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '4':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				break;
+		}
+		$typesql = ($assign['typeSelect']>0) ? (' AND type="'.$assign['typeSelect'].'"') : '';
+		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
+		//get leave apply
+		$sql = 'SELECT * FROM uatme_oa_hr_leave_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$typesql.$employeesql;
+		$result = $mysqli->query($sql);
+		if($result->num_rows > 0){
+			while($array = $result->fetch_assoc()){
+				$apply[] = $array;
+				if($array['status']==0 or $array['status']==1){
+					$daynumber = caculateDay($array['start'], $array['end']);
+					//employee
+					$count[$employee[$array['employee_id']]['namezh']]+=$daynumber['day'];
+				}
+			}
+		}
+		$properties = array('filename'=>'已用'.$type[$assign['typeSelect']]['name']);
+		$data = array(
+					array(
+						'title'=>'已用'.$type[$assign['typeSelect']]['name'],
+						'data'=>array()
+					)
+				);
+		$data[0]['data'][] = array('姓名', '已用'.$type[$assign['typeSelect']]['name'].'（天）');
+		foreach($count as $k => $v){
+			$data[0]['data'][] = array($k, $v);
+		}
+		//print_r($count);
+		//print_r($data);
+		downloadExcel($properties, $data);
+		break;
 	case 'manager.travel.apply.report': 
 		//get location
 		$location = basicMysqliQuery('uatme_oa_system_location');

@@ -1,17 +1,17 @@
-<?php /* Smarty version Smarty-3.0.7, created on 2013-04-01 22:09:58
+<?php /* Smarty version Smarty-3.0.7, created on 2013-04-02 23:15:16
          compiled from "E:\UATME_OA/template/modules\hr/annual.list.html" */ ?>
-<?php /*%%SmartyHeaderCode:2831151599536bc0124-07152428%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:23232515af6041da278-06877219%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
     'f0b46d4777c9ff60fcb6f51228942d713ee492dc' => 
     array (
       0 => 'E:\\UATME_OA/template/modules\\hr/annual.list.html',
-      1 => 1362411363,
+      1 => 1364915710,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '2831151599536bc0124-07152428',
+  'nocache_hash' => '23232515af6041da278-06877219',
   'function' => 
   array (
   ),
@@ -26,7 +26,7 @@ $_smarty_tpl->decodeProperties(array (
 <div class="container ">
 	<table>
 		<tr>
-			<th>姓名</th>
+			<th>姓名<span class="clickbtn annualExport">[导出Excel]</span></th>
 			<th>总年假</th>
 			<th>已使用年假</th>
 			<th>剩余年假</th>
@@ -80,6 +80,10 @@ $(document).ready(function(){
 				$('#alertDiv').dialog('close');
 			}
 		})
-	})	
+	})
+	
+	$('.annualExport').click(function(){	
+		window.open('index.php?m=hr&s=setup&a=annual.setup.export');
+	})
 })
 </script>

@@ -1,17 +1,17 @@
-<?php /* Smarty version Smarty-3.0.7, created on 2013-03-31 22:27:59
+<?php /* Smarty version Smarty-3.0.7, created on 2013-04-02 22:27:42
          compiled from "E:\UATME_OA/template/modules\hr/leave.report.html" */ ?>
-<?php /*%%SmartyHeaderCode:62515847ef2d53d1-88482820%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:25853515aeade1d6d53-96043131%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
     '2cbc3f95902eb14a54ca8b4c5d0cff30d7037789' => 
     array (
       0 => 'E:\\UATME_OA/template/modules\\hr/leave.report.html',
-      1 => 1363872776,
+      1 => 1364912856,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '62515847ef2d53d1-88482820',
+  'nocache_hash' => '25853515aeade1d6d53-96043131',
   'function' => 
   array (
   ),
@@ -83,6 +83,7 @@ if ($_smarty_tpl->_count($_from) > 0){
 <?php }} ?>
 </select>
 <span class="clickbtn reportSearch">[查看]</span>
+<span class="clickbtn reportExport">[导出Excel]</span>
 </div>
 
 <div class="container">
@@ -153,6 +154,9 @@ $(function(){
 	
 	$('.reportSearch').click(function(){
 		window.location = 'index.php?m=hr&s=report&a=leave.apply.report&employeeSelect='+$('#employeeSelect').val()+'&yearSelect='+$('#yearSelect').val()+'&timeSelect='+$('#timeSelect').val()+'&typeSelect='+$('#typeSelect').val();
+	})
+	$('.reportExport').click(function(){
+		window.open('index.php?m=hr&s=report&a=leave.apply.report.export&employeeSelect='+$('#employeeSelect').val()+'&yearSelect='+$('#yearSelect').val()+'&timeSelect='+$('#timeSelect').val()+'&typeSelect='+$('#typeSelect').val());
 	})
 })
 </script>

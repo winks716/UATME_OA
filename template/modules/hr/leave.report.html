@@ -49,6 +49,7 @@
 <{/foreach}>
 </select>
 <span class="clickbtn reportSearch">[查看]</span>
+<span class="clickbtn reportExport">[导出Excel]</span>
 </div>
 
 <div class="container">
@@ -95,6 +96,9 @@ $(function(){
 	
 	$('.reportSearch').click(function(){
 		window.location = 'index.php?m=hr&s=report&a=leave.apply.report&employeeSelect='+$('#employeeSelect').val()+'&yearSelect='+$('#yearSelect').val()+'&timeSelect='+$('#timeSelect').val()+'&typeSelect='+$('#typeSelect').val();
+	})
+	$('.reportExport').click(function(){
+		window.open('index.php?m=hr&s=report&a=leave.apply.report.export&employeeSelect='+$('#employeeSelect').val()+'&yearSelect='+$('#yearSelect').val()+'&timeSelect='+$('#timeSelect').val()+'&typeSelect='+$('#typeSelect').val());
 	})
 })
 </script>

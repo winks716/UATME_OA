@@ -5,7 +5,7 @@
 <div class="container ">
 	<table>
 		<tr>
-			<th>姓名</th>
+			<th>姓名<span class="clickbtn annualExport">[导出Excel]</span></th>
 			<th>总年假</th>
 			<th>已使用年假</th>
 			<th>剩余年假</th>
@@ -47,6 +47,10 @@ $(document).ready(function(){
 				$('#alertDiv').dialog('close');
 			}
 		})
-	})	
+	})
+	
+	$('.annualExport').click(function(){	
+		window.open('index.php?m=hr&s=setup&a=annual.setup.export');
+	})
 })
 </script>

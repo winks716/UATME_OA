@@ -157,7 +157,11 @@ function caculateDay($starttimestamp='0000-00-00 00:00:00', $endtimestamp='0000-
 	//echo $minute,'分';
 	$hour = $minute/60;
 	//echo $hour,'小时';
-	$day = $hour/8;
+	if($start[0]!=$end[0]){
+		$day = ((($hour%24)/8) + floor($hour/24));
+	}else{
+		$day = $hour/8;
+	}
 	//echo $day,'天';
 	$return = array('second'=>$second, 'minute'=>$minute, 'hour'=>$hour, 'day'=>$day);
 	return $return;
