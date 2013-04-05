@@ -243,6 +243,7 @@ switch($A){
 						'data'=>array()
 					)
 				);
+		$data[0]['data'][] = array($type[$assign['typeSelect']]['name'].'报表('.$yearsql.')');
 		$data[0]['data'][] = array('姓名', '已用'.$type[$assign['typeSelect']]['name'].'（天）');
 		foreach($count as $k => $v){
 			$data[0]['data'][] = array($k, $v);
