@@ -23,9 +23,9 @@ foreach($_GET as $k=>$v){
 }
 
 //获取路由设置参数
-$M = isset ($_GET['m']) ? $_GET['m'] : 'document';
-$S = isset ($_GET['s']) ? $_GET['s'] : 'list';
-$A = isset ($_GET['a']) ? $_GET['a'] : 'doc.company_rules';
+$M = isset ($_GET['m']) ? $_GET['m'] : 'base';
+$S = isset ($_GET['s']) ? $_GET['s'] : 'self';
+$A = isset ($_GET['a']) ? $_GET['a'] : 'edit';
 //设置smarty模板
 $smarty->assign('request_module',$M);
 $smarty->assign('request_submodule',$S);

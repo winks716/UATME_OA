@@ -1,79 +1,11 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
 <div class="container">
-	<div class="toolbar">
-			<select id="countrySelect" onChange="changeLocation()">
-				<option value="0">--请选择国家--</option>
-				<{foreach from=$country item=c}>
-					<option value="<{$c.id}>"<{if $c.id==$countrySelected}> selected<{/if}>><{$c.name}></option>
-				<{/foreach}>
-			</select>
-			<select id="locationSelect">
-				<option value="0">--请选择地区--</option>
-			</select>
-			<select id="departmentSelect">
-				<option value="0">--请选择部门--</option>
-				<{foreach from=$department item=d}>
-					<option value="<{$d.id}>"<{if $d.id==$departmentSelected}> selected<{/if}>><{$d.name}></option>
-				<{/foreach}>
-			</select>
-			<span id="documentSearch" class="clickbtn"> [查找] </span>
-			
-			
-			关键字
-			<input id="documentKeyword" value="<{$keywordInput}>"/>
-			<span id="documentFilter" class="clickbtn"> [过滤] </span>
-	</div>
-	
-	<table>
-		<thead>
-			<tr><th>文档名称</th></tr>
-		</thead>
-		<tbody>
-			<{foreach from=$document item=doc}>
-			<tr class="documentItem"><td><a href="<{$doc.path}>" target="_blank"><{$doc.name}></a></td></tr>
-			<{/foreach}>
-		</tbody>
-	</table>
+欢迎访问文档系统，请点击上方功能菜单选项进入相应页面。
+<br/>
+如需帮助请联系管理员。谢谢！
 </div>
 
-<script>
-var countrys = new Array();
-var locations_id = new Array();
-countrys["0"] = ["--请选择地区--"];
-locations_id["0"] = ["0"];
-<{foreach from=$country item=c}>
-	countrys["<{$c.id}>"] = [<{foreach from=$c.location item=l}>"<{$l.name}>",<{/foreach}>];
-	locations_id["<{$c.id}>"] = [<{foreach from=$c.location item=l}>"<{$l.id}>",<{/foreach}>];
-<{/foreach}>
-
-function changeLocation(){
-	var value = $('#countrySelect').val();
-	$('#locationSelect').get(0).options.length = 0;
-	var option;
-	for(i = 0;i < countrys[value].length;i++){
-		option = new Option(countrys[value][i],locations_id[value][i],(locations_id[value][i]=="<{$locationSelected}>"?true:false),(locations_id[value][i]=="<{$locationSelected}>"?true:false));
-		$('#locationSelect').get(0).options.add(option);
-	}
-    /*if($('#countrySelect').val() == "0"){
-     $('#locationSelect').get(0).disabled = true;
-    }else{
-     $('#locationSelect').get(0).disabled = false;
-	}*/
-}
-
-changeLocation();
-
-$('#documentSearch').click(function(){
-	var country_id = $('#countrySelect').val(),
-		location_id = $('#locationSelect').val(),
-		department_id = $('#departmentSelect').val();
-	$(this).parents('.ui-tabs-panel').load('index.php?m=document&country_id='+country_id+'&location_id='+location_id+'&department_id='+department_id);
-})
-
-$('#documentFilter').click(function(){
-	var country_id = $('#countrySelect').val(),
-		location_id = $('#locationSelect').val(),
-		department_id = $('#departmentSelect').val(),
-		keyword = $.trim($('#documentKeyword').val());
-		$(this).parents('.ui-tabs-panel').load('index.php?m=document&country_id='+country_id+'&location_id='+location_id+'&department_id='+department_id+'&keyword='+keyword);
-})
-</script>
+<{include file="declaration.html"}>
+<{include file="footer.html"}>

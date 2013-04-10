@@ -46,7 +46,7 @@ switch($A){
 		}
 		sendResponse($httpstatus, $error, $msg);
 		break;
-	case 'manager.leave.apply.report': 
+	case 'leave.apply.manager.report': 
 		//get location
 		$location = basicMysqliQuery('uatme_oa_system_location');
 		//get department
@@ -90,26 +90,25 @@ switch($A){
 		}
 		$typesql = ($assign['typeSelect']>0) ? (' AND type="'.$assign['typeSelect'].'"') : '';
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
-		$departmentsql = ' AND employee_id';
 		//get leave apply
-		$sql = ' SELECT * FROM uatme_oa_hr_leave_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.') '.$typesql.$employeesql.$employeesql2;
-		echo $sql;
+		$sql = 'SELECT * FROM uatme_oa_hr_leave_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$typesql.$employeesql.$employeesql2;
 		$result = $mysqli->query($sql);
 		if($result->num_rows > 0){
 			while($array = $result->fetch_assoc()){
 				$apply[] = $array;
 				if($array['status']==0 or $array['status']==1){
+					$daynumber = caculateDay($array['start'], $array['end']);
 					//whole company
-					$count['whole_company']++;
+					$count['whole_company']+=$daynumber['day'];
 					$assign['count']['whole_company'] = array('name'=>'全公司', 'count'=>$count['whole_company']);
 					//location
-					$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]++;
+					$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]+=$daynumber['day'];
 					$assign['count']['location_'.$department[$employee[$array['employee_id']]['department_id']]['location_id']] = array('name'=>$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name'], 'count'=>$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]);
 					//department
-					$count[$department[$employee[$array['employee_id']]['department_id']]['name']]++;
+					$count[$department[$employee[$array['employee_id']]['department_id']]['name']]+=$daynumber['day'];
 					$assign['count']['department_'.$employee[$array['employee_id']]['department_id']] = array('name'=>$department[$employee[$array['employee_id']]['department_id']]['name'], 'count'=>$count[$department[$employee[$array['employee_id']]['department_id']]['name']]);
 					//employee
-					$count[$employee[$array['employee_id']]['namezh']]['已使用']++;
+					$count[$employee[$array['employee_id']]['namezh']]['已使用']+=$daynumber['day'];
 					$assign['count']['employee_'.$array['employee_id']] = array('name'=>$employee[$array['employee_id']]['namezh'], 'count'=>$count[$employee[$array['employee_id']]['namezh']]['已使用']);
 				}
 			}
@@ -119,7 +118,80 @@ switch($A){
 		$assign['employee'] = $employee;
 		$assign['type'] = $type;
 		$smarty->assign($assign);
-		$smarty->display('hr/leave.report.html');
+		$smarty->display('hr/leave.manager.report.html');
+		break;
+	case 'leave.apply.manager.report.export':
+		//get location
+		$location = basicMysqliQuery('uatme_oa_system_location');
+		//get department
+		$department = basicMysqliQuery('uatme_oa_system_department','WHERE manager_employee_id="'.$_SESSION['employee_id'].'"');
+		foreach($department as $d){
+			$departmentarray[] = $d['id'];
+		}
+		$departmentsql = ' AND department_id IN ('.implode(',',$departmentarray).') ';
+		//get employee
+		$employee = basicMysqliQuery('uatme_oa_system_employee','WHERE id>1 '.$departmentsql);
+		foreach($employee as $d){
+			$employeearray[] = $d['id'];
+		}
+		$employeesql2 = ' AND employee_id IN ('.implode(',',$employeearray).') ';
+		//get leave type
+		$type = basicMysqliQuery('uatme_oa_hr_leave_type');
+		//set status type
+		$status = array('待审批','已通过','已拒绝');
+		//init data request sql
+		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
+		$assign['timeSelect'] = $_GET['timeSelect'];
+		$assign['typeSelect'] = $_GET['typeSelect'];
+		$assign['employeeSelect'] = $_GET['employeeSelect'];
+		switch($assign['timeSelect']){
+			case '0':
+			case '':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				break;
+			case '1':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				break;
+			case '2':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '3':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '4':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				break;
+		}
+		$typesql = ($assign['typeSelect']>0) ? (' AND type="'.$assign['typeSelect'].'"') : '';
+		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
+		//get leave apply
+		$sql = 'SELECT * FROM uatme_oa_hr_leave_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$typesql.$employeesql.$employeesql2;
+		$result = $mysqli->query($sql);
+		if($result->num_rows > 0){
+			while($array = $result->fetch_assoc()){
+				$apply[] = $array;
+				if($array['status']==0 or $array['status']==1){
+					$daynumber = caculateDay($array['start'], $array['end']);
+					//employee
+					$count[$employee[$array['employee_id']]['namezh']]+=$daynumber['day'];
+				}
+			}
+		}
+		$properties = array('filename'=>'已用'.$type[$assign['typeSelect']]['name']);
+		$data = array(
+					array(
+						'title'=>'已用'.$type[$assign['typeSelect']]['name'],
+						'data'=>array()
+					)
+				);
+		$data[0]['data'][] = array($type[$assign['typeSelect']]['name'].'报表('.$yearsql.')');
+		$data[0]['data'][] = array('姓名', '已用'.$type[$assign['typeSelect']]['name'].'（天）');
+		foreach($count as $k => $v){
+			$data[0]['data'][] = array($k, $v);
+		}
+		//print_r($count);
+		//print_r($data);
+		downloadExcel($properties, $data);
 		break;
 	case 'leave.apply.report': 
 		//get location
