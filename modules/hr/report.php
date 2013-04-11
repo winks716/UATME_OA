@@ -318,7 +318,7 @@ switch($A){
 		//print_r($data);
 		downloadExcel($properties, $data);
 		break;
-	case 'manager.travel.apply.report': 
+	case 'travel.apply.manager.report': 
 		//get location
 		$location = basicMysqliQuery('uatme_oa_system_location');
 		//get department
@@ -386,7 +386,63 @@ switch($A){
 		$assign['department'] = $department;
 		$assign['employee'] = $employee;
 		$smarty->assign($assign);
-		$smarty->display('hr/travel.report.html');
+		$smarty->display('hr/travel.manager.report.html');
+		break;
+	case 'travel.apply.manager.report.export': 
+		//get location
+		$location = basicMysqliQuery('uatme_oa_system_location');
+		//get department
+		$department = basicMysqliQuery('uatme_oa_system_department','WHERE manager_employee_id="'.$_SESSION['employee_id'].'"');
+		foreach($department as $d){
+			$departmentarray[] = $d['id'];
+		}
+		$departmentsql = ' AND department_id IN ('.implode(',',$departmentarray).') ';
+		//get employee
+		$employee = basicMysqliQuery('uatme_oa_system_employee','WHERE id>1 '.$departmentsql);
+		foreach($employee as $d){
+			$employeearray[] = $d['id'];
+		}
+		$employeesql2 = ' AND employee_id IN ('.implode(',',$employeearray).') ';
+		//set status type
+		$status = array('待审批','已通过','已拒绝');
+		//init data request sql
+		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
+		$assign['timeSelect'] = $_GET['timeSelect'];
+		$assign['typeSelect'] = $_GET['typeSelect'];
+		$assign['employeeSelect'] = $_GET['employeeSelect'];
+		switch($assign['timeSelect']){
+			case '0':
+			case '':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				break;
+			case '1':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				break;
+			case '2':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '3':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '4':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				break;
+		}
+		$typesql = ($assign['typeSelect']>0) ? (' AND type="'.$assign['typeSelect'].'"') : '';
+		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
+		//get travel apply
+		$sql = 'SELECT * FROM uatme_oa_hr_travel_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$typesql.$employeesql.$employeesql2;
+		$result = $mysqli->query($sql);
+		if($result->num_rows > 0){
+			while($array = $result->fetch_assoc()){
+				$apply[] = $array;
+				if($array['status']==0 or $array['status']==1){
+					//employee
+					$count[$employee[$array['employee_id']]['namezh']]['已申请']+=$array['expense'];
+					$assign['count']['employee_'.$array['employee_id']] = array('name'=>$employee[$array['employee_id']]['namezh'], 'count'=>number_format($count[$employee[$array['employee_id']]['namezh']]['已申请'],2));
+				}
+			}
+		}
 		break;
 	case 'travel.apply.report': 
 		//get location
@@ -449,5 +505,53 @@ switch($A){
 		$assign['employee'] = $employee;
 		$smarty->assign($assign);
 		$smarty->display('hr/travel.report.html');
+		break;
+	case 'travel.apply.report.export': 
+		//get location
+		$location = basicMysqliQuery('uatme_oa_system_location');
+		//get department
+		$department = basicMysqliQuery('uatme_oa_system_department');
+		//get employee
+		$employee = basicMysqliQuery('uatme_oa_system_employee','WHERE id>1');
+		//set status type
+		$status = array('待审批','已通过','已拒绝');
+		//init data request sql
+		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
+		$assign['timeSelect'] = $_GET['timeSelect'];
+		$assign['typeSelect'] = $_GET['typeSelect'];
+		$assign['employeeSelect'] = $_GET['employeeSelect'];
+		switch($assign['timeSelect']){
+			case '0':
+			case '':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				break;
+			case '1':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				break;
+			case '2':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '3':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '4':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				break;
+		}
+		$typesql = ($assign['typeSelect']>0) ? (' AND type="'.$assign['typeSelect'].'"') : '';
+		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
+		//get travel apply
+		$sql = 'SELECT * FROM uatme_oa_hr_travel_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$typesql.$employeesql;
+		$result = $mysqli->query($sql);
+		if($result->num_rows > 0){
+			while($array = $result->fetch_assoc()){
+				$apply[] = $array;
+				if($array['status']==0 or $array['status']==1){
+					//employee
+					$count[$employee[$array['employee_id']]['namezh']]['已申请']+=$array['expense'];
+					$assign['count']['employee_'.$array['employee_id']] = array('name'=>$employee[$array['employee_id']]['namezh'], 'count'=>number_format($count[$employee[$array['employee_id']]['namezh']]['已申请'],2));
+				}
+			}
+		}
 		break;
 }
