@@ -12,6 +12,7 @@ $taskId = $_POST['i'];
 $executerId = $_POST['e'];
 $authorKey = $_POST['k'];
 $sql = 'SELECT * FROM uatme_oa_workflow_task WHERE id="'.$taskId.'" AND employee_id="'.$executerId.'" AND author_key="'.$authorKey.'"';
+//echo $sql;
 $result = $mysqli->query($sql);
 //approval start
 //if user is validated

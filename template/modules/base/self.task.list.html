@@ -11,27 +11,34 @@
 	<td><{$t.apply_date}></td>
 	<td><{$t.apply_alternative}></td>
 	<td>审批备注 <input class="span-8 comment"/>
-	<span class="clickbtn agreeApply" s="<{$t.document_typelv1_nameen}>" a="agree" e="<{$t.employee_id}>" i="<{$t.document_id}>" k="<{$t.author_key}>">[同意]</span>
-	<span class="clickbtn denyApply" s="<{$t.document_typelv1_nameen}>" a="deny" e="<{$t.employee_id}>" i="<{$t.document_id}>" k="<{$t.author_key}>">[拒绝]</span></td></tr>
+	<span class="clickbtn agreeApply" s="<{$t.document_typelv1_nameen}>" a="agree" e="<{$t.employee_id}>" i="<{$t.id}>" k="<{$t.author_key}>">[同意]</span>
+	<span class="clickbtn denyApply" s="<{$t.document_typelv1_nameen}>" a="deny" e="<{$t.employee_id}>" i="<{$t.id}>" k="<{$t.author_key}>">[拒绝]</span></td></tr>
 	<{/foreach}>
 	</table>
 </div>
 
+<div id="alertDiv" style="display:hidden;">数据递交中，大约需要12秒，请耐心等待。<br/>等待期间请不要关闭此窗口，谢谢！</div>
 <{include file="declaration.html"}>
 <{include file="footer.html"}>
 
 <script>
 $(function(){
+	$('#alertDiv').dialog({
+		autoOpen: false,
+		modal: true
+	})
 	$('.agreeApply').click(function(){
-		if(confirm('确认同意此申请？')){
-			$.post('<{$WEBSERVER}>/api/approval.php',{'s':$(this).attr('s'),'a':$(this).attr('a'),'i':$(this).attr('i'),'e':$(this).attr('e'),'k':$(this).attr('k'),'comment':$(this).parent().find('.comment').val(},function(){
+		if(confirm('确认同意此申请？')){		
+			$('#alertDiv').dialog('open');
+			$.post('<{$WEBSERVER}>api/approval.php',{'s':$(this).attr('s'),'a':$(this).attr('a'),'i':$(this).attr('i'),'e':$(this).attr('e'),'k':$(this).attr('k'),'comment':$(this).parent().find('.comment').val()},function(data){
 				window.location.reload();
 			})
 		}
 	})
 	$('.denyApply').click(function(){
-		if(confirm('确认拒绝此申请？')){
-			$.post('<{$WEBSERVER}>/api/approval.php',{'s':$(this).attr('s'),'a':$(this).attr('a'),'i':$(this).attr('i'),'e':$(this).attr('e'),'k':$(this).attr('k'),'comment':$(this).parent().find('.comment').val()},function(){
+		if(confirm('确认拒绝此申请？')){		
+			$('#alertDiv').dialog('open');
+			$.post('<{$WEBSERVER}>api/approval.php',{'s':$(this).attr('s'),'a':$(this).attr('a'),'i':$(this).attr('i'),'e':$(this).attr('e'),'k':$(this).attr('k'),'comment':$(this).parent().find('.comment').val()},function(data){
 				window.location.reload();
 			})
 		}
