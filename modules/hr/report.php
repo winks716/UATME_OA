@@ -338,7 +338,6 @@ switch($A){
 		//init data request sql
 		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
 		$assign['timeSelect'] = $_GET['timeSelect'];
-		$assign['typeSelect'] = $_GET['typeSelect'];
 		$assign['employeeSelect'] = $_GET['employeeSelect'];
 		switch($assign['timeSelect']){
 			case '0':
@@ -358,10 +357,9 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
-		$typesql = ($assign['typeSelect']>0) ? (' AND type="'.$assign['typeSelect'].'"') : '';
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
 		//get travel apply
-		$sql = 'SELECT * FROM uatme_oa_hr_travel_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$typesql.$employeesql.$employeesql2;
+		$sql = 'SELECT * FROM uatme_oa_hr_travel_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$employeesql.$employeesql2;
 		$result = $mysqli->query($sql);
 		if($result->num_rows > 0){
 			while($array = $result->fetch_assoc()){
@@ -408,7 +406,6 @@ switch($A){
 		//init data request sql
 		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
 		$assign['timeSelect'] = $_GET['timeSelect'];
-		$assign['typeSelect'] = $_GET['typeSelect'];
 		$assign['employeeSelect'] = $_GET['employeeSelect'];
 		switch($assign['timeSelect']){
 			case '0':
@@ -428,21 +425,50 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
-		$typesql = ($assign['typeSelect']>0) ? (' AND type="'.$assign['typeSelect'].'"') : '';
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
 		//get travel apply
-		$sql = 'SELECT * FROM uatme_oa_hr_travel_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$typesql.$employeesql.$employeesql2;
+		$sql = 'SELECT * FROM uatme_oa_hr_travel_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$employeesql.$employeesql2;
 		$result = $mysqli->query($sql);
+		
+		//INIT EXCEL title, attribute, etc.
+		$properties = array('filename'=>'差旅申请报表');
+		$data = array(
+				array(
+						'title'=>'差旅申请',
+						'data'=>array()
+				),
+				array(
+						'title'=>'费用合计',
+						'data'=>array()
+				)
+		);
+		$data[0]['data'][] = array('差旅申请报表('.$yearsql.')');
+		$data[0]['data'][] = array('姓名', '目的地', '时间', '事由', '指定代办', '费用预估');
+		$data[1]['data'][] = array('差旅申请费用预估合计报表('.$yearsql.')');
+		$data[1]['data'][] = array('姓名', '费用预估合计');
+		
 		if($result->num_rows > 0){
 			while($array = $result->fetch_assoc()){
-				$apply[] = $array;
+				$data[0]['data'][] = array(
+										$employee[$array['employee_id']]['namezh'].' ('.$employee[$array['employee_id']]['name'].') ',
+										$array['target'],
+										$array['start'].'~'.$array['end'],
+										$array['reason'],
+										$employee[$array['alternative_employee_id']],
+										number_format($array['expense'],2)
+						);
 				if($array['status']==0 or $array['status']==1){
 					//employee
-					$count[$employee[$array['employee_id']]['namezh']]['已申请']+=$array['expense'];
-					$assign['count']['employee_'.$array['employee_id']] = array('name'=>$employee[$array['employee_id']]['namezh'], 'count'=>number_format($count[$employee[$array['employee_id']]['namezh']]['已申请'],2));
+					$data[1]['data'][$array['employee_id']] = array(
+																$employee[$array['employee_id']]['namezh'].' ('.$employee[$array['employee_id']]['name'].') ',
+																number_format($data[1]['data'][$array['employee_id']][1]+$array['expense'],2)
+							);
 				}
 			}
 		}
+		//print_r($count);
+		//print_r($data);
+		downloadExcel($properties, $data);
 		break;
 	case 'travel.apply.report': 
 		//get location
@@ -456,7 +482,6 @@ switch($A){
 		//init data request sql
 		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
 		$assign['timeSelect'] = $_GET['timeSelect'];
-		$assign['typeSelect'] = $_GET['typeSelect'];
 		$assign['employeeSelect'] = $_GET['employeeSelect'];
 		switch($assign['timeSelect']){
 			case '0':
@@ -476,10 +501,9 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
-		$typesql = ($assign['typeSelect']>0) ? (' AND type="'.$assign['typeSelect'].'"') : '';
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
 		//get travel apply
-		$sql = 'SELECT * FROM uatme_oa_hr_travel_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$typesql.$employeesql;
+		$sql = 'SELECT * FROM uatme_oa_hr_travel_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$employeesql;
 		$result = $mysqli->query($sql);
 		if($result->num_rows > 0){
 			while($array = $result->fetch_assoc()){
@@ -518,7 +542,6 @@ switch($A){
 		//init data request sql
 		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
 		$assign['timeSelect'] = $_GET['timeSelect'];
-		$assign['typeSelect'] = $_GET['typeSelect'];
 		$assign['employeeSelect'] = $_GET['employeeSelect'];
 		switch($assign['timeSelect']){
 			case '0':
@@ -538,20 +561,49 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
-		$typesql = ($assign['typeSelect']>0) ? (' AND type="'.$assign['typeSelect'].'"') : '';
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
 		//get travel apply
-		$sql = 'SELECT * FROM uatme_oa_hr_travel_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$typesql.$employeesql;
+		$sql = 'SELECT * FROM uatme_oa_hr_travel_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$employeesql;
 		$result = $mysqli->query($sql);
+		
+		//INIT EXCEL title, attribute, etc.
+		$properties = array('filename'=>'差旅申请报表');
+		$data = array(
+				array(
+						'title'=>'差旅申请',
+						'data'=>array()
+				),
+				array(
+						'title'=>'费用合计',
+						'data'=>array()
+				)
+		);
+		$data[0]['data'][] = array('差旅申请报表('.$yearsql.')');
+		$data[0]['data'][] = array('姓名', '目的地', '时间', '事由', '指定代办', '费用预估');
+		$data[1]['data'][] = array('差旅申请费用预估合计报表('.$yearsql.')');
+		$data[1]['data'][] = array('姓名', '费用预估合计');
+		
 		if($result->num_rows > 0){
 			while($array = $result->fetch_assoc()){
-				$apply[] = $array;
+				$data[0]['data'][] = array(
+										$employee[$array['employee_id']]['namezh'].' ('.$employee[$array['employee_id']]['name'].') ',
+										$array['target'],
+										$array['start'].'~'.$array['end'],
+										$array['reason'],
+										$employee[$array['alternative_employee_id']],
+										number_format($array['expense'],2)
+						);
 				if($array['status']==0 or $array['status']==1){
 					//employee
-					$count[$employee[$array['employee_id']]['namezh']]['已申请']+=$array['expense'];
-					$assign['count']['employee_'.$array['employee_id']] = array('name'=>$employee[$array['employee_id']]['namezh'], 'count'=>number_format($count[$employee[$array['employee_id']]['namezh']]['已申请'],2));
+					$data[1]['data'][$array['employee_id']] = array(
+																$employee[$array['employee_id']]['namezh'].' ('.$employee[$array['employee_id']]['name'].') ',
+																number_format($data[1]['data'][$array['employee_id']][1]+$array['expense'],2)
+							);
 				}
 			}
 		}
+		//print_r($count);
+		//print_r($data);
+		downloadExcel($properties, $data);
 		break;
 }
