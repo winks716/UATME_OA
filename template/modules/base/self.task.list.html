@@ -1,0 +1,40 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+<div class="container">
+	<table>
+	<tr><th>任务类型</th><th>申请者</th><th>相关申请信息</th><th>申请时间</th><th>指定代办</th><th>操作</th></tr>
+	<{foreach from=$task item=t}>
+	<tr><td><{$t.document_typelv1_name}></td>
+	<td><{$t.apply_employee}></td>
+	<td><{$t.period}><br/><{$t.reason}></td>
+	<td><{$t.apply_date}></td>
+	<td><{$t.apply_alternative}></td>
+	<td>审批备注 <input class="span-8 comment"/>
+	<span class="clickbtn agreeApply" s="<{$t.document_typelv1_nameen}>" a="agree" e="<{$t.employee_id}>" i="<{$t.document_id}>" k="<{$t.author_key}>">[同意]</span>
+	<span class="clickbtn denyApply" s="<{$t.document_typelv1_nameen}>" a="deny" e="<{$t.employee_id}>" i="<{$t.document_id}>" k="<{$t.author_key}>">[拒绝]</span></td></tr>
+	<{/foreach}>
+	</table>
+</div>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>
+
+<script>
+$(function(){
+	$('.agreeApply').click(function(){
+		if(confirm('确认同意此申请？')){
+			$.post('<{$WEBSERVER}>/api/approval.php',{'s':$(this).attr('s'),'a':$(this).attr('a'),'i':$(this).attr('i'),'e':$(this).attr('e'),'k':$(this).attr('k'),'comment':$(this).parent().find('.comment').val(},function(){
+				window.location.reload();
+			})
+		}
+	})
+	$('.denyApply').click(function(){
+		if(confirm('确认拒绝此申请？')){
+			$.post('<{$WEBSERVER}>/api/approval.php',{'s':$(this).attr('s'),'a':$(this).attr('a'),'i':$(this).attr('i'),'e':$(this).attr('e'),'k':$(this).attr('k'),'comment':$(this).parent().find('.comment').val()},function(){
+				window.location.reload();
+			})
+		}
+	})
+})
+</script>

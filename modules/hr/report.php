@@ -1,9 +1,6 @@
 <?php
 switch($A){
 	case 'get.employee.travel':
-		if(!privilegeCheck(array('hr_travel_report_reader'))){
-				exit('您无权访问此页面');
-		}
 		//get status
 		$status = array('待审批','已通过','已拒绝');
 		//get travel apply
@@ -23,9 +20,6 @@ switch($A){
 		sendResponse($httpstatus, $error, $msg);
 		break;
 	case 'get.employee.leave':
-		if(!privilegeCheck(array('hr_leave_report_reader'))){
-				exit('您无权访问此页面');
-		}
 		//get status
 		$status = array('待审批','已通过','已拒绝');
 		//get leave type

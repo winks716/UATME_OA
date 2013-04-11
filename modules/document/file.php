@@ -1,5 +1,5 @@
 <?php
-if($_SESSION['if_document_admin'] == 1 || $_SESSION['if_techdoc_admin']==1 || $_SESSION['if_purchasedoc_admin']==1 || $_SESSION['if_hrdoc_admin']==1){
+if($_SESSION['if_document_admin'] == 1 || $_SESSION['if_techdoc_admin']==1 || $_SESSION['if_purchasedoc_admin']==1 || $_SESSION['if_hrdoc_admin']==1 || $_SESSION['if_admindoc_admin']==1){
 	switch($A){
 		case 'upload':
 				$error = "";

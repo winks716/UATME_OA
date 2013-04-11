@@ -67,8 +67,8 @@ switch($A){
 												<tr><th>假期类型</th><th>休假时间</th><th>指定代办</th><th>事由</th></tr>
 												<tr><td>'.$leaveType[$_POST["leaveType"]].'</td><td>'.$_POST['leaveStartDate'].' '.$_POST['leaveStartTime'].' 至 '.$_POST['leaveEndDate'].' '.$_POST['leaveEndTime'].'</td><td>'.$employee[$_POST['leaveAlter']]['namezh'].'('.$employee[$_POST['leaveAlter']]['name'].')</td><td>'.$_POST['leaveReason'].'</td></tr>
 											</table></p>
-											<p><a class="clickbtn" href="'.WEBSERVER.'api/before.approval.php?s=leave&a=agree&e='.$task['executerId'].'&i='.$task['taskId'].'&k='.$task['authorKey'].'">[同意]</a>
-											&nbsp;&nbsp;&nbsp;&nbsp;<a class="clickbtn" href="'.WEBSERVER.'api/before.approval.php?s=leave&a=deny&e='.$task['executerId'].'&i='.$task['taskId'].'&k='.$task['authorKey'].'">[拒绝]</a></p>
+											<p><a class="clickbtn" href="'.WEBSERVER.'api/before.approval.php?s=leave.apply&a=agree&e='.$task['executerId'].'&i='.$task['taskId'].'&k='.$task['authorKey'].'">[同意]</a>
+											&nbsp;&nbsp;&nbsp;&nbsp;<a class="clickbtn" href="'.WEBSERVER.'api/before.approval.php?s=leave.apply&a=deny&e='.$task['executerId'].'&i='.$task['taskId'].'&k='.$task['authorKey'].'">[拒绝]</a></p>
 											</body>											
 											'
 								);

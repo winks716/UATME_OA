@@ -18,7 +18,7 @@ $result = $mysqli->query($sql);
 if($result->num_rows == 1){
 	while($array = $result->fetch_assoc()){
 		switch($_POST['s']){
-			case 'leave':
+			case 'leave.apply':
 				switch($_POST['a']){
 					case 'agree':
 						$sql = 'UPDATE uatme_oa_workflow_task SET status="2", author_key="'.md5(sha1($array['author_key'].date('Y-m-d H:i:s'))).'", updated_date="'.date('Y-m-d H:i:s').'", comment="'.$_POST['comment'].'" WHERE id="'.$array['id'].'"';
@@ -214,7 +214,7 @@ if($result->num_rows == 1){
 				break;
 				
 			//差旅审批
-			case 'travel':
+			case 'travel.apply':
 				switch($_POST['a']){
 					case 'agree':
 						$sql = 'UPDATE uatme_oa_workflow_task SET status="2", author_key="'.md5(sha1($array['author_key'].date('Y-m-d H:i:s'))).'", updated_date="'.date('Y-m-d H:i:s').'", comment="'.$_POST['comment'].'" WHERE id="'.$array['id'].'"';

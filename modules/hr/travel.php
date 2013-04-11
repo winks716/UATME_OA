@@ -61,8 +61,8 @@ switch($A){
 												<tr><th>目的地</th><th>出差时间</th><th>费用</th><th>事由</th><th>指定代办</th></tr>
 												<tr><td>'.$_POST["travelTarget"].'</td><td>'.$_POST['travelStartDate'].' '.$_POST['travelStartTime'].' 至 '.$_POST['travelEndDate'].' '.$_POST['travelEndTime'].'</td><td>'.$currency[$_POST['travelCurrencyId']].$_POST['travelExpense'].'</td><td>'.$_POST['travelReason'].'</td><td>'.$employee[$_POST['travelAlter']]['namezh'].'('.$employee[$_POST['travelAlter']]['name'].')</td></tr>
 											</table></p>
-											<p><a class="clickbtn" href="'.WEBSERVER.'api/before.approval.php?s=travel&a=agree&e='.$task['executerId'].'&i='.$task['taskId'].'&k='.$task['authorKey'].'">[同意]</a>
-											&nbsp;&nbsp;&nbsp;&nbsp;<a class="clickbtn" href="'.WEBSERVER.'api/before.approval.php?s=travel&a=deny&e='.$task['executerId'].'&i='.$task['taskId'].'&k='.$task['authorKey'].'">[拒绝]</a></p>
+											<p><a class="clickbtn" href="'.WEBSERVER.'api/before.approval.php?s=travel.apply&a=agree&e='.$task['executerId'].'&i='.$task['taskId'].'&k='.$task['authorKey'].'">[同意]</a>
+											&nbsp;&nbsp;&nbsp;&nbsp;<a class="clickbtn" href="'.WEBSERVER.'api/before.approval.php?s=travel.apply&a=deny&e='.$task['executerId'].'&i='.$task['taskId'].'&k='.$task['authorKey'].'">[拒绝]</a></p>
 											</body>											
 											'
 								);

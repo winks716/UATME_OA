@@ -24,6 +24,9 @@ switch($A){
 	case 'doc.hr_handbook':
 		$assign['list_type'] = '人事文档';
 		break;
+	case 'doc.admin_handbook':
+		$assign['list_type'] = '行政文档';
+		break;
 }
 
 if(isset($assign['list_type']) && $assign['list_type']!=''){

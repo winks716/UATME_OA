@@ -7,6 +7,7 @@
 		<{/foreach}>
 	  </span></td>
 	  <td><span class="">欢迎, <{$session.employee_name}>(<{$session.employee_namezh}>)</span></td>
+	  <td>待完成: <a href="index.php?m=base&s=self&a=task.list"><span id="taskCount">...</span>个任务</a></td>
 	  <td><span class=""><span class="clickbtn" id="logOff"> [退出] </span></span></td>
 	  </tr></table>
 </div>
@@ -78,6 +79,15 @@ $('#announce').dialog({
 		'确认': function(){
 			$('#announce').dialog('close');
 		}
+	}
+})
+//INIT task count number
+$.post('index.php?m=base&s=self&a=task.count',{},function(data){
+	var json = eval('('+ data +')');
+	if(json.httpstatus==200){
+		$('#taskCount').html(json.msg);
+	}else{
+		$('#taskCount').html('0');
 	}
 })
 </script>
