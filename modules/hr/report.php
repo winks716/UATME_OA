@@ -2,14 +2,14 @@
 switch($A){
 	case 'get.employee.travel':
 		//get status
-		$status = array('待审批','已通过','已拒绝');
+		$status = basicMysqliQuery('uatme_oa_system_apply_status');
 		//get travel apply
 		$sql = 'SELECT * FROM uatme_oa_hr_travel_apply WHERE employee_id="'.$_POST['id'].'"';
 		$result = $mysqli->query($sql);
 		if($result->num_rows > 0){
 			$msg = '<table><tr><th class="span-2">目的地</th><th class="span-8">起始-结束</th><th class="span-2">费用预算<br/>(机票除外)</th><th class="span-2">状态</th><th>事由</th></tr>';
 			while($array = $result->fetch_assoc()){
-				$msg .= '<tr><td>'.$array['target'].'</td><td>'.$array['start'].' 至 '.$array['end'].'</td><td>'.$array['expense'].'</td><td>'.$status[$array['status']].'</td><td>'.$array['reason'].'</td></tr>';
+				$msg .= '<tr><td>'.$array['target'].'</td><td>'.$array['start'].' 至 '.$array['end'].'</td><td>'.$array['expense'].'</td><td>'.$status[$array['status']]['namezh'].'</td><td>'.$array['reason'].'</td></tr>';
 			}
 			$msg .= '</table>';
 			$httpstatus = 200;
@@ -21,7 +21,7 @@ switch($A){
 		break;
 	case 'get.employee.leave':
 		//get status
-		$status = array('待审批','已通过','已拒绝');
+		$status = basicMysqliQuery('uatme_oa_system_apply_status');
 		//get leave type
 		$type = basicMysqliQuery('uatme_oa_hr_leave_type');
 		//get leave apply
@@ -30,7 +30,7 @@ switch($A){
 		if($result->num_rows > 0){
 			$msg = '<table><tr><th class="span-2">类型</th><th class="span-8">起始-结束</th><th class="span-2">状态</th><th>事由</th></tr>';
 			while($array = $result->fetch_assoc()){
-				$msg .= '<tr><td>'.$type[$array['type']]['name'].'</td><td>'.$array['start'].' 至 '.$array['end'].'</td><td>'.$status[$array['status']].'</td><td>'.$array['reason'].'</td></tr>';
+				$msg .= '<tr><td>'.$type[$array['type']]['name'].'</td><td>'.$array['start'].' 至 '.$array['end'].'</td><td>'.$status[$array['status']]['namezh'].'</td><td>'.$array['reason'].'</td></tr>';
 			}
 			$msg .= '</table>';
 			$httpstatus = 200;
@@ -58,7 +58,7 @@ switch($A){
 		//get leave type
 		$type = basicMysqliQuery('uatme_oa_hr_leave_type');
 		//set status type
-		$status = array('待审批','已通过','已拒绝');
+		$status = basicMysqliQuery('uatme_oa_system_apply_status');
 		//init data request sql
 		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
 		$assign['timeSelect'] = $_GET['timeSelect'];
@@ -132,7 +132,7 @@ switch($A){
 		//get leave type
 		$type = basicMysqliQuery('uatme_oa_hr_leave_type');
 		//set status type
-		$status = array('待审批','已通过','已拒绝');
+		$status = basicMysqliQuery('uatme_oa_system_apply_status');
 		//init data request sql
 		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
 		$assign['timeSelect'] = $_GET['timeSelect'];
@@ -197,7 +197,7 @@ switch($A){
 		//get leave type
 		$type = basicMysqliQuery('uatme_oa_hr_leave_type');
 		//set status type
-		$status = array('待审批','已通过','已拒绝');
+		$status = basicMysqliQuery('uatme_oa_system_apply_status');
 		//init data request sql
 		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
 		$assign['timeSelect'] = $_GET['timeSelect'];
@@ -263,7 +263,7 @@ switch($A){
 		//get leave type
 		$type = basicMysqliQuery('uatme_oa_hr_leave_type');
 		//set status type
-		$status = array('待审批','已通过','已拒绝');
+		$status = basicMysqliQuery('uatme_oa_system_apply_status');
 		//init data request sql
 		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
 		$assign['timeSelect'] = $_GET['timeSelect'];
@@ -334,7 +334,7 @@ switch($A){
 		}
 		$employeesql2 = ' AND employee_id IN ('.implode(',',$employeearray).') ';
 		//set status type
-		$status = array('待审批','已通过','已拒绝');
+		$status = basicMysqliQuery('uatme_oa_system_apply_status');
 		//init data request sql
 		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
 		$assign['timeSelect'] = $_GET['timeSelect'];
@@ -402,7 +402,7 @@ switch($A){
 		}
 		$employeesql2 = ' AND employee_id IN ('.implode(',',$employeearray).') ';
 		//set status type
-		$status = array('待审批','已通过','已拒绝');
+		$status = basicMysqliQuery('uatme_oa_system_apply_status');
 		//init data request sql
 		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
 		$assign['timeSelect'] = $_GET['timeSelect'];
@@ -478,7 +478,7 @@ switch($A){
 		//get employee
 		$employee = basicMysqliQuery('uatme_oa_system_employee','WHERE id>1');
 		//set status type
-		$status = array('待审批','已通过','已拒绝');
+		$status = basicMysqliQuery('uatme_oa_system_apply_status');
 		//init data request sql
 		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
 		$assign['timeSelect'] = $_GET['timeSelect'];
@@ -538,7 +538,7 @@ switch($A){
 		//get employee
 		$employee = basicMysqliQuery('uatme_oa_system_employee','WHERE id>1');
 		//set status type
-		$status = array('待审批','已通过','已拒绝');
+		$status = basicMysqliQuery('uatme_oa_system_apply_status');
 		//init data request sql
 		$assign['yearSelect'] = $_GET['yearSelect']>0 ? $_GET['yearSelect'] : date('Y');
 		$assign['timeSelect'] = $_GET['timeSelect'];

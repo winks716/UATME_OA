@@ -8,7 +8,12 @@
 		</thead>
 		<tbody>
 		<{foreach from=$apply item=a}>
-			<tr><td><{$a.applyer}></td><td><{$a.type}></td><td><{$a.start}> ~ <{$a.end}></td><td><{$a.alter}></td><td><{$a.status}></td><td></td></tr>
+			<tr><td><{$a.applyer}></td>
+			<td><{$a.type}></td>
+			<td><{$a.start}> ~ <{$a.end}></td>
+			<td><{$a.alter}></td>
+			<td><{$a.statusZH}></td>
+			<td><{if $a.status==0}><span class="clickbtn cancelApply" i="<{$a.id}>">[撤销]<span><{/if}></td></tr>
 		<{/foreach}>
 		</tbody>
 	</table>
@@ -16,3 +21,22 @@
 
 <{include file="declaration.html"}>
 <{include file="footer.html"}>
+
+<script>
+$(function(){
+	$('.cancelApply').click(function(){
+		if(confirm('确认撤销此申请？')){
+			var id = $(this).attr('i');
+			$.post('index.php?m=hr&s=leave&a=applier.cancel',{'id':id},function(data){
+				var json = eval('(' + data + ')');
+				if(json.httpstatus == 200){
+					alert(json.msg);
+					window.location.reload();
+				}else{
+					alert(json.error);
+				}
+			})
+		}
+	})
+})
+</script>

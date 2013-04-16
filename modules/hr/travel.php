@@ -84,18 +84,27 @@ switch($A){
 		}
 		sendResponse($httpstatus, $error, $msg);
 		break;
-	case 'agree':
-		
-		break;
-	case 'deny':
-		
+	case 'applier.cancel':
+		$sql = 'UPDATE uatme_oa_hr_travel_apply SET status=3, comment="本人撤销" WHERE id="'.$_POST['id'].'" AND employee_id="'.$_SESSION['employee_id'].'"';
+		if($mysqli->query($sql)){
+			$httpstatus = 200;
+			$msg = '此申请已成功撤销';
+			//delete related task db information
+			$applyType = basicMysqliQuery('uatme_oa_workflow_document_typelv1', ' WHERE name_english="travel.apply" ');
+			foreach($applyType as $k => $t){
+				$sql = 'UPDATE uatme_oa_workflow_task SET status="3", comment="本人撤销", updated_date="'.date('Y-m-d H:i:s').'" WHERE document_typelv1_id="'.$k.'" AND document_id="'.$_POST['id'].'" AND status IN (0,1)';
+				$mysqli->query($sql);
+			}
+		}else{
+			$httpstatus = 500;
+			$error = '申请撤销：服务器0忙，请稍后再试，谢谢！';
+		}
+		sendResponse($httpstatus, $error, $msg);
 		break;
 	case 'list':
-		$assign['status'] = array(
-			0 => '审批中',
-			1 => '通过',
-			2 => '拒绝'
-		);
+		//get apply status definition list
+		$assign['status'] = basicMysqliQuery('uatme_oa_system_apply_status');
+		//get employee
 		$sql = 'SELECT id,name,namezh FROM uatme_oa_system_employee';
 		$result = $mysqli->query($sql);
 		if($result->num_rows > 0){
@@ -118,7 +127,7 @@ switch($A){
 				$array['currencyName'] = $currency[$array['currency_id']];
 				$array['applyer'] = $employee[$array['employee_id']];
 				$array['alter'] = $employee[$array['alternative_employee_id']];
-				$array['status'] = $assign['status'][$array['status']];
+				$array['statusZH'] = $assign['status'][$array['status']]['namezh'];
 				$assign['apply'][] = $array;
 			}
 		}
