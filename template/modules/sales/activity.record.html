@@ -1,0 +1,39 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+<div class="container">
+	<table class="span-23">
+		<tr><td class="span-6">
+			<strong>添加活动</strong>
+			<hr/>
+			<table class="span-7">
+				<tr><th>日期</th><td><input readonly id="date"/></td></tr>
+				<tr><th>时间</th><td><input readonly id="start" class="span-2"/> ~ <input readonly id="end" class="span-2"/></td></tr>
+				<tr><th>客户</th><td><input readonly id="customer"/></td></tr>
+				<tr><th>活动</th><td><textarea class="span-5" id="detail" style="height:50px;"></textarea></td></tr>
+				<tr><td colspan="2"><span class="clickbtn">[递交]</span></td></tr>
+			</table>
+		</td>
+		<td class="span-16">
+			<table class="span-16">
+				<thead>
+					<tr><th>日期</th><th>开始</th><th>结束</th><th>客户</th><th>活动</th></tr>
+				</thead>
+				<tbody>
+					<{foreach from=$activity item=a}>
+					<tr><td><{$a.date}></td><td><{$a.start}></td><td><{$a.end}></td><td><{$a.customer}></td><td><{$a.detail}></td></tr>
+					<{/foreach}>
+				</tbody>
+			</table>
+		</td></tr>
+	</table>
+</div>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>
+
+<script>
+$(function(){
+	$('#date').datepicker()
+})
+</script>

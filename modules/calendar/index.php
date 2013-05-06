@@ -61,7 +61,7 @@ switch($assign['key']){
 }
 
 //获取查看的事件图例类型，0=全部查看，>0代表查看某一种图例事件
-$assign['legendid'] = isset($_REQUEST['legendid']) ? $_REQUEST['legendid'] : 0;
+/*$assign['legendid'] = isset($_REQUEST['legendid']) ? $_REQUEST['legendid'] : 0;
 if($assign['legendid']==0){
     $legendstr = ' 1 ';
 }else{
@@ -73,39 +73,39 @@ if($_SESSION['user_ifadmin']==1 and $ifglobal==1){
     $noadminsql = ' 1 ';
 }else{
     $noadminsql = ' (eid="'.$_SESSION['employee_id'].'" OR ifshare="1") ';
-}
+}*/
 
 //在这里为有日历事件的数据格数组进行赋值
 //获取数据库数据
 //选取规则：自己的(自己添加的或者被别人@的)，或者public类型的，在目标月时间范围内的
-$query = 'SELECT * FROM uatme_view_calendar_event WHERE '.$noadminsql.' AND '.$legendstr.' AND (year="'.$assign['year'].'") AND (month="'.$assign['month'].'") AND (day BETWEEN "1" AND "31") '.$assign['order'];
+/*$query = 'SELECT * FROM uatme_view_calendar_event WHERE '.$noadminsql.' AND '.$legendstr.' AND (year="'.$assign['year'].'") AND (month="'.$assign['month'].'") AND (day BETWEEN "1" AND "31") '.$assign['order'];
 $result = $mysqli->query($query);
 if($result->num_rows > 0){
     while($array = $result->fetch_assoc()){
         $data[$array['day']][] = $array;
     }
 }
-$assign['data'] = $data;
+$assign['data'] = $data;*/
 
 //获取目标月的节日信息
-$query = 'SELECT * FROM uatme_holiday WHERE holidaydate BETWEEN "'.$assign['year'].'-'.$assign['month'].'-01" AND "'.$assign['year'].'-'.$assign['month'].'-31"';
+/*$query = 'SELECT * FROM uatme_holiday WHERE holidaydate BETWEEN "'.$assign['year'].'-'.$assign['month'].'-01" AND "'.$assign['year'].'-'.$assign['month'].'-31"';
 $result = $mysqli->query($query);
 if($result->num_rows > 0){
     while($array = $result->fetch_assoc()){
         $holiday[date('j',strtotime($array['holidaydate']))] = $array['name'];
     }
 }
-$assign['holiday'] = $holiday;
+$assign['holiday'] = $holiday;*/
 
 //设定图例颜色的数组
-$query = 'SELECT * FROM uatme_legend';
+/*$query = 'SELECT * FROM uatme_legend';
 $result = $mysqli->query($query);
 if($result->num_rows > 0){
     while($array = $result->fetch_assoc()){
         $legend[] = $array;
     }
 }
-$assign['legend'] = $legend;
+$assign['legend'] = $legend;*/
 
 //根据通知的有效时间和目前时间的对比，获取最新的通知
 /*$query = 'SELECT * FROM uatme_view_inform_employee WHERE publishdate >= ('.time().'-(lasting+1)*86400) AND publishdate <= '.time().' ORDER BY publishdate DESC, lasting DESC';
