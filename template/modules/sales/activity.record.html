@@ -6,7 +6,7 @@
 		<tr><td class="span-6">
 			<strong>添加活动记录</strong>
 			<hr/>
-			<form id="activityTable">
+			<form id="activityForm">
 				<table class="span-7">
 					<tr><th>日期</th><td><input readonly id="date" name="date" class="span-3"/></td></tr>
 					<tr><th>时间</th><td><input readonly id="start" name="start" class="span-2"/> ~ <input readonly id="end" name="end" class="span-2"/></td></tr>
@@ -49,8 +49,7 @@ $(function(){
 	});
 	$('#start, #end').timePicker({step:30, startTime:"08:00", endTime:"20:00"});
 	$('.activitySave').click(function(){
-		alert($('#activityTable').serialize());
-		$.post('index.php?m=sales&s=activity&a=save',$('#activityTable').serialize(),function(data){
+		$.post('index.php?m=sales&s=activity&a=save',$('#activityForm').serialize(),function(data){
 			alert(data);
 		})
 	})
