@@ -11,6 +11,7 @@
  * @example  $("#mytime").timePicker();
  * @example  $("#mytime").timePicker({step:30, startTime:"15:00", endTime:"18:00"});
  */
+
 (function($){
   $.fn.timePicker = function(options) {
     // Build main options before element iteration
@@ -42,12 +43,12 @@
       time = new Date(time.setMinutes(time.getMinutes() + settings.step));
     }
 
-    var $tpDiv = $('<div style="position:absolute;background-color:#FFF;border:solid 1px black;" class="time-picker'+ (settings.show24Hours ? '' : ' time-picker-12hours') +'"></div>');
+    var $tpDiv = $('<div class="time-picker'+ (settings.show24Hours ? '' : ' time-picker-12hours') +'"></div>');
     var $tpList = $('<ul></ul>');
 
     // Build the list.
     for(var i = 0; i < times.length; i++) {
-      $tpList.append("<li style=\"cursor:pointer;\">" + times[i] + ":00</li>");
+      $tpList.append("<li>" + times[i] + "</li>");
     }
     $tpDiv.append($tpList);
     // Append the timPicker to the body and position it.
