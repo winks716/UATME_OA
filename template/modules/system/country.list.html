@@ -32,22 +32,18 @@
 
 <script>
 $(function(){
+	alertDivInit();
+	
 	$('#addCountry').click(function(){
 		var name = $('#name').val();
 		var nameshort = $('#nameshort').val();
 		var available = $('#available:checked').val();
-		if(name!='' || nameshort!=''){
-			$.post('index.php?m=system&s=setup&a=country.add', {'name':name,'nameshort':nameshort,'available':available}, function(data){
-				var json = eval('(' + data + ')');
-				if(json.httpstatus == 200){
-					alert(json.msg);
-					window.location.reload();
-				}
-				if(json.httpstatus == 500){
-					alert(json.error);
-				}
-			})			
-		}
+		alertDivPostData({
+			postUrl: 'index.php?m=system&s=setup&a=country.add',
+			postData: {'name':name,'nameshort':nameshort,'available':available},
+			checkBeforePost: '"'+name+'"!="" && "'+nameshort+'"!=""',
+			tipBeforePost: '国家名称和简称必填'
+		});
 	})
 	$('.saveCountry').click(function(){
 		var o = $(this).parents('tr');
@@ -55,19 +51,12 @@ $(function(){
 		var nameshort = o.find('.nameshort').val();
 		var available = o.find('.available:checked').val();
 		var id = $(this).attr('i');
-		if(name!='' || nameshort!=''){
-			$.post('index.php?m=system&s=setup&a=country.save', {'id':id,'name':name,'nameshort':nameshort,'available':available}, function(data){
-				alert(data);
-				var json = eval('(' + data + ')');
-				if(json.httpstatus == 200){
-					alert(json.msg);
-					window.location.reload();
-				}
-				if(json.httpstatus == 500){
-					alert(json.error);
-				}
-			})			
-		}
+		alertDivPostData({
+			postUrl: 'index.php?m=system&s=setup&a=country.save',
+			postData: {'id':id,'name':name,'nameshort':nameshort,'available':available},
+			checkBeforePost: '"'+name+'"!="" && "'+nameshort+'"!=""',
+			tipBeforePost: '国家名称和简称必填'
+		});
 	})
 })
 </script>

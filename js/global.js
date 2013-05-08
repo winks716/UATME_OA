@@ -1,8 +1,29 @@
 /* #alertDiv data handling function set 
  * Need jQuery support
- * Start */
-function alertDivInit(){
-	$('#alertDiv').hide().dialog({
+ * Start
+ * 
+ * Example
+   $('#xxxxx').click(function(){
+       var aaa = $('#aaa').val();
+       var bbb = $('#bbb').val();
+       var ccc = $('#ccc').val();
+       alertDivPostData({
+           	postConfirm: '确认要xxx么？',                                          //递交前的提示确认信息
+			checkBeforePost: '"'+aaa+'"!="" && "'+bbb+'"!="" && "'+ccc+'"!=""',   //递交前数据检查通过的逻辑表达式, 注意, 不能接受带控制符的字符串如textarea, 只能单行文本或数字
+			tipBeforePost: '请将数据填写完整后再次递交',                            //递交前数据检查不通过的警告提示
+			postUrl: 'index.php?m=xxx&s=xxx&a=xxx',                               //递交数据的目标url
+			postData: {'aaa':aaa,'bbb':bbb,'ccc':ccc},                            //递交的数据
+			tipAfterPost: '正在刷新页面，请稍候……',                                //递交后modal提示框中的文字
+			redirectUrl: 'index.php?m=xxxx&s=xxxx&a=xxxx'                         //递交后页面转向的url
+       })
+   }) 
+   */
+function alertDivInit(initOptions){
+	var defaultOptions = {
+			initMsg: '后台数据交互中，请稍后……'  //modal提示框中的初始文字
+	};
+	var o = $.extend(defaultOptions, initOptions);
+	$('<div id="alertDiv">'+o.initMsg+'</div>').appendTo('body').hide().dialog({
 		'modal':true,
 		'autoOpen':false
 	}).ajaxStart(function(){
@@ -11,13 +32,13 @@ function alertDivInit(){
 }
 function alertDivPostData(postOptions){
 	var defaultOptions = {
-			postUrl: '#',
-			postData: {},
-			postConfirm: '',
-			redirectUrl: '',
-			tipAfterPost: '正在刷新页面，请稍候……',
-			checkBeforePost: '',
-			tipBeforePost: '请将数据填写完整后再次递交'
+			postConfirm: '',                             //递交前的提示确认信息
+			checkBeforePost: '',                         //递交前数据检查通过的逻辑表达式, 注意, 不能接受带控制符的字符串如textarea, 只能单行文本或数字
+			tipBeforePost: '请将数据填写完整后再次递交',   //递交前数据检查不通过的警告提示
+			postUrl: '#',                                //递交数据的目标url
+			postData: {},                                //递交的数据
+			tipAfterPost: '正在刷新页面，请稍候……',       //递交后modal提示框中的文字
+			redirectUrl: ''                              //递交后页面转向的url
 	};
 	var o = $.extend(defaultOptions, postOptions);
 	//if need confirm before post
@@ -66,9 +87,13 @@ function alertDivCheckBeforePost(data){
 function alertDivHandleResult(data, redirectUrl, tipAfterPost){
 	var json = eval('(' + data + ')');
 	if(json.httpstatus = 200){
-		alert(json.msg);
+		if(json.msg!=''){
+			alert(json.msg);
+		}
 	}else{
-		alert(json.error);
+		if(json.error!=''){
+			alert(json.error);
+		}
 	}
 	$('#alertDiv').html(tipAfterPost);
 	if(redirectUrl!=''){

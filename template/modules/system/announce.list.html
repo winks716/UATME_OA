@@ -35,6 +35,8 @@
 
 <script>
 $(function(){
+	alertDivInit();
+	
 	//init start_date, end_date datepicker
 	$('#announceStart_date, #announceEnd_date, .announceStart_date, .announceEnd_date').datepicker({dateFormat:'yy-mm-dd'});
 	//add one announce
@@ -43,56 +45,48 @@ $(function(){
 		var detail = $.trim($('#announceDetail').val());
 		var start_date = $.trim($('#announceStart_date').val());
 		var end_date = $.trim($('#announceEnd_date').val());
-		if(title != '' && detail != '' && start_date != '' && end_date != ''){
-			$.post('index.php?m=system&s=setup&a=announce.add',{'title':title, 'detail':detail, 'start_date':start_date, 'end_date':end_date}, function(data){
-				var json = eval('(' + data + ')');
-				if(json.httpstatus == 200){
-					alert(json.msg);
-					window.location.reload();
-				}else{
-					alert(json.error);
-				}
-			})
-		}else{
-			alert('所有内容必填');
-		}
+		alertDivPostData({
+			postUrl: 'index.php?m=system&s=setup&a=announce.add',
+			postData: {'title':title, 
+						'detail':detail, 
+						'start_date':start_date, 
+						'end_date':end_date},
+			checkBeforePost: '"'+title+'"!="" '
+								//+'&& "'+detail+'"!="" '
+								+'&& "'+start_date+'"!="" '
+								+'&& "'+end_date+'"!=""',
+			tipBeforePost: '所有内容必填'
+		});
 	})
 	
 	//delete one announce
 	$('.deleteAnnounce').click(function(){
-		if(confirm('确认删除此通告？'))
-		var id = $(this).attr('i');
-		$.post('index.php?m=system&s=setup&a=announce.delete',{'id':id}, function(data){
-			var json = eval('(' + data + ')');
-			if(json.httpstatus == 200){
-				alert(json.msg);
-				window.location.reload();
-			}else{
-				alert(json.error);
-			}			
+		alertDivPostData({
+			postUrl: 'index.php?m=system&s=setup&a=announce.delete',
+			postData: {id:$(this).attr('i')},
+			postConfirm: '确认删除此通告？'
 		})
 	})
 	
 	//save one announce
 	$('.saveAnnounce').click(function(){
-		var id = $(this).attr('i');
 		var title = $.trim($(this).parents('tr').find('.announceTitle').val());
 		var detail = $.trim($(this).parents('tr').find('.announceDetail').val());
 		var start_date = $.trim($(this).parents('tr').find('.announceStart_date').val());
 		var end_date = $.trim($(this).parents('tr').find('.announceEnd_date').val());
-		if(title != '' && detail != '' && start_date != '' && end_date != ''){
-			$.post('index.php?m=system&s=setup&a=announce.save',{'id':id, 'title':title, 'detail':detail, 'start_date':start_date, 'end_date':end_date}, function(data){
-				var json = eval('(' + data + ')');
-				if(json.httpstatus == 200){
-					alert(json.msg);
-					window.location.reload();
-				}else{
-					alert(json.error);
-				}			
-			})
-		}else{
-			alert('所有内容必填');
-		}
+		alertDivPostData({
+			postUrl: 'index.php?m=system&s=setup&a=announce.save',
+			postData: {'id':$(this).attr('i'),
+						'title':title, 
+						'detail':detail, 
+						'start_date':start_date, 
+						'end_date':end_date},
+			checkBeforePost: '"'+title+'"!="" '
+								//+'&& "'+detail+'"!="" '
+								+'&& "'+start_date+'"!="" '
+								+'&& "'+end_date+'"!=""',
+			tipBeforePost: '所有内容必填'
+		});
 	})
 })
 </script>

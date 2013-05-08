@@ -34,48 +34,32 @@
 
 <script>
 $(function(){
+	alertDivInit();
 	
 	//add one employee
 	$('#addCurrency').click(function(){
-		if(confirm('确认要添加新的币种吗？')){
-			var name = $.trim($('#currencyName').val());
-			var symbol = $.trim($('#currencySymbol').val());
-			var rate = $.trim($('#currencyRate').val());
-			if(name != '' && symbol != '' && rate != ''){
-				$.post('index.php?m=system&s=setup&a=currency.add',{'name':name, 'symbol':symbol, 'rate':rate}, function(data){
-					var json = eval('(' + data + ')');
-					if(json.httpstatus == 200){
-						alert(json.msg);
-						window.location.reload();
-					}else{
-						alert(json.error);
-					}
-				})
-			}else{
-				alert('所有内容必填');
-			}	
-		}
+		var name = $.trim($('#currencyName').val());
+		var symbol = $.trim($('#currencySymbol').val());
+		var rate = $.trim($('#currencyRate').val());
+		alertDivPostData({
+			postConfirm: '确认要添加新的币种吗？',
+			checkBeforePost: '"'+name+'"!="" && "'+symbol+'"!="" && "'+rate+'"!=""',
+			tipBeforePost: '所有内容必填',
+			postUrl: 'index.php?m=system&s=setup&a=currency.add',
+			postData: {'name':name, 'symbol':symbol, 'rate':rate}
+		});
 	})
 	
 	$('.saveCurrency').click(function(){
-		if(confirm('确认保存汇率修改结果吗？')){
-			var rate = $.trim($(this).parents('tr').find('.currencyRate').val());
-			var id = $(this).attr('i');
-			if(rate != ''){
-				$.post('index.php?m=system&s=setup&a=currency.save',{'rate':rate, 'id':id}, function(data){
-					alert(data);
-					var json = eval('(' + data + ')');
-					if(json.httpstatus == 200){
-						alert(json.msg);
-						window.location.reload();
-					}else{
-						alert(json.error);
-					}
-				})
-			}else{
-				alert('汇率必填');
-			}			
-		}
+		var rate = $.trim($(this).parents('tr').find('.currencyRate').val());
+		var id = $(this).attr('i');
+		alertDivPostData({
+			postConfirm: '确认保存汇率修改结果吗？',
+			checkBeforePost: '"'+rate+'"!=""',
+			tipBeforePost: '汇率必填',
+			postUrl: 'index.php?m=system&s=setup&a=currency.save',
+			postData: {'rate':rate, 'id':id}
+		});
 	})
 })
 </script>

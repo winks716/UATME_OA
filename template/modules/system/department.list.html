@@ -58,24 +58,20 @@
 
 <script>
 $(function(){
+	alertDivInit();
+	
 	$('#addDepartment').click(function(){
 		var name = $('#name').val();
 		var nameshort = $('#nameshort').val();
 		var manageremployeeid = $('#manageremployeeid').val();
 		var parentid = $('#parentid').val();
 		var available = $('#available:checked').val();
-		if(name!='' || nameshort!=''){
-			$.post('index.php?m=system&s=setup&a=department.add', {'name':name,'nameshort':nameshort,'manageremployeeid':manageremployeeid,'parentid':parentid,'available':available}, function(data){
-				var json = eval('(' + data + ')');
-				if(json.httpstatus == 200){
-					alert(json.msg);
-					window.location.reload();
-				}
-				if(json.httpstatus == 500){
-					alert(json.error);
-				}
-			})			
-		}
+		alertDivPostData({
+			checkBeforePost: '"'+name+'"!="" && "'+nameshort+'"!=""',
+			tipBeforePost: '部门名称及部门简称必填',
+			postUrl: 'index.php?m=system&s=setup&a=department.add',
+			postData: {'name':name,'nameshort':nameshort,'manageremployeeid':manageremployeeid,'parentid':parentid,'available':available}
+		});
 	})
 	$('.saveDepartment').click(function(){
 		var o = $(this).parents('tr');
@@ -85,18 +81,12 @@ $(function(){
 		var parentid = o.find('.parentid').val();
 		var available = o.find('.available:checked').val();
 		var id = $(this).attr('i');
-		if(name!='' || nameshort!=''){
-			$.post('index.php?m=system&s=setup&a=department.save', {'id':id,'name':name,'nameshort':nameshort,'manageremployeeid':manageremployeeid,'parentid':parentid,'available':available}, function(data){
-				var json = eval('(' + data + ')');
-				if(json.httpstatus == 200){
-					alert(json.msg);
-					window.location.reload();
-				}
-				if(json.httpstatus == 500){
-					alert(json.error);
-				}
-			})			
-		}
+		alertDivPostData({
+			checkBeforePost: '"'+name+'"!="" && "'+nameshort+'"!=""',
+			tipBeforePost: '部门名称及部门简称必填',
+			postUrl: 'index.php?m=system&s=setup&a=department.save',
+			postData: {'id':id,'name':name,'nameshort':nameshort,'manageremployeeid':manageremployeeid,'parentid':parentid,'available':available}
+		});
 	})
 })
 </script>

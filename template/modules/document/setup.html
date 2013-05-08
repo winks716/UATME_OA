@@ -52,8 +52,6 @@
 
 </div>
 
-<div id="alertDiv"></div>
-
 <{include file="declaration.html"}>
 <{include file="footer.html"}>
 
@@ -99,38 +97,21 @@ function ajaxFileUpload(){
 }
 
 $(function(){
-	$('#alertDiv').html('数据操作中，请不要关闭此窗口！').dialog({
-		autoOpen: false,
-		modal: true
-	});
+	alertDivInit();
 
 	$('.deleteDocumentBtn').click(function(){
-		if(confirm('确认删除此文档？')){
-			$('#alertDiv').dialog('open');
-			$.post('index.php?m=document&s=file&a=delete',{'id':$(this).attr('i')},function(data){
-				/*var json = eval("(" + data + ")");
-				if(json.httpstatus==200){
-					window.location.reload();
-				}else{
-					alert('反馈D1: 服务器忙，请稍后再试');
-				}*/
-				window.location.reload();
-			})
-		}
+		alertDivPostData({
+			postConfirm: '确认删除此文档？',
+			postUrl: 'index.php?m=document&s=file&a=delete',
+			postData: {'id':$(this).attr('i')}
+		});
 	})
 	$('.sortDocumentBtn').click(function(){
-		if(confirm('确认保存排序？')){
-			$('#alertDiv').dialog('open');
-			$.post('index.php?m=document&s=file&a=sort',{'id':$(this).attr('i'), 'orderby':($(this).parent().find('input.orderBy').val()-0)},function(data){			
-				/*var json = eval("(" + data + ")");
-				if(json.httpstatus==200){
-					window.location.reload();
-				}else{
-					alert('反馈D2： 服务器忙，请稍后再试');
-				}*/
-				window.location.reload();
-			})		
-		}
+		alertDivPostData({
+			postConfirm: '确认保存排序？',
+			postUrl: 'index.php?m=document&s=file&a=sort',
+			postData: {'id':$(this).attr('i'), 'orderby':($(this).parent().find('input.orderBy').val()-0)}
+		});
 	})
 })
 </script>

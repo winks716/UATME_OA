@@ -38,14 +38,14 @@
 </form>
 </div>
 
-<div id="alertDiv">假期申请发送中，请耐心等待12秒左右，切勿关闭此窗口，谢谢！</div>
-
 <{include file="declaration.html"}>
 <{include file="footer.html"}>
 
 <script type="text/javascript">
 	$(function(){
-		alertDivInit();
+		alertDivInit({
+			initMsg: '假期申请发送中，请耐心等待12秒左右，切勿关闭此窗口，谢谢！'
+		});
 		
 		$('#leaveStartDate, #leaveEndDate').datepicker({
 			'dateFormat':'yy-mm-dd'

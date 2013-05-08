@@ -23,30 +23,18 @@
 	</table>
 </div>
 
-<div id="alertDiv">数据处理中，请稍候……</div>
-
 <{include file="declaration.html"}>
 <{include file="footer.html"}>
 
 <script type="text/javascript">
 $(document).ready(function(){
-	$('#alertDiv').dialog({
-		'modal':true,
-		'autoOpen':false
-	});
+	alertDivInit();
 	
 	$('.saveAnnualLeave').click(function(){
-		$('#alertDiv').dialog('open');
-		$.post('index.php?m=hr&s=setup&a=annual.save',{'id':$(this).attr('i'),'count':($(this).parents('tr').find('.annualLeaveTotal').val()-0)},function(data){
-			var json = eval('(' + data + ')');
-			if(json.httpstatus == 200){
-				alert(json.msg);
-				window.location.reload();
-			}else{
-				alert(json.error);
-				$('#alertDiv').dialog('close');
-			}
-		})
+		alertDivPostData({
+			postUrl: 'index.php?m=hr&s=setup&a=annual.save',
+			postData: {'id':$(this).attr('i'),'count':($(this).parents('tr').find('.annualLeaveTotal').val()-0)}
+		});
 	})
 	
 	$('.annualExport').click(function(){	

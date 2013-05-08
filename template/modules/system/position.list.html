@@ -45,23 +45,19 @@
 
 <script>
 $(function(){
+	alertDivInit();
+	
 	$('#addPosition').click(function(){
 		var name = $('#name').val();
 		var nameshort = $('#nameshort').val();
 		var parentid = $('#parentid').val();
 		var available = $('#available:checked').val();
-		if(name!='' || nameshort!=''){
-			$.post('index.php?m=system&s=setup&a=position.add', {'name':name,'nameshort':nameshort,'parentid':parentid,'available':available}, function(data){
-				var json = eval('(' + data + ')');
-				if(json.httpstatus == 200){
-					alert(json.msg);
-					window.location.reload();
-				}
-				if(json.httpstatus == 500){
-					alert(json.error);
-				}
-			})			
-		}
+		alertDivPostData({
+			checkBeforePost: '"'+name+'"!="" && "'+nameshort+'"!=""',
+			tipBeforePost: '职位名称及职位简称必填',
+			postUrl: 'index.php?m=system&s=setup&a=position.add',
+			postData: {'name':name,'nameshort':nameshort,'parentid':parentid,'available':available}
+		});
 	})
 	$('.savePosition').click(function(){
 		var o = $(this).parents('tr');
@@ -70,18 +66,12 @@ $(function(){
 		var parentid = o.find('.parentid').val();
 		var available = o.find('.available:checked').val();
 		var id = $(this).attr('i');
-		if(name!='' || nameshort!=''){
-			$.post('index.php?m=system&s=setup&a=position.save', {'id':id,'name':name,'nameshort':nameshort,'parentid':parentid,'available':available}, function(data){
-				var json = eval('(' + data + ')');
-				if(json.httpstatus == 200){
-					alert(json.msg);
-					window.location.reload();
-				}
-				if(json.httpstatus == 500){
-					alert(json.error);
-				}
-			})			
-		}
+		alertDivPostData({
+			checkBeforePost: '"'+name+'"!="" && "'+nameshort+'"!=""',
+			tipBeforePost: '职位名称及职位简称必填',
+			postUrl: 'index.php?m=system&s=setup&a=position.save',
+			postData: {'id':id,'name':name,'nameshort':nameshort,'parentid':parentid,'available':available}
+		});
 	})
 })
 </script>
