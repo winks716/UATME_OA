@@ -41,33 +41,26 @@
 
 <script type="text/javascript">
 	$(function(){
-		$('#alertDiv').hide().dialog({
-			'modal':true,
-			'autoOpen':false
-		});
+		alertDivInit();
 		
 		$('#travelStartDate, #travelEndDate').datepicker({
 			'dateFormat':'yy-mm-dd'
 		});
 		
 		$('#applyConfirm').click(function(){
-			if(confirm('确认递交申请？')){
-				if($('#travelTarget').val()==0 || $('#travelStartDate').val()=='' || $('#travelEndDate').val()=='' || $('#travelAlter').val()==0 || $('#travelCurrencyId').val()==0 || $('#travelExpense').val()==0){
-					alert('目的地、起始-结束日期、指定代办员工、预估费用为必填项，请检查！');
-				}else{
-					$('#alertDiv').dialog('open');
-					$.post('index.php?m=hr&s=travel&a=submit', $('#applyForm').serialize(), function(data){
-						var json = eval('(' + data + ')');
-						if(json.httpstatus == 200){
-							alert(json.msg);
-							window.location = 'index.php?m=hr&s=travel&a=list';
-						}else{
-							alert(json.error);
-							$('#alertDiv').dialog('close');
-						}
-					})
-				}
-			}
+			alertDivPostData({
+				postUrl: 'index.php?m=hr&s=travel&a=submit',
+				postData: $('#applyForm').serialize(),
+				postConfirm: '确认递交申请？',
+				redirectUrl: 'index.php?m=hr&s=travel&a=list',
+				tipBeforePost: '目的地、起始-结束日期、指定代办员工、预估费用为必填项，请检查！',
+				checkBeforePost: '$("#travelTarget").val()!=0 '
+									+'&& $("#travelStartDate").val()!="" '
+									+'&& $("#travelEndDate").val()!="" '
+									+'&& $("#travelAlter").val()!=0 '
+									+'&& $("#travelCurrencyId").val()!=0 '
+									+'&& $("#travelExpense").val()!=0'
+			})
 		})
 	})
 </script>

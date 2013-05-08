@@ -45,33 +45,24 @@
 
 <script type="text/javascript">
 	$(function(){
-		$('#alertDiv').hide().dialog({
-			'modal':true,
-			'autoOpen':false
-		});
+		alertDivInit();
 		
 		$('#leaveStartDate, #leaveEndDate').datepicker({
 			'dateFormat':'yy-mm-dd'
 		});
 		
 		$('#applyConfirm').click(function(){
-			if(confirm('确认递交申请？')){
-				if($('#leaveType').val()==0 || $('#leaveStartDate').val()=='' || $('#leaveEndDate').val()=='' || $('#leaveAlter').val()==0){
-					alert('假期类型、起始-结束日期、指定代办员工为必填项，请检查！');
-				}else{
-					$('#alertDiv').dialog('open');
-					$.post('index.php?m=hr&s=leave&a=submit', $('#applyForm').serialize(), function(data){
-						var json = eval('(' + data + ')');
-						if(json.httpstatus == 200){
-							alert(json.msg);
-							window.location = 'index.php?m=hr&s=leave&a=list';
-						}else{
-							alert(json.error);
-							$('#alertDiv').dialog('close');
-						}
-					})					
-				}				
-			}
+			alertDivPostData({
+				postUrl: 'index.php?m=hr&s=leave&a=submit',
+				postData: $('#applyForm').serialize(),
+				postConfirm: '确认递交申请？',
+				redirectUrl: 'index.php?m=hr&s=leave&a=list',
+				tipBeforePost: '假期类型、起始-结束日期、指定代办员工为必填项，请检查！',
+				checkBeforePost: '$("#leaveType").val()!=0 '
+									+'&& $("#leaveStartDate").val()!="" '
+									+'&& $("#leaveEndDate").val()!="" '
+									+'&& $("#leaveAlter").val()!=0'
+			})
 		})
 	})
 </script>

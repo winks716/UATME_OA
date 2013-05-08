@@ -20,24 +20,21 @@
 	</table>
 </div>
 
+<div id="alertDiv">后台数据处理中…… 请稍候……</div>
+
 <{include file="declaration.html"}>
 <{include file="footer.html"}>
 
 <script>
 $(function(){
+	alertDivInit();
+
 	$('.cancelApply').click(function(){
-		if(confirm('确认撤销此申请？')){
-			var id = $(this).attr('i');
-			$.post('index.php?m=hr&s=travel&a=applier.cancel',{'id':id},function(data){
-				var json = eval('(' + data + ')');
-				if(json.httpstatus == 200){
-					alert(json.msg);
-					window.location.reload();
-				}else{
-					alert(json.error);
-				}
-			})
-		}
+		alertDivPostData({
+			postUrl: 'index.php?m=hr&s=travel&a=applier.cancel',
+			postData: {id:$(this).attr('i')},
+			postConfirm: '确认撤销此申请？'
+		});
 	})
 })
 </script>
