@@ -24,7 +24,12 @@ privilegeCheck($privilege=array())
 //Description: check if visitor meets the privilege request
 //Acception: an array like array('club_admin','hr_admin'...)
 //Return: if check passed, return 1;  if check failed, return 0;
-------------------------------------------------------
+---------------------------------------------------------
+supervisorCheck($employee_id=0, $supervisor_id=0)
+//Description: check if supervisor_id is the supervisor of employee_id
+//Acception: 2 Int variable
+//Return: if check passed, return true; if check failed, return false;
+---------------------------------------------------------
 caculateDay($starttimestamp='0000-00-00 00:00:00', $endtimestamp='0000-00-00 00:00:00'){
 //Description: caculate day number from start timestamp and end timestamp, type='yyyy-mm-dd hh:mm:ss'
 //Acception: timestamp string
@@ -102,6 +107,20 @@ function privilegeCheck($privilege=array()){
 		}
 	}
 	return $return;
+}
+
+//check if supervisor_id is the supervisor of employee_id
+function supervisorCheck($employee_id=0, $supervisor_id=0){
+    //check if operator is the supervisor of applier
+    $sql = 'SELECT id FROM uatme_oa_system_department
+	            WHERE id=(SELECT department_id FROM uatme_oa_system_employee WHERE id="'.$employee_id.'")
+	                    AND manager_employee_id="'.$supervisor_id.'"';
+    $result = $mysqli->query($sql);
+    if($result->num_rows > 0){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 //check if visitor meets the privilege request of module,submodule and action.

@@ -78,15 +78,25 @@
 
 <script type="text/javascript">
 $(function(){
+	alertDivInit();
+	
 	$('tr.employee td.employee').click(function(){
 		$('tr.apply').remove();
 		var o = $(this);
 		var id = $(o).attr('i');
-		$(o).parent().after('<tr class="apply"><td class="nonestyle"></td><td class="detail">等待数据载入……</td></tr>');
+		$(o).parent().after('<tr class="apply"><td class="nonestyle"></td><td class="detail"></td></tr>');
 		$.post('index.php?m=hr&s=report&a=get.employee.leave',{'id':id},function(data){
 			var json = eval('(' + data + ')');
 			if(json.httpstatus==200){
 				$('tr.apply').find('td.detail').html(json.msg);
+				$('#alertDiv').dialog('close');
+				$('tr.apply').find('.cancelApply').click(function(){
+				       alertDivPostData({
+				           	postConfirm: '确认要撤销此申请？',
+							postUrl: 'index.php?m=hr&s=leave&a=manager.cancel',
+							postData: {'id':$(this).attr('i'),'eid':$(this).attr('ei')}
+				       })
+				});
 			}else{
 				$('tr.apply').remove();
 				alert(json.error);
