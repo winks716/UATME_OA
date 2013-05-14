@@ -4,13 +4,14 @@
 <div class="container">
 	<table class="span-24">
 		<tr><td class="span-6">
-			<strong>添加本周活动</strong>
+			<strong>添加日志</strong>
 			<hr/>
 			<form id="activityForm">
 				<table class="span-7">
 					<tr><th>日期</th><td><input readonly id="date" name="date" class="span-3"/></td></tr>
 					<tr><th>时间</th><td><input readonly id="start" name="start" class="span-2"/> ~ <input readonly id="end" name="end" class="span-2"/></td></tr>
 					<tr><th>客户</th><td><select id="customerId" name="customerId">
+                                            <option value="0">-请选择客户-</option>
 											<{foreach from=$mycustomer item=mc}>
 											<option value="<{$mc.id}>"><{$mc.name}></option>
 											<{/foreach}>
@@ -21,7 +22,7 @@
 			</form>
 		</td>
 		<td class="span-18">
-			<strong>本周活动列表</strong>
+			<strong>近期活动列表</strong>
 			<table class="span-18">
 				<thead>
 					<tr><th>日期</th>
@@ -57,7 +58,7 @@ $(function(){
 	$('#date').datepicker({
 		dateFormat: 'yy-mm-dd',
 		minDate: '-'+day+'D',
-		maxDate: '+'+(6-day)+'D'
+		maxDate: '+1W +'+(6-day)+'D'
 	});
 	$('#start, #end').timePicker({step:30, startTime:"08:00", endTime:"20:00"});
 	$('.activitySave').click(function(){

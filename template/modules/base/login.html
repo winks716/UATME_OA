@@ -28,7 +28,7 @@
 		})
 	})
 </script>
-<title>欢迎使用UATME_OA</title>
+<title><{$lang['base.login.title']}></title>
 <style>
 .header{
 	background: url('images/base/login/header.bg.gif');
@@ -131,16 +131,16 @@
 	<div>
 		<div style="float:left;"><img border="0" src="images/global/logo.highsource.gif"/></div>
 		<div style="font:bold 24px times; padding-top:18px; color:#999999;"></div>
-		<div style="float:right; font:12px times; padding-right: 20px; color:#999999; padding-bottom: 20px;">版本 1.0.1</div>
+		<div style="float:right; font:12px times; padding-right: 20px; color:#999999; padding-bottom: 20px;"><{$lang['base.login.version']}></div>
 	</div>
 </div>
 <div class="body">
 	<div class="main">
 		<div class="login">
-			<div class="email">电邮 <input id="email"/> <span class="emailAppendix">@highsource.com</span></div>
-			<div class="password">密码 <input id="password" type="password"/></div>
+			<div class="email"><{$lang['base.login.usernameLabel']}> <input id="email"/> <span class="emailAppendix">@highsource.com</span></div>
+			<div class="password"><{$lang['base.login.passwordLabel']}> <input id="password" type="password"/></div>
 			<div class="submit">
-				<a id="submit" title="登录">登&nbsp;&nbsp;录</a><!--<span class="clickbtn"> [忘记密码] </span>-->
+				<a id="submit" title="<{$lang['base.login.loginButtonTitle']}>"><{$lang['base.login.loginButtonLabel']}></a><!--<span class="clickbtn"> [忘记密码] </span>-->
 			</div>
 		</div>
 </div>

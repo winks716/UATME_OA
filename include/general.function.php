@@ -123,6 +123,18 @@ function supervisorCheck($employee_id=0, $supervisor_id=0){
     }
 }
 
+//per employee_id, return the array of employee_id of who working for me
+function getMyEmployee($employee_id=0){
+    $department = basicMysqliQuery('uatme_oa_system_department', ' WHERE manager_employee_id="'.$employee_id.'"');
+    foreach($department as $d){
+        $employee = basicMysqliQuery('uatme_oa_system_employee', ' WHERE department_id="'.$d['id'].'"');
+        foreach($employee as $e){
+            $myEmployeeId[$d['id']][] = $e['id'];
+        }
+    }
+    return $myEmployeeId;
+}
+
 //check if visitor meets the privilege request of module,submodule and action.
 //this should be an update of function privilegeCheck
 function msaAuth($M, $S, $A, $session){

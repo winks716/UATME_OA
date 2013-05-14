@@ -1,0 +1,34 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+<div class="container">
+	<strong>活动历史</strong>
+	<table class="span-24">
+		<thead>
+			<tr>
+            <th>销售</th>
+            <th>日期</th>
+			<th>开始</th>
+			<th>结束</th>
+			<th>客户</th>
+			<th>活动</th></tr>
+		</thead>
+		<tbody>
+			<{foreach from=$activity item=a}>
+            <tr><th colspan="6"><{$a.department_name}></th></tr>
+                <{foreach from=$a.activity item=aa}>
+        			<tr>
+                    <td><{$employee[$aa.employee_id]['namezh']}></td>
+                    <td><{$aa.date}></td>
+        			<td><{$aa.start}></td>
+        			<td><{$aa.end}></td>
+        			<td><{$customer[$aa.customer_id]['name']}></td>
+        			<td><{$aa.detail}></td></tr>
+                <{/foreach}>
+			<{/foreach}>
+		</tbody>
+	</table>
+</div>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>

@@ -1,6 +1,6 @@
 <?php
 //界面语言包 简体中文
-$language['zh_CN'] = array(
+/*$language['zh_CN'] = array(
         //登录界面语言包 简体中文
         'login' => array(
             'title'=>'登录',
@@ -201,13 +201,13 @@ $language['zh_CN'] = array(
             'deleteconfirm'=>'确认删除此通知？',
             'savefirst'=>'请先保存未保存的通知'
         )
-    );
+    );*/
 
 //设定本语言包名称为简体中文
-$language['zh_CN']['name'] = '简体中文';
+/*$language['zh_CN']['name'] = '简体中文';*/
 
 //设置中文小窍门
-$language['zh_CN']['skilltip'] = array(
+/*$language['zh_CN']['skilltip'] = array(
                 'label'=>'小窍门',
                 'tip'=>array(
                     '第一步，请先前往“后台管理->部门管理”，添加组织的相关部门 ～',
@@ -217,5 +217,33 @@ $language['zh_CN']['skilltip'] = array(
                     '然后，请尝试点击日历上的数字，添加事件 ！！！',
                     '点击图例可以过滤事件类型～'
                 )
-    );
+    );*/
+
+$language['zh_CN'] = array(
+//global setting
+    'name' => '简体中文',
+
+//base module
+    'base.index.mainContent' => '欢迎使用OA',
+    'base.login.title' => '欢迎使用UATME_OA',
+    'base.login.version' => '版本 1.0.1',
+    'base.login.usernameLabel' => '电邮',
+    'base.login.passwordLabel' => '密码',
+    'base.login.loginButtonTitle' => '点击按钮或回车登录系统',
+    'base.login.loginButtonLabel' => '登&nbsp;&nbsp;录',
+    'base.self.edit.title' => '',
+    'base.self.edit.oldPasswordLabel' => '',
+    'base.self.edit.newPasswordLabel' => '',
+    'base.self.edit.repeatPasswordLabel' => '',
+    
+//calendar module
+//club module
+//document module
+//expense module
+//hr module
+//sales module
+//support module
+//system module
+);
+
 ?>

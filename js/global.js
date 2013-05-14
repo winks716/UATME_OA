@@ -8,6 +8,7 @@
        var bbb = $('#bbb').val();
        var ccc = $('#ccc').val();
        alertDivPostData({
+           	initMsg: '递交数据中，请稍候……',                                          //modal提示框中的初始文字
            	postConfirm: '确认要xxx么？',                                          //递交前的提示确认信息
 			checkBeforePost: '"'+aaa+'"!="" && "'+bbb+'"!="" && "'+ccc+'"!=""',   //递交前数据检查通过的逻辑表达式, 注意, 不能接受带控制符的字符串如textarea, 只能单行文本或数字
 			tipBeforePost: '请将数据填写完整后再次递交',                            //递交前数据检查不通过的警告提示
@@ -18,12 +19,8 @@
        })
    }) 
    */
-function alertDivInit(initOptions){
-	var defaultOptions = {
-			initMsg: '后台数据交互中，请稍后……'  //modal提示框中的初始文字
-	};
-	var o = $.extend(defaultOptions, initOptions);
-	$('<div id="alertDiv">'+o.initMsg+'</div>').appendTo('body').hide().dialog({
+function alertDivInit(){
+	$('<div id="alertDiv">数据交互中，请稍候……</div>').appendTo('body').hide().dialog({
 		'modal':true,
 		'autoOpen':false
 	}).ajaxStart(function(){
@@ -32,6 +29,7 @@ function alertDivInit(initOptions){
 }
 function alertDivPostData(postOptions){
 	var defaultOptions = {
+			initMsg: '数据交互中，请稍候……',          //modal提示框中的初始文字
 			postConfirm: '',                             //递交前的提示确认信息
 			checkBeforePost: '',                         //递交前数据检查通过的逻辑表达式, 注意, 不能接受带控制符的字符串如textarea, 只能单行文本或数字
 			tipBeforePost: '请将数据填写完整后再次递交',   //递交前数据检查不通过的警告提示
@@ -48,6 +46,7 @@ function alertDivPostData(postOptions){
 			if(o.checkBeforePost!=''){
 				//if passed the data precheck
 				if(alertDivCheckBeforePost(o.checkBeforePost)){
+					$('#alertDiv').html(o.initMsg);
 					$.post(o.postUrl,o.postData,function(data){
 						alertDivHandleResult(data, o.redirectUrl, o.tipAfterPost);
 					});
@@ -55,6 +54,7 @@ function alertDivPostData(postOptions){
 					alert(o.tipBeforePost);
 				}
 			}else{
+				$('#alertDiv').html(o.initMsg);
 				$.post(o.postUrl,o.postData,function(data){
 					alertDivHandleResult(data, o.redirectUrl, o.tipAfterPost);
 				});
@@ -63,6 +63,7 @@ function alertDivPostData(postOptions){
 	}else{
 		if(o.checkBeforePost!=''){
 			if(alertDivCheckBeforePost(o.checkBeforePost)){
+				$('#alertDiv').html(o.initMsg);
 				$.post(o.postUrl,o.postData,function(data){
 					alertDivHandleResult(data, o.redirectUrl, o.tipAfterPost);
 				});
@@ -70,6 +71,7 @@ function alertDivPostData(postOptions){
 				alert(o.tipBeforePost);
 			}
 		}else{
+			$('#alertDiv').html(o.initMsg);
 			$.post(o.postUrl,o.postData,function(data){
 				alertDivHandleResult(data, o.redirectUrl, o.tipAfterPost);
 			});

@@ -79,16 +79,16 @@ define('COMPANY_DOMAIN','highsource.com');
 //设置多国语言包
 //获得语言包种类
 foreach($language as $k=>$v){
-    $languagelist[] = array('v'=>$k,'n'=>$v['name']);
+    $langList[] = array('v'=>$k,'n'=>$v['name']);
 }
 //print_r($languagelist);
-$smarty->assign('languagelist', $languagelist);
+$smarty->assign('langList', $langList);
 //获取当前用户选择的语言包设置
-$_SESSION['language'] = isset($_POST['lang']) ? $_POST['lang'] : ($_SESSION['language'] ? $_SESSION['language'] : 'zh_CN');
-$smarty->assign('languageselected',$_SESSION['language']);
+$_SESSION['lang'] = isset($_POST['lang']) ? $_POST['lang'] : ($_SESSION['lang'] ? $_SESSION['lang'] : 'zh_CN');
+$smarty->assign('langSelected',$_SESSION['lang']);
 //设定用户语言包，默认使用简体中文
-if(is_array($language[$_SESSION['language']])){
-    $smarty->assign('lang',$language[$_SESSION['language']]);//zh_CN,us_EN
+if(is_array($language[$_SESSION['lang']])){
+    $smarty->assign('lang',$language[$_SESSION['lang']]);//zh_CN,us_EN
 }else{
     $smarty->assign('lang',$language['zh_CN']);
 }

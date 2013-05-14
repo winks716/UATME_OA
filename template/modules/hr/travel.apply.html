@@ -39,9 +39,7 @@
 
 <script type="text/javascript">
 	$(function(){
-		alertDivInit({
-			initMsg: '差旅申请发送中，请耐心等待12秒左右，切勿关闭此窗口，谢谢！'
-		});
+		alertDivInit();
 		
 		$('#travelStartDate, #travelEndDate').datepicker({
 			'dateFormat':'yy-mm-dd'
@@ -49,6 +47,7 @@
 		
 		$('#applyConfirm').click(function(){
 			alertDivPostData({
+				initMsg: '差旅申请发送中，请耐心等待12秒左右，切勿关闭此窗口，谢谢！',
 				postUrl: 'index.php?m=hr&s=travel&a=submit',
 				postData: $('#applyForm').serialize(),
 				postConfirm: '确认递交申请？',
