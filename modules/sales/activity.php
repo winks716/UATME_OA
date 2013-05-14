@@ -24,18 +24,29 @@ switch($A){
 		$start = $_POST['start'];
 		$end = $_POST['end'];
 		$customerId = $_POST['customerId'];
-		$detail = $_POST['detail'];
-		$minday = Date('Y-m-d',(time()-Date('w')*24*3600));
-		$maxday = Date('Y-m-d',(time()+(6-Date('w'))*24*3600));
-		if($date >= $minday and $date <= $maxday){
-		    $sql = 'INSERT INTO uatme_oa_sales_activity(date, start, end, customer_id, detail, employee_id)
-		             VALUES ("'.$date.'", "'.$start.'", "'.$end.'", "'.$customerId.'", "'.$detail.'", "'.$_SESSION["employee_id"].'")';
+		$customerName = $_POST['customerName'];
+		if($customerId==0 && $customerName!=''){
+		    $sql = 'INSERT INTO uatme_oa_sales_customer (name, owner_employee_id) VALUES ("'.$customerName.'", "'.$_SESSION['employee_id'].'")';
 		    $mysqli->query($sql);
-		    $httpstatus = 200;
-		    $msg = '活动记录成功！';
+		    $customerId = $mysqli->insert_id;
+		}
+		if($customerId > 0){
+    		$detail = $_POST['detail'];
+    		$minday = Date('Y-m-d',(time()-Date('w')*24*3600));
+    		$maxday = Date('Y-m-d',(time()+(6-Date('w'))*24*3600));
+    		if($date >= $minday and $date <= $maxday){
+    		    $sql = 'INSERT INTO uatme_oa_sales_activity(date, start, end, customer_id, detail, employee_id)
+    		             VALUES ("'.$date.'", "'.$start.'", "'.$end.'", "'.$customerId.'", "'.$detail.'", "'.$_SESSION["employee_id"].'")';
+    		    $mysqli->query($sql);
+    		    $httpstatus = 200;
+    		    $msg = '活动记录成功！';
+    		}else{
+    		    $httpstatus = 500;
+    		    $error = '记录日期 ('.$date.') 超出允许范围 ('.$minday.'~'.$maxday.')';
+    		}
 		}else{
 		    $httpstatus = 500;
-		    $error = '记录日期 ('.$date.') 超出允许范围 ('.$minday.'~'.$maxday.')';
+		    $error = '客户关联失败，请检查客户是否存在';
 		}
 		sendResponse($httpstatus, $error, $msg);
 		break;

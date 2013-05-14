@@ -7,7 +7,7 @@
 			<strong>添加日志</strong>
 			<hr/>
 			<form id="activityForm">
-				<table class="span-7">
+				<table class="span-8">
 					<tr><th>日期</th><td><input readonly id="date" name="date" class="span-3"/></td></tr>
 					<tr><th>时间</th><td><input readonly id="start" name="start" class="span-2"/> ~ <input readonly id="end" name="end" class="span-2"/></td></tr>
 					<tr><th>客户</th><td><select id="customerId" name="customerId">
@@ -15,7 +15,7 @@
 											<{foreach from=$mycustomer item=mc}>
 											<option value="<{$mc.id}>"><{$mc.name}></option>
 											<{/foreach}>
-										</select></td></tr>
+										</select><input id="customerName" name="customerName" class="span-3"/></td></tr>
 					<tr><th>活动</th><td><textarea class="span-5" id="detail" name="detail" style="height:80px;"></textarea></td></tr>
 					<tr><td colspan="2"><span class="clickbtn activitySave">[递交]</span></td></tr>
 				</table>
@@ -69,7 +69,7 @@ $(function(){
 			checkBeforePost: '$("#date").val()!="" '
 								+'&& $("#start").val()!="" '
 								+'&& $("#end").val()!="" '
-								+'&& $("#customerId").val()!=0 '
+								+'&& ($("#customerId").val()!=0 || ($("#customerId").val()==0 && $.trim($("#customerName").val())!="")) '
 								+'&& $("#detail").val()!=""'
 		});
 	})
