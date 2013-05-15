@@ -58,7 +58,18 @@ switch($A){
 		$msg = '记录成功删除';
 		sendResponse($httpstatus, $error, $msg);
 		break;
-	case 'manager.list':	    
+	case 'manager.list':
+	    $selectedDay = $_POST['selectedDay']!='' ? $_POST['selectedDay'] : date('Y-m-d');
+	    $selectedDayArray = explode('-', $selectedDay);
+	    $selectedYear = $selectedDayArray[0];
+	    $selectedMonth = $selectedDayArray[1];
+	    $selectedDay = $selectedDayArray[2];
+	    $selectedUTCStamp = mktime(0,0,0,$selectedMonth, $selectedDay, $selectedYear); 
+		$minday = Date('Y-m-d',($selectedUTCStamp-Date('w', $selectedUTCStamp)*24*3600));
+		$maxday = Date('Y-m-d',($selectedUTCStamp+(6-Date('w', $selectedUTCStamp))*24*3600));
+	    $wherePeriod = ' AND (createdate BETWEEN "'.$minday.'" AND "'.$maxday.'") ';
+	    //echo $wherePeriod;	    
+	    
 	    $department = basicMysqliQuery('uatme_oa_system_department');
 	    $assign['customer'] = basicMysqliQuery('uatme_oa_sales_customer', ' WHERE ifavailable="1"');
 	    $assign['employee'] = basicMysqliQuery('uatme_oa_system_employee', ' WHERE ifavailable="1"');
@@ -67,7 +78,7 @@ switch($A){
 	    foreach($myEmployeeId as $d=>$e){
 	        $activity[$d]['department_name'] = $department[$d]['name'];
 	        $activity[$d]['department_id'] = $d;
-	        $activity[$d]['activity'] = basicMysqliQuery('uatme_oa_sales_activity', ' WHERE employee_id IN ('.implode(',',$e).') ORDER BY employee_id ASC, createdate DESC');
+	        $activity[$d]['activity'] = basicMysqliQuery('uatme_oa_sales_activity', ' WHERE employee_id IN ('.implode(',',$e).') '.$wherePeriod.' ORDER BY employee_id ASC, createdate DESC');
 	    }
 	    //print_r($activity);
 	    $assign['activity'] = $activity;
@@ -75,10 +86,21 @@ switch($A){
 		$smarty->display('sales/activity.manager.list.html');
 	    break;
 	case 'global.list':
+	    $selectedDay = $_POST['selectedDay']!='' ? $_POST['selectedDay'] : date('Y-m-d');
+	    $selectedDayArray = explode('-', $selectedDay);
+	    $selectedYear = $selectedDayArray[0];
+	    $selectedMonth = $selectedDayArray[1];
+	    $selectedDay = $selectedDayArray[2];
+	    $selectedUTCStamp = mktime(0,0,0,$selectedMonth, $selectedDay, $selectedYear); 
+		$minday = Date('Y-m-d',($selectedUTCStamp-Date('w', $selectedUTCStamp)*24*3600));
+		$maxday = Date('Y-m-d',($selectedUTCStamp+(6-Date('w', $selectedUTCStamp))*24*3600));
+	    $wherePeriod = ' AND (createdate BETWEEN "'.$minday.'" AND "'.$maxday.'") ';
+	    //echo $wherePeriod;	
+	    
 	    $department = basicMysqliQuery('uatme_oa_system_department');
 	    $assign['customer'] = basicMysqliQuery('uatme_oa_sales_customer', ' WHERE ifavailable="1"');
 	    $assign['employee'] = basicMysqliQuery('uatme_oa_system_employee', ' WHERE ifavailable="1"');
-	    $activity = basicMysqliQuery('uatme_oa_sales_activity', ' ORDER BY employee_id ASC, createdate DESC');
+	    $activity = basicMysqliQuery('uatme_oa_sales_activity',  ' WHERE 1'.$wherePeriod.' ORDER BY employee_id ASC, createdate DESC');
 	    foreach($activity as $a){
 	        $department_id = $assign['employee'][$a['employee_id']]['department_id'];
 	        $assign['activity'][$department_id]['department_name'] = $department[$department_id]['name'];
