@@ -9,7 +9,7 @@ switch($A){
 		if($result->num_rows > 0){
 			$msg = '<table><tr><th class="span-2">目的地</th><th class="span-8">起始-结束</th><th class="span-2">费用预算<br/>(机票除外)</th><th class="span-2">状态</th><th>事由</th></tr>';
 			while($array = $result->fetch_assoc()){
-				$msg .= '<tr><td>'.$array['target'].'</td><td>'.$array['start'].' 至 '.$array['end'].'</td><td>'.$array['expense'].'</td><td>'.$status[$array['status']]['namezh'].'</td><td>'.$array['reason'].(($array['status']==1)?'<span class="clickbtn cancelApply" i="'.$array['id'].'" ei="'.$_POST['id'].'">[撤销]</span>':'').'</td></tr>';
+				$msg .= '<tr><td>'.$array['target'].'</td><td>'.$array['start'].' 至 '.$array['end'].'</td><td>'.$array['expense'].'</td><td>'.$status[$array['status']]['namezh'].'</td><td>'.$array['reason'].'</td></tr>';
 			}
 			$msg .= '</table>';
 			$httpstatus = 200;
@@ -30,7 +30,7 @@ switch($A){
 		if($result->num_rows > 0){
 			$msg = '<table><tr><th class="span-2">类型</th><th class="span-8">起始-结束</th><th class="span-2">状态</th><th>事由</th></tr>';
 			while($array = $result->fetch_assoc()){
-				$msg .= '<tr><td>'.$type[$array['type']]['name'].'</td><td>'.$array['start'].' 至 '.$array['end'].'</td><td>'.$status[$array['status']]['namezh'].'</td><td>'.$array['reason'].(($array['status']==1)?'<span class="clickbtn cancelApply" i="'.$array['id'].'" ei="'.$_POST['id'].'">[撤销]</span>':'').'</td></tr>';
+				$msg .= '<tr><td>'.$type[$array['type']]['name'].'</td><td>'.$array['start'].' 至 '.$array['end'].'</td><td>'.$status[$array['status']]['namezh'].'</td><td>'.$array['reason'].'</td></tr>';
 			}
 			$msg .= '</table>';
 			$httpstatus = 200;
@@ -40,7 +40,7 @@ switch($A){
 		}
 		sendResponse($httpstatus, $error, $msg);
 		break;
-	/*case 'manager.get.employee.travel':
+	case 'hr.get.employee.travel':
 		//get status
 		$status = basicMysqliQuery('uatme_oa_system_apply_status');
 		//get travel apply
@@ -49,7 +49,7 @@ switch($A){
 		if($result->num_rows > 0){
 			$msg = '<table><tr><th class="span-2">目的地</th><th class="span-8">起始-结束</th><th class="span-2">费用预算<br/>(机票除外)</th><th class="span-4">状态</th><th>事由</th></tr>';
 			while($array = $result->fetch_assoc()){
-				$msg .= '<tr><td>'.$array['target'].'</td><td>'.$array['start'].' 至 '.$array['end'].'</td><td>'.$array['expense'].'</td><td>'.$status[$array['status']]['namezh'].(($array['status']==1 && supervisorCheck($_POST['id'],$_SESSION['employee_id']))?'<span class="clickbtn cancelApply" i="'.$array['id'].'" ei="'.$_POST['id'].'">[撤销]</span>':'').'</td><td>'.$array['reason'].'</td></tr>';
+				$msg .= '<tr><td>'.$array['target'].'</td><td>'.$array['start'].' 至 '.$array['end'].'</td><td>'.$array['expense'].'</td><td>'.$status[$array['status']]['namezh'].($array['status']==1 ?'<span class="clickbtn cancelApply" i="'.$array['id'].'" ei="'.$_POST['id'].'">[撤销]</span>':'').'</td><td>'.$array['reason'].'</td></tr>';
 			}
 			$msg .= '</table>';
 			$httpstatus = 200;
@@ -59,7 +59,7 @@ switch($A){
 		}
 		sendResponse($httpstatus, $error, $msg);
 		break;
-	case 'manager.get.employee.leave':
+	case 'hr.get.employee.leave':
 		//get status
 		$status = basicMysqliQuery('uatme_oa_system_apply_status');
 		//get leave type
@@ -70,7 +70,7 @@ switch($A){
 		if($result->num_rows > 0){
 			$msg = '<table><tr><th class="span-2">类型</th><th class="span-8">起始-结束</th><th class="span-4">状态</th><th>事由</th></tr>';
 			while($array = $result->fetch_assoc()){
-				$msg .= '<tr><td>'.$type[$array['type']]['name'].'</td><td>'.$array['start'].' 至 '.$array['end'].'</td><td>'.$status[$array['status']]['namezh'].($array['status']==1?'<span class="clickbtn cancelApply" i="'.$array['id'].'" ei="'.$_POST['id'].'">[撤销]</span>':'').'</td><td>'.$array['reason'].'</td></tr>';
+				$msg .= '<tr><td>'.$type[$array['type']]['name'].'</td><td>'.$array['start'].' 至 '.$array['end'].'</td><td>'.$status[$array['status']]['namezh'].($array['status']==1 ?'<span class="clickbtn cancelApply" i="'.$array['id'].'" ei="'.$_POST['id'].'">[撤销]</span>':'').'</td><td>'.$array['reason'].'</td></tr>';
 			}
 			$msg .= '</table>';
 			$httpstatus = 200;
@@ -79,7 +79,7 @@ switch($A){
 			$httpstatus = 200;
 		}
 		sendResponse($httpstatus, $error, $msg);
-		break;*/
+		break;
 	case 'leave.apply.manager.report': 
 		//get location
 		$location = basicMysqliQuery('uatme_oa_system_location');

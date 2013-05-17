@@ -82,7 +82,7 @@ if(isset($_SESSION['employee_id']) && $_SESSION['employee_id']>0){
 		while($array = $result->fetch_assoc()){
 			$assign['tab'][] = $array;
 			$assign['menu'][] = $array;
-			$sql_submenu = 'SELECT * FROM uatme_oa_system_module WHERE available=1 and parent_id="'.$array['id'].'" '.$menu_sql.' ORDER BY orderby ASC';
+			$sql_submenu = 'SELECT * FROM uatme_oa_system_module WHERE available=1 AND ifnav=1 AND parent_id="'.$array['id'].'" '.$menu_sql.' ORDER BY orderby ASC';
 			$result_submenu = $mysqli->query($sql_submenu);
 			if($result_submenu->num_rows > 0){
 				while($array_submenu = $result_submenu->fetch_assoc()){
