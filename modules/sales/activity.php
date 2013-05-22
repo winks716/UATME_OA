@@ -59,16 +59,19 @@ switch($A){
 		sendResponse($httpstatus, $error, $msg);
 		break;
 	case 'manager.list':
-	    $selectedDay = $_GET['selectedDay']!='' ? $_GET['selectedDay'] : date('Y-m-d');
-	    $selectedDayArray = explode('-', $selectedDay);
-	    $selectedYear = $selectedDayArray[0];
-	    $selectedMonth = $selectedDayArray[1];
-	    $selectedDay = $selectedDayArray[2];
+	    //get selected date and caculate the week including the date
+	    $selectedDate = $_GET['selectedDate']!='' ? $_GET['selectedDate'] : date('Y-n-j');
+	    $assign['selectedDate'] = $selectedDate;
+	    $selectedDateArray = explode('-', $selectedDate);
+	    $selectedYear = $selectedDateArray[0];
+	    $selectedMonth = $selectedDateArray[1];
+	    $selectedDay = $selectedDateArray[2];
 	    $selectedUTCStamp = mktime(0,0,0,$selectedMonth, $selectedDay, $selectedYear); 
 		$minday = Date('Y-m-d',($selectedUTCStamp-Date('w', $selectedUTCStamp)*24*3600));
 		$maxday = Date('Y-m-d',($selectedUTCStamp+(6-Date('w', $selectedUTCStamp))*24*3600));
 	    $wherePeriod = ' AND (createdate BETWEEN "'.$minday.'" AND "'.$maxday.'") ';
-	    //echo $wherePeriod;	    
+	    $assign['selectedPeriod'] = $minday . ' ~ ' . $maxday;
+	    //echo $wherePeriod;    
 	    
 	    $department = basicMysqliQuery('uatme_oa_system_department');
 	    $assign['customer'] = basicMysqliQuery('uatme_oa_sales_customer', ' WHERE ifavailable="1"');
@@ -86,16 +89,18 @@ switch($A){
 		$smarty->display('sales/activity.manager.list.html');
 	    break;
 	case 'global.list':
-	    $selectedDay = $_GET['selectedDay']!='' ? $_GET['selectedDay'] : date('Y-m-d');
-	    $selectedDayArray = explode('-', $selectedDay);
-	    $selectedYear = $selectedDayArray[0];
-	    $selectedMonth = $selectedDayArray[1];
-	    $selectedDay = $selectedDayArray[2];
+	    //get selected date and caculate the week including the date
+	    $selectedDate = $_GET['selectedDate']!='' ? $_GET['selectedDate'] : date('Y-n-j');
+	    $assign['selectedDate'] = $selectedDate;
+	    $selectedDateArray = explode('-', $selectedDate);
+	    $selectedYear = $selectedDateArray[0];
+	    $selectedMonth = $selectedDateArray[1];
+	    $selectedDay = $selectedDateArray[2];
 	    $selectedUTCStamp = mktime(0,0,0,$selectedMonth, $selectedDay, $selectedYear); 
-	    echo Date('w', $selectedUTCStamp);
 		$minday = Date('Y-m-d',($selectedUTCStamp-Date('w', $selectedUTCStamp)*24*3600));
 		$maxday = Date('Y-m-d',($selectedUTCStamp+(6-Date('w', $selectedUTCStamp))*24*3600));
 	    $wherePeriod = ' AND (createdate BETWEEN "'.$minday.'" AND "'.$maxday.'") ';
+	    $assign['selectedPeriod'] = $minday . ' ~ ' . $maxday;
 	    //echo $wherePeriod;	
 	    
 	    $department = basicMysqliQuery('uatme_oa_system_department');

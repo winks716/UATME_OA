@@ -2,7 +2,9 @@
 <{include file="topnav.html"}>
 
 <div class="container">
-	<strong>活动历史</strong>
+	<strong>活动历史</strong> &nbsp;
+	<input type="hidden" id="selectedDay"/> &nbsp;&nbsp;&nbsp;&nbsp;
+	日期跨度：<{$selectedPeriod}>
 	<table class="span-24">
 		<thead>
 			<tr>
@@ -32,3 +34,17 @@
 
 <{include file="declaration.html"}>
 <{include file="footer.html"}>
+
+<script>
+$('#selectedDay').datepicker({
+	 dateFormat: 'yy-m-d',
+	 defaultDate: '<{$selectedDate}>',
+	 showOn: "button",
+	 buttonImage: "images/global/calendar.jpg",
+	 buttonImageOnly: true,
+	 onSelect:function(){
+			window.location = 'index.php?m=sales&s=activity&a=manager.list&selectedDate='+$(this).val();
+	 }
+});
+$('.ui-datepicker-trigger').css({cursor:'pointer',height:'25px',width:'25px'});
+</script>
