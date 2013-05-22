@@ -59,7 +59,7 @@ switch($A){
 		sendResponse($httpstatus, $error, $msg);
 		break;
 	case 'manager.list':
-	    $selectedDay = $_POST['selectedDay']!='' ? $_POST['selectedDay'] : date('Y-m-d');
+	    $selectedDay = $_GET['selectedDay']!='' ? $_GET['selectedDay'] : date('Y-m-d');
 	    $selectedDayArray = explode('-', $selectedDay);
 	    $selectedYear = $selectedDayArray[0];
 	    $selectedMonth = $selectedDayArray[1];
@@ -86,12 +86,13 @@ switch($A){
 		$smarty->display('sales/activity.manager.list.html');
 	    break;
 	case 'global.list':
-	    $selectedDay = $_POST['selectedDay']!='' ? $_POST['selectedDay'] : date('Y-m-d');
+	    $selectedDay = $_GET['selectedDay']!='' ? $_GET['selectedDay'] : date('Y-m-d');
 	    $selectedDayArray = explode('-', $selectedDay);
 	    $selectedYear = $selectedDayArray[0];
 	    $selectedMonth = $selectedDayArray[1];
 	    $selectedDay = $selectedDayArray[2];
 	    $selectedUTCStamp = mktime(0,0,0,$selectedMonth, $selectedDay, $selectedYear); 
+	    echo Date('w', $selectedUTCStamp);
 		$minday = Date('Y-m-d',($selectedUTCStamp-Date('w', $selectedUTCStamp)*24*3600));
 		$maxday = Date('Y-m-d',($selectedUTCStamp+(6-Date('w', $selectedUTCStamp))*24*3600));
 	    $wherePeriod = ' AND (createdate BETWEEN "'.$minday.'" AND "'.$maxday.'") ';
@@ -109,7 +110,7 @@ switch($A){
 	    }
 	    //print_r($activity);
 		$smarty->assign($assign);
-		$smarty->display('sales/activity.manager.list.html');
+		$smarty->display('sales/activity.global.list.html');
 	    break;
 	default:
 		

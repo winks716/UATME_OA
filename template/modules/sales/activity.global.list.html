@@ -3,6 +3,7 @@
 
 <div class="container">
 	<strong>活动历史</strong>
+	<input type="hidden" id="selectedDay"/>
 	<table class="span-24">
 		<thead>
 			<tr>
@@ -32,3 +33,14 @@
 
 <{include file="declaration.html"}>
 <{include file="footer.html"}>
+
+<script>
+$('#selectedDay').datepicker({
+	 showOn: "button",
+	 buttonImage: "images/global/calendar.jpg",
+	 buttonImageOnly: true
+}).change(function(){
+	window.location = 'index.php?m=sales&s=activity&a=global.list&selectedDay='+$(this).val();
+})
+$('.ui-datepicker-trigger').css({height:'25px',width:'25px'});
+</script>
