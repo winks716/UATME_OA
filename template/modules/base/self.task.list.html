@@ -3,16 +3,21 @@
 
 <div class="container">
 	<table>
-	<tr><th>任务类型</th><th>申请者</th><th>相关申请信息</th><th>申请时间</th><th>指定代办</th><th>操作</th></tr>
+	<tr><th><{$lang['base.self.task.taskList.tableHeader1']}></th>
+	<th><{$lang['base.self.task.taskList.tableHeader2']}></th>
+	<th><{$lang['base.self.task.taskList.tableHeader3']}></th>
+	<th><{$lang['base.self.task.taskList.tableHeader4']}></th>
+	<th><{$lang['base.self.task.taskList.tableHeader5']}></th>
+	<th><{$lang['base.self.task.taskList.tableHeader6']}></th></tr>
 	<{foreach from=$task item=t}>
 	<tr><td><{$t.document_typelv1_name}></td>
 	<td><{$t.apply_employee}></td>
 	<td><{$t.period}><br/><{$t.reason}></td>
 	<td><{$t.apply_date}></td>
 	<td><{$t.apply_alternative}></td>
-	<td>审批备注 <input class="span-8 comment"/>
-	<span class="clickbtn agreeApply" s="<{$t.document_typelv1_nameen}>" a="agree" e="<{$t.employee_id}>" i="<{$t.id}>" k="<{$t.author_key}>">[同意]</span>
-	<span class="clickbtn denyApply" s="<{$t.document_typelv1_nameen}>" a="deny" e="<{$t.employee_id}>" i="<{$t.id}>" k="<{$t.author_key}>">[拒绝]</span></td></tr>
+	<td><{$lang['base.self.task.taskList.tableHeader7']}> <input class="span-8 comment"/>
+	<span class="clickbtn agreeApply" s="<{$t.document_typelv1_nameen}>" a="agree" e="<{$t.employee_id}>" i="<{$t.id}>" k="<{$t.author_key}>">[<{$lang['base.self.task.taskList.agreeButtonLabel']}>]</span>
+	<span class="clickbtn denyApply" s="<{$t.document_typelv1_nameen}>" a="deny" e="<{$t.employee_id}>" i="<{$t.id}>" k="<{$t.author_key}>">[<{$lang['base.self.task.taskList.declineButtonLabel']}>]</span></td></tr>
 	<{/foreach}>
 	</table>
 </div>

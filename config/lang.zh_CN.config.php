@@ -225,16 +225,47 @@ $language['zh_CN'] = array(
 
 //base module
     'base.index.mainContent' => '欢迎使用OA',
+	
     'base.login.title' => '欢迎使用UATME_OA',
     'base.login.version' => '版本 1.0.1',
     'base.login.usernameLabel' => '电邮',
     'base.login.passwordLabel' => '密码',
     'base.login.loginButtonTitle' => '点击按钮或回车登录系统',
     'base.login.loginButtonLabel' => '登&nbsp;&nbsp;录',
-    'base.self.edit.title' => '',
-    'base.self.edit.oldPasswordLabel' => '',
-    'base.self.edit.newPasswordLabel' => '',
-    'base.self.edit.repeatPasswordLabel' => '',
+	
+    'base.self.edit.resetPassword.title' => '密码修改',
+    'base.self.edit.resetPassword.oldPasswordLabel' => '原密码',
+    'base.self.edit.resetPassword.newPasswordLabel' => '新密码',
+    'base.self.edit.resetPassword.repeatPasswordLabel' => '重复新密码',
+    'base.self.edit.resetPassword.confirmButtonLabel' => '确认修改',
+    'base.self.edit.resetPassword.alertMsg1' => '原密码必须填写！',
+    'base.self.edit.resetPassword.alertMsg2' => '新密码必须填写！',
+    'base.self.edit.resetPassword.alertMsg3' => '重复新密码必须填写！',
+    'base.self.edit.resetPassword.alertMsg4' => '两次输入的新密码必须一致！',
+    'base.self.edit.resetPassword.alertMsg5' => '密码修改成功！',
+    'base.self.edit.resetPassword.alertMsg6' => '您的原密码不正确！',
+	
+	'base.self.edit.selfInformation.title' => '个人信息',
+	'base.self.edit.selfInformation.namezhLabel' => '中文名',
+	'base.self.edit.selfInformation.nameenLabel' => '英文名',
+	'base.self.edit.selfInformation.emailLabel' => '电子邮箱',
+	'base.self.edit.selfInformation.departmentLabel' => '所属部门',
+	'base.self.edit.selfInformation.annualLeaveLabel' => '年假信息',
+	'base.self.edit.selfInformation.annualLeaveSubLabel1' => '截止至今日，总共:',
+	'base.self.edit.selfInformation.annualLeaveSubLabel2' => '天； 已用:',
+	'base.self.edit.selfInformation.annualLeaveSubLabel3' => '天； 剩余:',
+	'base.self.edit.selfInformation.annualLeaveSubLabel4' => '天；',
+	
+	'base.self.task.taskList.tableHeader1' => '任务类型',
+	'base.self.task.taskList.tableHeader2' => '申请者',
+	'base.self.task.taskList.tableHeader3' => '相关申请信息',
+	'base.self.task.taskList.tableHeader4' => '申请时间',
+	'base.self.task.taskList.tableHeader5' => '指定代办',
+	'base.self.task.taskList.tableHeader6' => '操作',
+	'base.self.task.taskList.tableHeader7' => '审批备注',
+	'base.self.task.taskList.agreeButtonLabel' => '同意',
+	'base.self.task.taskList.declineButtonLabel' => '拒绝',
+	
     
 //calendar module
 //club module

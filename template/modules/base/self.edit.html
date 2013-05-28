@@ -6,29 +6,43 @@
 <table>
 <tr>
 <td>
-	<p><strong>密码修改</strong></p>
+	<p><strong><{$lang['base.self.edit.resetPassword.title']}></strong></p>
 	<table style="width:260px;">
 		<tr>
-			<th>原密码</th><td><input id="oldPassword" type="password"/></td>
+			<th><{$lang['base.self.edit.resetPassword.oldPasswordLabel']}></th>
+			<td><input id="oldPassword" type="password"/></td>
 		</tr>
 		<tr>
-			<th>新密码</th><td><input id="newPassword" type="password"/></td>
+			<th><{$lang['base.self.edit.resetPassword.newPasswordLabel']}></th>
+			<td><input id="newPassword" type="password"/></td>
 		</tr>
 		<tr>
-			<th>重复新密码</th><td><input id="confirmNewPassword" type="password"/></td>
+			<th><{$lang['base.self.edit.resetPassword.repeatPasswordLabel']}></th>
+			<td><input id="confirmNewPassword" type="password"/></td>
 		</tr>
 	</table>
-	<span id="confirmBtn" class="clickbtn"> [确认修改] </span>
+	<span id="confirmBtn" class="clickbtn"> [<{$lang['base.self.edit.resetPassword.confirmButtonLabel']}>] </span>
 </td>
 
 <td style="border-left:solid 2px #CCCCCC;">
 	<table style="width:400px;">
-	<tr><th colspan="2">个人信息</th></tr>
-	<tr><th>中文名</th><td><{$employee.namezh}></td></tr>
-	<tr><th>英文名</th><td><{$employee.name}></td></tr>
-	<tr><th>电子邮箱</th><td><{$employee.email}></td></tr>
-	<tr><th>所属部门</th><td><{$employee.department_name}></td></tr>
-	<tr><th>年假信息</th><td>截止至今日，总共:<{$employee.total_annualleave}>天； 已用:<{$employee.used_annualleave}>天； 剩余:<{$employee.total_annualleave - $employee.used_annualleave}>天；</td></tr>
+	<tr><th colspan="2"><{$lang['base.self.edit.selfInformation.title']}></th></tr>
+	<tr><th><{$lang['base.self.edit.selfInformation.namezhLabel']}></th>
+		<td><{$employee.namezh}></td></tr>
+	<tr><th><{$lang['base.self.edit.selfInformation.nameenLabel']}></th>
+		<td><{$employee.name}></td></tr>
+	<tr><th><{$lang['base.self.edit.selfInformation.emailLabel']}></th>
+		<td><{$employee.email}></td></tr>
+	<tr><th><{$lang['base.self.edit.selfInformation.departmentLabel']}></th>
+		<td><{$employee.department_name}></td></tr>
+	<tr><th><{$lang['base.self.edit.selfInformation.annualLeaveLabel']}></th>
+		<td><{$lang['base.self.edit.selfInformation.annualLeaveSubLabel1']}>
+		<{$employee.total_annualleave}>
+		<{$lang['base.self.edit.selfInformation.annualLeaveSubLabel2']}>
+		<{$employee.used_annualleave}>
+		<{$lang['base.self.edit.selfInformation.annualLeaveSubLabel3']}>
+		<{$employee.total_annualleave - $employee.used_annualleave}>
+		<{$lang['base.self.edit.selfInformation.annualLeaveSubLabel4']}></td></tr>
 	</table>
 </td>
 </tr>
@@ -56,25 +70,25 @@ $(function(){
 		var newPassword = $('#newPassword').val();
 		var confirmNewPassword = $('#confirmNewPassword').val();
 		if(oldPassword==''){
-			alert('原密码必须填写！');
+			alert("<{$lang['base.self.edit.resetPassword.alertMsg1']}>");
 			$('#oldPassword').get(0).focus();
 		}else if(newPassword==''){
-			alert('新密码必须填写！');
+			alert("<{$lang['base.self.edit.resetPassword.alertMsg2']}>");
 			$('#newPassword').get(0).focus();
 		}else if(confirmNewPassword==''){
-			alert('重复新密码必须填写！');
+			alert("<{$lang['base.self.edit.resetPassword.alertMsg3']}>");
 			$('#confirmNewPassword').get(0).focus();
 		}else if(confirmNewPassword!=newPassword){
-			alert('两次输入的新密码必须一致！');
+			alert("<{$lang['base.self.edit.resetPassword.alertMsg4']}>");
 			$('#confirmNewPassword').get(0).focus();
 		}else{
 			$.post('index.php?m=base&s=self&a=save',{'oldPassword':oldPassword,'newPassword':newPassword,'confirmNewPassword':confirmNewPassword},function(data){
 				var json = eval("(" + data + ")");
 				if(json.httpstatus == 200){
-					alert('密码修改成功');
+					alert("<{$lang['base.self.edit.resetPassword.alertMsg5']}>");
 					$('#oldPassword, #newPassword, #confirmNewPassword').val('');
 				}else if(json.httpstatus == 500){
-					alert('您的原密码不正确!');
+					alert("<{$lang['base.self.edit.resetPassword.alertMsg6']}>");
 					$('#oldPassword').get(0).focus();
 				}
 			})
