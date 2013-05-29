@@ -117,6 +117,29 @@ switch($A){
 		$smarty->assign($assign);
 		$smarty->display('sales/activity.global.list.html');
 	    break;
+	case 'self.list':
+	    //get selected date and caculate the week including the date
+	    $selectedDate = $_GET['selectedDate']!='' ? $_GET['selectedDate'] : date('Y-n-j');
+	    $assign['selectedDate'] = $selectedDate;
+	    $selectedDateArray = explode('-', $selectedDate);
+	    $selectedYear = $selectedDateArray[0];
+	    $selectedMonth = $selectedDateArray[1];
+	    $selectedDay = $selectedDateArray[2];
+	    $selectedUTCStamp = mktime(0,0,0,$selectedMonth, $selectedDay, $selectedYear); 
+		$minday = Date('Y-m-d',($selectedUTCStamp-Date('w', $selectedUTCStamp)*24*3600));
+		$maxday = Date('Y-m-d',($selectedUTCStamp+(6-Date('w', $selectedUTCStamp))*24*3600));
+	    $wherePeriod = ' AND (createdate BETWEEN "'.$minday.'" AND "'.$maxday.'") ';
+	    $assign['selectedPeriod'] = $minday . ' ~ ' . $maxday;
+	    //echo $wherePeriod;	
+	    
+	    $department = basicMysqliQuery('uatme_oa_system_department');
+	    $assign['customer'] = basicMysqliQuery('uatme_oa_sales_customer', ' WHERE ifavailable="1"');
+	    $assign['activity'] = basicMysqliQuery('uatme_oa_sales_activity',  ' WHERE owner_employee_id="'.$_SESSION['employee_id'].'" '.$wherePeriod.' ORDER BY createdate DESC');
+	    
+	    //print_r($activity);
+		$smarty->assign($assign);
+		$smarty->display('sales/activity.self.list.html');
+	    break;
 	default:
 		
 		break;

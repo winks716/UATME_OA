@@ -1,0 +1,45 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+<div class="container">
+	<strong>活动历史</strong> &nbsp;
+	<input type="hidden" id="selectedDay"/> &nbsp;&nbsp;&nbsp;&nbsp;
+	日期跨度：<{$selectedPeriod}>
+	<table class="span-24">
+		<thead>
+			<tr>
+            <th>日期</th>
+			<th>开始</th>
+			<th>结束</th>
+			<th>客户</th>
+			<th>活动</th></tr>
+		</thead>
+		<tbody>
+               <{foreach from=$activity item=a}>
+       			<tr>
+                    <td><{$a.date}></td>
+	       			<td><{$a.start}></td>
+	       			<td><{$a.end}></td>
+	       			<td><{$customer[$a.customer_id]['name']}></td>
+	       			<td><{$a.detail}></td></tr>
+               <{/foreach}>
+		</tbody>
+	</table>
+</div>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>
+
+<script>
+$('#selectedDay').datepicker({
+	 dateFormat: 'yy-m-d',
+	 defaultDate: '<{$selectedDate}>',
+	 showOn: "button",
+	 buttonImage: "images/global/calendar.jpg",
+	 buttonImageOnly: true,
+	 onSelect:function(){
+			window.location = 'index.php?m=sales&s=activity&a=self.list&selectedDate='+$(this).val();
+	 }
+});
+$('.ui-datepicker-trigger').css({cursor:'pointer',height:'25px',width:'25px'});
+</script>
