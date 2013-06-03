@@ -138,6 +138,7 @@ switch($A){
             $httpstatus = 500;
             $error = '申请撤销：服务器0忙，请稍后再试，谢谢！';
         }
+		sendResponse($httpstatus, $error, $msg);
 	    break;
 	case 'list':
 		//get apply status definition list

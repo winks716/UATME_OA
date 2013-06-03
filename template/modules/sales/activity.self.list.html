@@ -1,6 +1,16 @@
 <{include file="header.html"}>
 <{include file="topnav.html"}>
 
+<style>
+tr.activityLogicalDeleted td{
+	text-decoration: line-through;
+	color: #CCCCCC;
+}
+tr.activityAfterwards td{
+	color: #228B22;
+}
+</style>
+
 <div class="container">
 	<strong>活动历史</strong> &nbsp;
 	<input type="hidden" id="selectedDay"/> &nbsp;&nbsp;&nbsp;&nbsp;
@@ -12,16 +22,18 @@
 			<th>开始</th>
 			<th>结束</th>
 			<th>客户</th>
-			<th>活动</th></tr>
+			<th>活动</th>
+			<th>操作</th></tr>
 		</thead>
 		<tbody>
                <{foreach from=$activity item=a}>
-       			<tr>
+       			<tr class="<{if $a.iflogicaldeleted==1}>activityLogicalDeleted <{/if}><{if $a.ifafterwards==1}>activityAfterwards<{/if}>">
                     <td><{$a.date}></td>
 	       			<td><{$a.start}></td>
 	       			<td><{$a.end}></td>
 	       			<td><{$customer[$a.customer_id]['name']}></td>
-	       			<td><{$a.detail}></td></tr>
+	       			<td><{$a.detail}><{if $a.deletable==1}></td>
+	       			<td><span class="clickbtn activityDelete" i="<{$a.id}>">[删除]</span><{/if}></td></tr>
                <{/foreach}>
 		</tbody>
 	</table>
@@ -41,5 +53,12 @@ $('#selectedDay').datepicker({
 			window.location = 'index.php?m=sales&s=activity&a=self.list&selectedDate='+$(this).val();
 	 }
 });
+$('.activityDelete').click(function(){
+	alertDivPostData({
+		postUrl: 'index.php?m=sales&s=activity&a=delete',
+		postData: {id:$(this).attr('i')},
+		postConfirm: '确认删除本条记录？'
+	});
+})
 $('.ui-datepicker-trigger').css({cursor:'pointer',height:'25px',width:'25px'});
 </script>
