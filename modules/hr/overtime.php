@@ -1,16 +1,16 @@
 <?php
 /*
- * leave apply, approval and etc.
+ * overtime apply, approval and etc.
  * 
  * */
 
 switch($A){
 	case 'apply':
-		$sql = 'SELECT id,name FROM uatme_oa_hr_leave_type';
+		$sql = 'SELECT id,name FROM uatme_oa_hr_overtime_type';
 		$result = $mysqli->query($sql);
 		if($result->num_rows > 0){
 			while($array = $result->fetch_assoc()){
-				$assign['leave'][] = $array; 
+				$assign['overtime'][] = $array; 
 			}
 		}
 		$sql = 'SELECT id,name,namezh FROM uatme_oa_system_employee WHERE ifleave=0 AND ifavailable=1 AND id!=1 ORDER BY name';
@@ -21,23 +21,23 @@ switch($A){
 			}
 		}
 		$smarty->assign($assign);
-		$smarty->display('hr/leave.apply.html');
+		$smarty->display('hr/overtime.apply.html');
 		break;
 	case 'submit':
 		//save apply to db
-		$sql = 'INSERT INTO uatme_oa_hr_leave_apply(type, start, end, reason, employee_id, alternative_employee_id, copy_employee_id, apply_date) 
-				 VALUES ("'.$_POST['leaveType'].'", "'.$_POST['leaveStartDate'].' '.$_POST['leaveStartTime'].'", "'.$_POST['leaveEndDate'].' '.$_POST['leaveEndTime'].'", "'.$_POST['leaveReason'].'", "'.$_SESSION['employee_id'].'", "'.$_POST['leaveAlter'].'", "'.$_POST['leaveAlter'].','.implode(',', $_POST['leaveCopy']).'", "'.Date('Y-m-d H:i:s').'")';
+		$sql = 'INSERT INTO uatme_oa_hr_overtime_apply(type, start, end, reason, employee_id, alternative_employee_id, copy_employee_id, apply_date) 
+				 VALUES ("'.$_POST['overtimeType'].'", "'.$_POST['overtimeStartDate'].' '.$_POST['overtimeStartTime'].'", "'.$_POST['overtimeEndDate'].' '.$_POST['overtimeEndTime'].'", "'.$_POST['overtimeReason'].'", "'.$_SESSION['employee_id'].'", "'.$_POST['overtimeAlter'].'", "'.$_POST['overtimeAlter'].','.implode(',', $_POST['overtimeCopy']).'", "'.Date('Y-m-d H:i:s').'")';
 		if($mysqli->query($sql)){
 			//init work flow
-			$task = workflowInit($_SESSION['employee_id'], 'leave.apply', $mysqli->insert_id);
+			$task = workflowInit($_SESSION['employee_id'], 'overtime.apply', $mysqli->insert_id);
 			//send mail to the first person
 			if($task['executerId'] > 0){
 				//
-				$sql = 'SELECT id,name FROM uatme_oa_hr_leave_type';
+				$sql = 'SELECT id,name FROM uatme_oa_hr_overtime_type';
 				$result = $mysqli->query($sql);
 				if($result->num_rows > 0){
 					while($array = $result->fetch_assoc()){
-						$leaveType[$array['id']] = $array['name']; 
+						$overtimeType[$array['id']] = $array['name']; 
 					}
 				}
 				$sql = 'SELECT id,name,namezh FROM uatme_oa_system_employee';
@@ -53,7 +53,7 @@ switch($A){
 					while($array = $result->fetch_assoc()){
 						$SMTPConfig = array(
 								'sendto' => array(array('mail'=>$array['email'],'name'=>$array['name'])),
-								'subject' => '新的假期申请',
+								'subject' => '新的加班申请',
 								'body' => '<head>
 											<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 											<style>
@@ -65,10 +65,10 @@ switch($A){
 											<h4>详情如下</h4>
 											<p><table>
 												<tr><th>假期类型</th><th>休假时间</th><th>指定代办</th><th>事由</th></tr>
-												<tr><td>'.$leaveType[$_POST["leaveType"]].'</td><td>'.$_POST['leaveStartDate'].' '.$_POST['leaveStartTime'].' 至 '.$_POST['leaveEndDate'].' '.$_POST['leaveEndTime'].'</td><td>'.$employee[$_POST['leaveAlter']]['namezh'].'('.$employee[$_POST['leaveAlter']]['name'].')</td><td>'.$_POST['leaveReason'].'</td></tr>
+												<tr><td>'.$overtimeType[$_POST["overtimeType"]].'</td><td>'.$_POST['overtimeStartDate'].' '.$_POST['overtimeStartTime'].' 至 '.$_POST['overtimeEndDate'].' '.$_POST['overtimeEndTime'].'</td><td>'.$employee[$_POST['overtimeAlter']]['namezh'].'('.$employee[$_POST['overtimeAlter']]['name'].')</td><td>'.$_POST['overtimeReason'].'</td></tr>
 											</table></p>
-											<p><a class="clickbtn" href="'.WEBSERVER.'api/before.approval.php?s=leave.apply&a=agree&e='.$task['executerId'].'&i='.$task['taskId'].'&k='.$task['authorKey'].'">[同意]</a>
-											&nbsp;&nbsp;&nbsp;&nbsp;<a class="clickbtn" href="'.WEBSERVER.'api/before.approval.php?s=leave.apply&a=deny&e='.$task['executerId'].'&i='.$task['taskId'].'&k='.$task['authorKey'].'">[拒绝]</a></p>
+											<p><a class="clickbtn" href="'.WEBSERVER.'api/before.approval.php?s=overtime.apply&a=agree&e='.$task['executerId'].'&i='.$task['taskId'].'&k='.$task['authorKey'].'">[同意]</a>
+											&nbsp;&nbsp;&nbsp;&nbsp;<a class="clickbtn" href="'.WEBSERVER.'api/before.approval.php?s=overtime.apply&a=deny&e='.$task['executerId'].'&i='.$task['taskId'].'&k='.$task['authorKey'].'">[拒绝]</a></p>
 											</body>											
 											'
 								);
@@ -91,12 +91,12 @@ switch($A){
 		sendResponse($httpstatus, $error, $msg);
 		break;
 	case 'applier.cancel':
-		$sql = 'UPDATE uatme_oa_hr_leave_apply SET status=3, comment="本人撤销" WHERE id="'.$_POST['id'].'" AND employee_id="'.$_SESSION['employee_id'].'"';
+		$sql = 'UPDATE uatme_oa_hr_overtime_apply SET status=3, comment="本人撤销" WHERE id="'.$_POST['id'].'" AND employee_id="'.$_SESSION['employee_id'].'"';
 		if($mysqli->query($sql)){
 			$httpstatus = 200;
 			$msg = '此申请已成功撤销';
 			//delete related task db information
-			$applyType = basicMysqliQuery('uatme_oa_workflow_document_typelv1', ' WHERE name_english="leave.apply" ');
+			$applyType = basicMysqliQuery('uatme_oa_workflow_document_typelv1', ' WHERE name_english="overtime.apply" ');
 			foreach($applyType as $k => $t){
 				$sql = 'UPDATE uatme_oa_workflow_task SET status="3", comment="本人撤销", updated_date="'.date('Y-m-d H:i:s').'" WHERE document_typelv1_id="'.$k.'" AND document_id="'.$_POST['id'].'" AND status IN (0,1)';
 				$mysqli->query($sql);
@@ -115,7 +115,7 @@ switch($A){
 	    $result = $mysqli->query($sql);
 	    //if check ok, go cancel
 	    if($result->num_rows > 0){
-	        $sql = 'UPDATE uatme_oa_hr_leave_apply SET status=4, comment="上级撤销" WHERE id="'.$_POST['id'].'" AND employee_id="'.$_POST['eid'].'"';
+	        $sql = 'UPDATE uatme_oa_hr_overtime_apply SET status=4, comment="上级撤销" WHERE id="'.$_POST['id'].'" AND employee_id="'.$_POST['eid'].'"';
 	        if($mysqli->query($sql)){
 	            $httpstatus = 200;
 	            $msg = '此申请已成功撤销';
@@ -130,7 +130,7 @@ switch($A){
 		sendResponse($httpstatus, $error, $msg);
 		break;*/
 	case 'hr.cancel':
-	    $sql = 'UPDATE uatme_oa_hr_leave_apply SET status=4, comment="上级撤销" WHERE id="'.$_POST['id'].'" AND employee_id="'.$_POST['eid'].'"';
+	    $sql = 'UPDATE uatme_oa_hr_overtime_apply SET status=4, comment="上级撤销" WHERE id="'.$_POST['id'].'" AND employee_id="'.$_POST['eid'].'"';
         if($mysqli->query($sql)){
             $httpstatus = 200;
             $msg = '此申请已成功撤销';
@@ -140,8 +140,8 @@ switch($A){
         }
 		sendResponse($httpstatus, $error, $msg);
 	    break;
-	case 'hr.update.leave.type':
-	    $sql = 'UPDATE uatme_oa_hr_leave_apply SET type="'.$_POST['type'].'" WHERE id="'.$_POST['id'].'" AND employee_id="'.$_POST['eid'].'"';
+	case 'hr.update.overtime.type':
+	    $sql = 'UPDATE uatme_oa_hr_overtime_apply SET type="'.$_POST['type'].'" WHERE id="'.$_POST['id'].'" AND employee_id="'.$_POST['eid'].'"';
         if($mysqli->query($sql)){
             $httpstatus = 200;
             $msg = '更新休假类型已成功';
@@ -162,14 +162,14 @@ switch($A){
 				$assign['employee'][$array['id']] = $array['namezh'].' - '.$array['name'];
 			}
 		}
-		$sql = 'SELECT id,name FROM uatme_oa_hr_leave_type';
+		$sql = 'SELECT id,name FROM uatme_oa_hr_overtime_type';
 		$result = $mysqli->query($sql);
 		if($result->num_rows > 0){
 			while($array = $result->fetch_assoc()){
 				$assign['type'][$array['id']] = $array['name'];
 			}
 		}
-		$sql = 'SELECT * FROM uatme_oa_hr_leave_apply WHERE employee_id="'.$_SESSION['employee_id'].'"';
+		$sql = 'SELECT * FROM uatme_oa_hr_overtime_apply WHERE employee_id="'.$_SESSION['employee_id'].'"';
 		$result = $mysqli->query($sql);
 		if($result->num_rows > 0){
 			while($array = $result->fetch_assoc()){
@@ -181,7 +181,7 @@ switch($A){
 			}
 		}
 		$smarty->assign($assign);
-		$smarty->display('hr/leave.list.html');
+		$smarty->display('hr/overtime.list.html');
 		break;
 	default:
 		

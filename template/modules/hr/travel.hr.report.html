@@ -77,11 +77,18 @@ $(function(){
 		var o = $(this);
 		var id = $(o).attr('i');
 		$(o).parent().after('<tr class="apply"><td class="nonestyle"></td><td class="detail">等待数据载入……</td></tr>');
-		$.post('index.php?m=hr&s=report&a=get.employee.travel',{'id':id},function(data){
+		$.post('index.php?m=hr&s=report&a=hr.get.employee.travel',{'id':id},function(data){
 			var json = eval('(' + data + ')');
 			if(json.httpstatus==200){
 				$('tr.apply').find('td.detail').html(json.msg);
 				$('#alertDiv').dialog('close');
+				$('tr.apply').find('.cancelApply').click(function(){
+				       alertDivPostData({
+				           	postConfirm: '确认要撤销此申请？',
+							postUrl: 'index.php?m=hr&s=travel&a=hr.cancel',
+							postData: {'id':$(this).attr('i'),'eid':$(this).attr('ei')}
+				       })
+				});
 			}else{
 				$('tr.apply').remove();
 				alert(json.error);
