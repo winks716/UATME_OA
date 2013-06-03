@@ -6,13 +6,6 @@
 
 switch($A){
 	case 'apply':
-		$sql = 'SELECT id,name FROM uatme_oa_hr_overtime_type';
-		$result = $mysqli->query($sql);
-		if($result->num_rows > 0){
-			while($array = $result->fetch_assoc()){
-				$assign['overtime'][] = $array; 
-			}
-		}
 		$sql = 'SELECT id,name,namezh FROM uatme_oa_system_employee WHERE ifleave=0 AND ifavailable=1 AND id!=1 ORDER BY name';
 		$result = $mysqli->query($sql);
 		if($result->num_rows > 0){
@@ -25,21 +18,14 @@ switch($A){
 		break;
 	case 'submit':
 		//save apply to db
-		$sql = 'INSERT INTO uatme_oa_hr_overtime_apply(type, start, end, reason, employee_id, alternative_employee_id, copy_employee_id, apply_date) 
-				 VALUES ("'.$_POST['overtimeType'].'", "'.$_POST['overtimeStartDate'].' '.$_POST['overtimeStartTime'].'", "'.$_POST['overtimeEndDate'].' '.$_POST['overtimeEndTime'].'", "'.$_POST['overtimeReason'].'", "'.$_SESSION['employee_id'].'", "'.$_POST['overtimeAlter'].'", "'.$_POST['overtimeAlter'].','.implode(',', $_POST['overtimeCopy']).'", "'.Date('Y-m-d H:i:s').'")';
+		$sql = 'INSERT INTO uatme_oa_hr_overtime_apply(date, period, reason, location, employee_id, copy_employee_id, apply_date) 
+				 VALUES ("'.$_POST['overtimeDate'].'", "'.$_POST['overtimePeriod'].'", "'.$_POST['overtimeReason'].'", "'.$_POST['overtimeLocation'].'", "'.$_SESSION['employee_id'].'", "'.implode(',', $_POST['overtimeCopy']).'", "'.Date('Y-m-d H:i:s').'")';
 		if($mysqli->query($sql)){
 			//init work flow
 			$task = workflowInit($_SESSION['employee_id'], 'overtime.apply', $mysqli->insert_id);
 			//send mail to the first person
 			if($task['executerId'] > 0){
 				//
-				$sql = 'SELECT id,name FROM uatme_oa_hr_overtime_type';
-				$result = $mysqli->query($sql);
-				if($result->num_rows > 0){
-					while($array = $result->fetch_assoc()){
-						$overtimeType[$array['id']] = $array['name']; 
-					}
-				}
 				$sql = 'SELECT id,name,namezh FROM uatme_oa_system_employee';
 				$result = $mysqli->query($sql);
 				if($result->num_rows > 0){
@@ -61,11 +47,11 @@ switch($A){
 											</style>
 											</head>
 											<body>
-											<h3>'.$_SESSION['employee_namezh'].'('.$_SESSION['employee_name'].') 申请休假。</h3><br/>
+											<h3>'.$_SESSION['employee_namezh'].'('.$_SESSION['employee_name'].') 申请加班。</h3><br/>
 											<h4>详情如下</h4>
 											<p><table>
-												<tr><th>假期类型</th><th>休假时间</th><th>指定代办</th><th>事由</th></tr>
-												<tr><td>'.$overtimeType[$_POST["overtimeType"]].'</td><td>'.$_POST['overtimeStartDate'].' '.$_POST['overtimeStartTime'].' 至 '.$_POST['overtimeEndDate'].' '.$_POST['overtimeEndTime'].'</td><td>'.$employee[$_POST['overtimeAlter']]['namezh'].'('.$employee[$_POST['overtimeAlter']]['name'].')</td><td>'.$_POST['overtimeReason'].'</td></tr>
+												<tr><th>日期</th><th>时长</th><th>地点</th><th>事由</th></tr>
+												<tr><td>'.$_POST['overtimeDate'].'</td><td>'.$_POST['overtimePeriod'].'</td><td>'.$_POST['overtimeLocation'].'</td><td>'.$_POST['overtimeReason'].'</td></tr>
 											</table></p>
 											<p><a class="clickbtn" href="'.WEBSERVER.'api/before.approval.php?s=overtime.apply&a=agree&e='.$task['executerId'].'&i='.$task['taskId'].'&k='.$task['authorKey'].'">[同意]</a>
 											&nbsp;&nbsp;&nbsp;&nbsp;<a class="clickbtn" href="'.WEBSERVER.'api/before.approval.php?s=overtime.apply&a=deny&e='.$task['executerId'].'&i='.$task['taskId'].'&k='.$task['authorKey'].'">[拒绝]</a></p>
@@ -74,7 +60,7 @@ switch($A){
 								);
 						mailSendMail($SMTPConfig);
 						$httpstatus = 200;
-						$msg = '假期申请成功！请等待批复结果';
+						$msg = '加班申请成功！请等待批复结果';
 					}
 				}else{
 					$httpstatus = 500;
@@ -147,7 +133,7 @@ switch($A){
             $msg = '更新休假类型已成功';
         }else{
             $httpstatus = 500;
-            $error = '申请撤销：服务器1忙，请稍后再试，谢谢！';
+            $error = '服务器1忙，请稍后再试，谢谢！';
         }
 		sendResponse($httpstatus, $error, $msg);
 		break;
@@ -162,20 +148,11 @@ switch($A){
 				$assign['employee'][$array['id']] = $array['namezh'].' - '.$array['name'];
 			}
 		}
-		$sql = 'SELECT id,name FROM uatme_oa_hr_overtime_type';
-		$result = $mysqli->query($sql);
-		if($result->num_rows > 0){
-			while($array = $result->fetch_assoc()){
-				$assign['type'][$array['id']] = $array['name'];
-			}
-		}
 		$sql = 'SELECT * FROM uatme_oa_hr_overtime_apply WHERE employee_id="'.$_SESSION['employee_id'].'"';
 		$result = $mysqli->query($sql);
 		if($result->num_rows > 0){
 			while($array = $result->fetch_assoc()){
-				$array['type'] = $assign['type'][$array['type']];
 				$array['applyer'] = $assign['employee'][$array['employee_id']];
-				$array['alter'] = $assign['employee'][$array['alternative_employee_id']];
 				$array['statusZH'] = $assign['status'][$array['status']]['namezh'];
 				$assign['apply'][] = $array;
 			}

@@ -147,7 +147,7 @@ switch($A){
             $msg = '更新休假类型已成功';
         }else{
             $httpstatus = 500;
-            $error = '申请撤销：服务器1忙，请稍后再试，谢谢！';
+            $error = '服务器1忙，请稍后再试，谢谢！';
         }
 		sendResponse($httpstatus, $error, $msg);
 		break;

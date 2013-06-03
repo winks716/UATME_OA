@@ -40,7 +40,7 @@ if($result->num_rows == 1){
 					<input type="hidden" name="i" value="'.$_GET['i'].'"/>
 					<input type="hidden" name="e" value="'.$_GET['e'].'"/>
 					<input type="hidden" name="k" value="'.$_GET['k'].'"/>
-					审批备注信息(点击递交后将发送邮件，请耐心等待近12秒，以获得审批结果)
+					审批备注信息(点击递交后将发送邮件，请耐心等待近5秒，以获得审批结果)
 					<br/>
 					<textarea name="comment"></textarea>
 					<br/>
@@ -85,5 +85,5 @@ if($result->num_rows == 1){
 		}
 	}
 }else{//if user is illegal
-	exit('您访问的链接不存在或已失效，请与管理员联系！');
+	exit('<head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"></head><body>您访问的链接不存在或已失效，请与管理员联系！</body></html>');
 }

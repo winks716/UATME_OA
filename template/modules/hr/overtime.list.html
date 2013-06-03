@@ -4,14 +4,14 @@
 <div class="container">
 	<table>
 		<thead>
-			<tr><th>申请人</th><th>假期类型</th><th>起始-结束</th><th>代办</th><th>状态</th><th>操作</th></tr>
+			<tr><th>申请人</th><th>加班日期及时长</th><th>地点</th><th>事由</th><th>状态</th><th>操作</th></tr>
 		</thead>
 		<tbody>
 		<{foreach from=$apply item=a}>
 			<tr><td><{$a.applyer}></td>
-			<td><{$a.type}></td>
-			<td><{$a.start}> ~ <{$a.end}></td>
-			<td><{$a.alter}></td>
+			<td><{$a.date}> &nbsp;&nbsp;<{$a.period}>小时</td>
+			<td><{$a.location}></td>
+			<td><{$a.reason}></td>
 			<td><{$a.statusZH}></td>
 			<td><{if $a.status==0}><span class="clickbtn cancelApply" i="<{$a.id}>">[撤销]<span><{/if}></td></tr>
 		<{/foreach}>
@@ -28,7 +28,7 @@ $(function(){
 
 	$('.cancelApply').click(function(){
 		alertDivPostData({
-			postUrl: 'index.php?m=hr&s=leave&a=applier.cancel',
+			postUrl: 'index.php?m=hr&s=overtime&a=applier.cancel',
 			postData: {id:$(this).attr('i')},
 			postConfirm: '确认撤销此申请？'
 		});
