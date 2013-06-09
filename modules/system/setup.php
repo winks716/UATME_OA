@@ -522,6 +522,27 @@ if($_SESSION['if_system_admin'] == 1){
 			}
 			sendResponse($httpstatus, $error, $msg);
 			break;
+		case 'company.structure.list':
+		    $assign['employee'] = basicMysqliQuery('uatme_oa_system_employee');
+		    foreach($assign['employee'] as $e){
+		        $assign['departMember'][$e['department_id']][] = $e;
+		    }
+		    
+		    $depart1 = basicMysqliQuery('uatme_oa_system_department', ' WHERE parent_id="0" ORDER BY id ');
+		    foreach($depart1 as $k=>$v){
+		        $depart1_id[] = $k;
+		    }
+		    $depart2 = basicMysqliQuery('uatme_oa_system_department', ' WHERE parent_id in ('.implode(',',$depart1_id).') ORDER BY id ');
+		    foreach($depart2 as $k=>$v){
+		        $depart2_id[] = $k;
+		    }
+		    $depart3 = basicMysqliQuery('uatme_oa_system_department', ' WHERE parent_id in ('.implode(',',$depart2_id).') ORDER BY id ');
+		    $assign['depart1'] = $depart1;
+		    $assign['depart2'] = $depart2;
+		    $assign['depart3'] = $depart3;
+			$smarty->assign($assign);
+			$smarty->display('system/company.structure.list.html');
+		    break;
 	}		
 }else{
 	exit('您没有管理权限');

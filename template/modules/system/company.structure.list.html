@@ -1,0 +1,155 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+<style>
+div.departLevel1{width:120px;float:left;margin-left:30px;margin-top:50px;font-weight:bold;}
+div.departLevel2{width:120px;float:left;margin-left:30px;margin-top:50px;font-weight:bold;}
+div.departLevel3{width:120px;float:left;margin-left:30px;margin-top:50px;font-weight:bold;margin-bottom:50px;}
+div.departLevel1:hover{cursor:e-resize;background-color:orange;}
+div.departLevel2:hover{cursor:e-resize;background-color:orange;}
+div.departLevel3:hover{cursor:e-resize;background-color:orange;}
+div.departManager{font-weight:bold;}
+div.departMember{font-weight:bold;}
+div.departMember span.departMember{font-weight:normal;}
+</style>
+
+<{foreach from=$depart1 item=d}>
+<div class="departLevel1" id="<{$d.id}>" p="<{$d.parent_id}>">
+<{$d.name}>
+<div class="departManager clear">负责：<{$employee[$d.manager_employee_id]['namezh']}></div>
+<div class="departMember clear">成员：
+<{foreach from=$departMember[$d.id] item=e}>
+<span class="departMember"><{$e.namezh}></span>
+<{/foreach}>
+</div>
+</div>
+<{/foreach}>
+<div class="clear"></div>
+
+
+<{foreach from=$depart2 item=d}>
+<div class="departLevel2" id="<{$d.id}>" p="<{$d.parent_id}>">
+<{$d.name}>
+<div class="departManager clear">负责：<{$employee[$d.manager_employee_id]['namezh']}></div>
+<div class="departMember clear">成员：
+<{foreach from=$departMember[$d.id] item=e}>
+<span class="departMember"><{$e.namezh}></span>
+<{/foreach}>
+</div>
+</div>
+<{/foreach}>
+<div class="clear"></div>
+
+
+<{foreach from=$depart3 item=d}>
+<div class="departLevel3" id="<{$d.id}>" p="<{$d.parent_id}>">
+<{$d.name}>
+<div class="departManager clear">负责：<{$employee[$d.manager_employee_id]['namezh']}></div>
+<div class="departMember clear">成员：
+<{foreach from=$departMember[$d.id] item=e}>
+<span class="departMember"><{$e.namezh}></span>
+<{/foreach}>
+</div>
+</div>
+<{/foreach}>
+<div class="clear"></div>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>
+
+<script>
+function makedot(x,y,oc,pc){  //画点函数 
+	$('body').append("<div class='connectLineO"+oc+" connectLineP"+pc+"' style='height:2px;position:absolute;left:"+x+"px;top:"+y+"px;width:2px;background:#666666;overflow:hidden'></div>") 
+	}
+
+function line(x1,y1,x2,y2,oc,pc){ 
+	var slope=(y2-y1)/(x2-x1);  //斜率 
+	var diff=x2-x1; 
+	if(x1<x2){ 
+		for(var i=0;i<diff;i=i+4){ 
+			makedot(x1+i,y1+slope*i,oc,pc); 
+		} 
+	}else if(x1>x2){ 
+		for(var i=0;i>diff;i=i-4){ 
+			makedot(x1+i,y1+slope*i,oc,pc); 
+		} 
+	}else{  //画垂直线 
+		var temp=y2-y1; 
+		if(temp>0){ 
+			for(var i=0;i<temp;i=i+4){ 
+				makedot(x1,y1+i,oc,pc); 
+			} 
+		}else{ 
+			for(var i=0;i>temp;i=i-4){ 
+				makedot(x1,y1+i,oc,pc); 
+			} 
+		} 
+	} 
+} 
+
+$(function(){
+	$('div.departLevel1').draggable({ 
+		axis: "x",  
+		start: function() {
+			$('div.connectLineP'+$(this).attr('id')).remove();
+		},
+		stop: function() {
+			$('div.departLevel2[p="'+$(this).attr('id')+'"]').each(function(){
+				var o = $(this);
+				var p = $('div.departLevel1[id="'+$(this).attr('p')+'"]');
+				var offset = o.offset();
+				var offsetParent = p.offset();
+				line(offset.left,offset.top,offsetParent.left+60,offsetParent.top+p.height(),o.attr('id'),p.attr('id'));
+			})
+		}
+	});
+	$('div.departLevel2').draggable({ 
+		axis: "x",  
+		start: function() {
+			$('div.connectLineP'+$(this).attr('id')).remove();
+			$('div.connectLineO'+$(this).attr('id')).remove();
+		},
+		stop: function() {
+			$('div.departLevel3[p="'+$(this).attr('id')+'"]').each(function(){
+				var o = $(this);
+				var p = $('div.departLevel2[id="'+$(this).attr('p')+'"]');
+				var offset = o.offset();
+				var offsetParent = p.offset();
+				line(offset.left,offset.top,offsetParent.left+60,offsetParent.top+p.height(),o.attr('id'),p.attr('id'));
+			})
+			var o = $(this);
+			var p = $('div.departLevel1[id="'+$(this).attr('p')+'"]');
+			var offset = o.offset();
+			var offsetParent = p.offset();
+			line(offset.left,offset.top,offsetParent.left+60,offsetParent.top+p.height(),o.attr('id'),p.attr('id'));
+		}
+	});
+	$('div.departLevel3').draggable({ 
+		axis: "x",  
+		start: function() {
+			$('div.connectLineO'+$(this).attr('id')).remove();
+		},
+		stop: function() {
+			var o = $(this);
+			var p = $('div.departLevel2[id="'+$(this).attr('p')+'"]');
+			var offset = o.offset();
+			var offsetParent = p.offset();
+			line(offset.left,offset.top,offsetParent.left+60,offsetParent.top+p.height(),o.attr('id'),p.attr('id'));
+		}
+	});
+	$('div.departLevel2').each(function(){
+		var o = $(this);
+		var p = $('div.departLevel1[id="'+$(this).attr('p')+'"]');
+		var offset = o.offset();
+		var offsetParent = p.offset();
+		line(offset.left,offset.top,offsetParent.left+60,offsetParent.top+p.height(),o.attr('id'),p.attr('id'));
+	})
+	$('div.departLevel3').each(function(){
+		var o = $(this);
+		var p = $('div.departLevel2[id="'+$(this).attr('p')+'"]');
+		var offset = o.offset();
+		var offsetParent = p.offset();
+		line(offset.left,offset.top,offsetParent.left+60,offsetParent.top+p.height(),o.attr('id'),p.attr('id'));
+	})
+})
+</script>
