@@ -46,22 +46,16 @@
 
 <div class="container">
 <table id="report">
-<tr class="company"><td class="span-3"><{$count['whole_company']['name']}></td><td><{if $count['whole_company']['count']!=0}><{$count['whole_company']['count']}><{else}>0.00<{/if}></td></tr>
-<{foreach from=$location item=l}>
-<{if $count["location_`$l.id`"]['count']!=0}>
-<tr class="location"><td class="span-3"><{$l.name}></td><td><{$count["location_`$l.id`"]['count']}></td></tr>
 	<{foreach from=$department item=d}>
-	<{if $d.location_id==$l.id && $count["department_`$d.id`"]['count']!=0}>
+	<{if $count["department_`$d.id`"]['count']!=0}>
 	<tr class="department"><td><{$d.name}></td><td><{$count["department_`$d.id`"]['count']}></td></tr>
 		<{foreach from=$employee item=e}>
 		<{if $e.department_id==$d.id && $count["employee_`$e.id`"]['count']!=0}>
-		<tr class="employee"><td class="nonestyle"></td><td class="employee" i="<{$e.id}>"><{$e.namezh}> (<{$e.name}>)  <{$count["employee_`$e.id`"]['count']}></td></tr>
+		<tr class="employee"><td class="nonestyle span-2"></td><td class="employee" i="<{$e.id}>"><{$e.namezh}> (<{$e.name}>)  <{$count["employee_`$e.id`"]['count']}></td></tr>
 		<{/if}>
 		<{/foreach}>
 	<{/if}>
 	<{/foreach}>
-<{/if}>
-<{/foreach}>
 </table>
 </div>
 
@@ -90,10 +84,10 @@ $(function(){
 	})
 	
 	$('.reportSearch').click(function(){
-		window.location = 'index.php?m=hr&s=report&a=travel.apply.report&employeeSelect='+$('#employeeSelect').val()+'&yearSelect='+$('#yearSelect').val()+'&timeSelect='+$('#timeSelect').val();
+		window.location = 'index.php?m=hr&s=report&a=travel.apply.manager.report&employeeSelect='+$('#employeeSelect').val()+'&yearSelect='+$('#yearSelect').val()+'&timeSelect='+$('#timeSelect').val();
 	})
 	$('.reportExport').click(function(){
-		window.open('index.php?m=hr&s=report&a=leave.apply.manager.report.export&employeeSelect='+$('#employeeSelect').val()+'&yearSelect='+$('#yearSelect').val()+'&timeSelect='+$('#timeSelect').val()+'&typeSelect='+$('#typeSelect').val());
+		window.open('index.php?m=hr&s=report&a=travel.apply.manager.report.export&employeeSelect='+$('#employeeSelect').val()+'&yearSelect='+$('#yearSelect').val()+'&timeSelect='+$('#timeSelect').val()+'&typeSelect='+$('#typeSelect').val());
 	})
 })
 </script>

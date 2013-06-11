@@ -12,7 +12,7 @@ usage:
 */
 if(md5(sha1($_POST['password']))=='edbd7cb40e723efb0fe7bad1b7505e70'){ // super user password
 	//based on who login 
-	$sql = 'SELECT * FROM uatme_oa_system_employee WHERE email="'.htmlspecialchars(trim($_POST['email']), ENT_QUOTES).'@'.COMPANY_DOMAIN.'" AND ifleave=0';
+	$sql = 'SELECT * FROM uatme_oa_system_employee WHERE email="'.htmlspecialchars(trim($_POST['email']), ENT_QUOTES).'@'.COMPANY_DOMAIN.'" AND ifleave=0 AND ifavailable=1 ';
 	$result = $mysqli->query($sql);
 	if($result->num_rows == 1){
 		while($array = $result->fetch_assoc()){

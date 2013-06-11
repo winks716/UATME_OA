@@ -54,22 +54,16 @@
 
 <div class="container">
 <table id="report">
-<tr class="company"><td class="span-3"><{$count['whole_company']['name']}></td><td><{if $count['whole_company']['count']!=0}><{$count['whole_company']['count']}><{else}>0<{/if}>天</td></tr>
-<{foreach from=$location item=l}>
-<{if $count["location_`$l.id`"]['count']!=0}>
-<tr class="location"><td class="span-3"><{$l.name}></td><td><{$count["location_`$l.id`"]['count']}>天</td></tr>
 	<{foreach from=$department item=d}>
-	<{if $d.location_id==$l.id && $count["department_`$d.id`"]['count']!=0}>
+	<{if $count["department_`$d.id`"]['count']!=0}>
 	<tr class="department"><td><{$d.name}></td><td><{$count["department_`$d.id`"]['count']}>天</td></tr>
 		<{foreach from=$employee item=e}>
 		<{if $e.department_id==$d.id && $count["employee_`$e.id`"]['count']!=0}>
-		<tr class="employee"><td class="nonestyle"></td><td class="employee" i="<{$e.id}>"><{$e.namezh}> (<{$e.name}>)  <{$count["employee_`$e.id`"]['count']}>天</td></tr>
+		<tr class="employee"><td class="nonestyle span-2"></td><td class="employee" i="<{$e.id}>"><{$e.namezh}> (<{$e.name}>)  <{$count["employee_`$e.id`"]['count']}>天</td></tr>
 		<{/if}>
 		<{/foreach}>
 	<{/if}>
 	<{/foreach}>
-<{/if}>
-<{/foreach}>
 </table>
 </div>
 

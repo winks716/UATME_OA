@@ -89,6 +89,8 @@ switch($A){
 		$location = basicMysqliQuery('uatme_oa_system_location');
 		//get department
 		$department = basicMysqliQuery('uatme_oa_system_department','WHERE manager_employee_id="'.$_SESSION['employee_id'].'"');
+		$department = getOwnedDepartment($department);
+
 		foreach($department as $d){
 			$departmentarray[] = $d['id'];
 		}
@@ -136,12 +138,13 @@ switch($A){
 				$apply[] = $array;
 				if($array['status']==0 or $array['status']==1){
 					$daynumber = caculateDay($array['start'], $array['end']);
+					//echo 'department_'.$employee[$array['employee_id']]['department_id'].'::'.$department[$employee[$array['employee_id']]['department_id']]['name'].'::'.$daynumber['day'].'----';
 					//whole company
-					$count['whole_company']+=$daynumber['day'];
-					$assign['count']['whole_company'] = array('name'=>'全公司', 'count'=>$count['whole_company']);
+					//$count['whole_company']+=$daynumber['day'];
+					//$assign['count']['whole_company'] = array('name'=>'全公司', 'count'=>$count['whole_company']);
 					//location
-					$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]+=$daynumber['day'];
-					$assign['count']['location_'.$department[$employee[$array['employee_id']]['department_id']]['location_id']] = array('name'=>$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name'], 'count'=>$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]);
+					//$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]+=$daynumber['day'];
+					//$assign['count']['location_'.$department[$employee[$array['employee_id']]['department_id']]['location_id']] = array('name'=>$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name'], 'count'=>$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]);
 					//department
 					$count[$department[$employee[$array['employee_id']]['department_id']]['name']]+=$daynumber['day'];
 					$assign['count']['department_'.$employee[$array['employee_id']]['department_id']] = array('name'=>$department[$employee[$array['employee_id']]['department_id']]['name'], 'count'=>$count[$department[$employee[$array['employee_id']]['department_id']]['name']]);
@@ -151,7 +154,7 @@ switch($A){
 				}
 			}
 		}
-		$assign['location'] = $location;
+		//$assign['location'] = $location;
 		$assign['department'] = $department;
 		$assign['employee'] = $employee;
 		$assign['type'] = $type;
@@ -163,6 +166,8 @@ switch($A){
 		$location = basicMysqliQuery('uatme_oa_system_location');
 		//get department
 		$department = basicMysqliQuery('uatme_oa_system_department','WHERE manager_employee_id="'.$_SESSION['employee_id'].'"');
+		$department = getOwnedDepartment($department);
+		
 		foreach($department as $d){
 			$departmentarray[] = $d['id'];
 		}
@@ -205,27 +210,46 @@ switch($A){
 		//get leave apply
 		$sql = 'SELECT * FROM uatme_oa_hr_leave_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$typesql.$employeesql.$employeesql2;
 		$result = $mysqli->query($sql);
-		if($result->num_rows > 0){
-			while($array = $result->fetch_assoc()){
-				$apply[] = $array;
-				if($array['status']==0 or $array['status']==1){
-					$daynumber = caculateDay($array['start'], $array['end']);
-					//employee
-					$count[$employee[$array['employee_id']]['namezh']]+=$daynumber['day'];
-				}
-			}
-		}
-		$properties = array('filename'=>'已用'.$type[$assign['typeSelect']]['name']);
+		
+		
+		//INIT EXCEL title, attribute, etc.
+		$properties = array('filename'=>'已用休假('.$type[$assign['typeSelect']]['name'].')报表');
 		$data = array(
-					array(
-						'title'=>'已用'.$type[$assign['typeSelect']]['name'],
-						'data'=>array()
-					)
-				);
-		$data[0]['data'][] = array($type[$assign['typeSelect']]['name'].'报表('.$yearsql.')');
-		$data[0]['data'][] = array('姓名', '已用'.$type[$assign['typeSelect']]['name'].'（天）');
+		        array(
+		                'title'=>'休假申请',
+		                'data'=>array()
+		        ),
+		        array(
+		                'title'=>'已用休假('.$type[$assign['typeSelect']]['name'].')合计',
+		                'data'=>array()
+		        )
+		);
+		$data[0]['data'][] = array('('.$type[$assign['typeSelect']]['name'].')休假申请报表('.$yearsql.')');
+		$data[0]['data'][] = array('姓名', '开始日期', '结束日期','事由', '指定代办', '审批结果');
+		$data[1]['data'][] = array('已用休假('.$type[$assign['typeSelect']]['name'].')合计报表('.$yearsql.')');
+		$data[1]['data'][] = array('姓名', '合计(天)');
+		
+		if($result->num_rows > 0){
+		    while($array = $result->fetch_assoc()){
+		        $data[0]['data'][] = array(
+		                $employee[$array['employee_id']]['namezh'].' ('.$employee[$array['employee_id']]['name'].') ',
+		                $array['start'],
+		                $array['end'],
+		                $array['reason'],
+		                $employee[$array['alternative_employee_id']],
+		                $status[$array['status']]['namezh']
+		        );
+		
+		        if($array['status']==0 or $array['status']==1){
+		            $daynumber = caculateDay($array['start'], $array['end']);
+		            //employee
+		            $count[$employee[$array['employee_id']]['namezh']]+=$daynumber['day'];
+		        }
+		    }
+		}
+		
 		foreach($count as $k => $v){
-			$data[0]['data'][] = array($k, $v);
+		    $data[1]['data'][] = array($k, $v);
 		}
 		//print_r($count);
 		//print_r($data);
@@ -402,9 +426,37 @@ switch($A){
 		//get leave apply
 		$sql = 'SELECT * FROM uatme_oa_hr_leave_apply WHERE (start '.$yearsql.') AND (end '.$yearsql.')'.$typesql.$employeesql;
 		$result = $mysqli->query($sql);
+		
+		
+		
+		//INIT EXCEL title, attribute, etc.
+		$properties = array('filename'=>'已用休假('.$type[$assign['typeSelect']]['name'].')报表');
+		$data = array(
+		        array(
+		                'title'=>'休假申请',
+		                'data'=>array()
+		        ),
+		        array(
+		                'title'=>'已用休假('.$type[$assign['typeSelect']]['name'].')合计',
+		                'data'=>array()
+		        )
+		);
+		$data[0]['data'][] = array('('.$type[$assign['typeSelect']]['name'].')休假申请报表('.$yearsql.')');
+		$data[0]['data'][] = array('姓名', '开始日期', '结束日期','事由', '指定代办', '审批结果');
+		$data[1]['data'][] = array('已用休假('.$type[$assign['typeSelect']]['name'].')合计报表('.$yearsql.')');
+		$data[1]['data'][] = array('姓名', '合计(天)');
+		
 		if($result->num_rows > 0){
-			while($array = $result->fetch_assoc()){
-				$apply[] = $array;
+		    while($array = $result->fetch_assoc()){
+		        $data[0]['data'][] = array(
+		                $employee[$array['employee_id']]['namezh'].' ('.$employee[$array['employee_id']]['name'].') ',
+		                $array['start'],
+		                $array['end'],
+		                $array['reason'],
+		                $employee[$array['alternative_employee_id']],
+		                $status[$array['status']]['namezh']
+		        );
+		        
 				if($array['status']==0 or $array['status']==1){
 					$daynumber = caculateDay($array['start'], $array['end']);
 					//employee
@@ -412,17 +464,9 @@ switch($A){
 				}
 			}
 		}
-		$properties = array('filename'=>'已用'.$type[$assign['typeSelect']]['name']);
-		$data = array(
-					array(
-						'title'=>'已用'.$type[$assign['typeSelect']]['name'],
-						'data'=>array()
-					)
-				);
-		$data[0]['data'][] = array($type[$assign['typeSelect']]['name'].'报表('.$yearsql.')');
-		$data[0]['data'][] = array('姓名', '已用'.$type[$assign['typeSelect']]['name'].'（天）');
+		
 		foreach($count as $k => $v){
-			$data[0]['data'][] = array($k, $v);
+			$data[1]['data'][] = array($k, $v);
 		}
 		//print_r($count);
 		//print_r($data);
@@ -433,6 +477,8 @@ switch($A){
 		$location = basicMysqliQuery('uatme_oa_system_location');
 		//get department
 		$department = basicMysqliQuery('uatme_oa_system_department','WHERE manager_employee_id="'.$_SESSION['employee_id'].'"');
+		$department = getOwnedDepartment($department);
+		
 		foreach($department as $d){
 			$departmentarray[] = $d['id'];
 		}
@@ -476,11 +522,11 @@ switch($A){
 				$apply[] = $array;
 				if($array['status']==0 or $array['status']==1){
 					//whole company
-					$count['whole_company']+=$array['expense'];
-					$assign['count']['whole_company'] = array('name'=>'全公司','count'=>number_format($count['whole_company'],2));
+					//$count['whole_company']+=$array['expense'];
+					//$assign['count']['whole_company'] = array('name'=>'全公司','count'=>number_format($count['whole_company'],2));
 					//location
-					$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]+=$array['expense'];
-					$assign['count']['location_'.$department[$employee[$array['employee_id']]['department_id']]['location_id']] = array('name'=>$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name'], 'count'=>number_format($count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']],2));
+					//$count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']]+=$array['expense'];
+					//$assign['count']['location_'.$department[$employee[$array['employee_id']]['department_id']]['location_id']] = array('name'=>$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name'], 'count'=>number_format($count[$location[$department[$employee[$array['employee_id']]['department_id']]['location_id']]['name']],2));
 					//department
 					$count[$department[$employee[$array['employee_id']]['department_id']]['name']]+=$array['expense'];
 					$assign['count']['department_'.$employee[$array['employee_id']]['department_id']] = array('name'=>$department[$employee[$array['employee_id']]['department_id']]['name'], 'count'=>number_format($count[$department[$employee[$array['employee_id']]['department_id']]['name']],2));
@@ -490,7 +536,7 @@ switch($A){
 				}
 			}
 		}
-		$assign['location'] = $location;
+		//$assign['location'] = $location;
 		$assign['department'] = $department;
 		$assign['employee'] = $employee;
 		$smarty->assign($assign);
@@ -501,6 +547,8 @@ switch($A){
 		$location = basicMysqliQuery('uatme_oa_system_location');
 		//get department
 		$department = basicMysqliQuery('uatme_oa_system_department','WHERE manager_employee_id="'.$_SESSION['employee_id'].'"');
+		$department = getOwnedDepartment($department);
+		
 		foreach($department as $d){
 			$departmentarray[] = $d['id'];
 		}
@@ -553,7 +601,7 @@ switch($A){
 				)
 		);
 		$data[0]['data'][] = array('差旅申请报表('.$yearsql.')');
-		$data[0]['data'][] = array('姓名', '目的地', '时间', '事由', '指定代办', '费用预估');
+		$data[0]['data'][] = array('姓名', '目的地', '时间', '事由', '指定代办', '费用预估', '审批结果');
 		$data[1]['data'][] = array('差旅申请费用预估合计报表('.$yearsql.')');
 		$data[1]['data'][] = array('姓名', '费用预估合计');
 		
@@ -565,13 +613,14 @@ switch($A){
 										$array['start'].'~'.$array['end'],
 										$array['reason'],
 										$employee[$array['alternative_employee_id']],
-										number_format($array['expense'],2)
+										$array['expense'],
+				                        $status[$array['status']]['namezh']
 						);
 				if($array['status']==0 or $array['status']==1){
 					//employee
 					$data[1]['data'][$array['employee_id']] = array(
 																$employee[$array['employee_id']]['namezh'].' ('.$employee[$array['employee_id']]['name'].') ',
-																number_format($data[1]['data'][$array['employee_id']][1]+$array['expense'],2)
+																$data[1]['data'][$array['employee_id']][1]+$array['expense']
 							);
 				}
 			}
@@ -749,7 +798,7 @@ switch($A){
 				)
 		);
 		$data[0]['data'][] = array('差旅申请报表('.$yearsql.')');
-		$data[0]['data'][] = array('姓名', '目的地', '时间', '事由', '指定代办', '费用预估');
+		$data[0]['data'][] = array('姓名', '目的地', '时间', '事由', '指定代办', '费用预估', '审批结果');
 		$data[1]['data'][] = array('差旅申请费用预估合计报表('.$yearsql.')');
 		$data[1]['data'][] = array('姓名', '费用预估合计');
 		
@@ -761,13 +810,14 @@ switch($A){
 										$array['start'].'~'.$array['end'],
 										$array['reason'],
 										$employee[$array['alternative_employee_id']],
-										number_format($array['expense'],2)
+										$array['expense'],
+				                        $status[$array['status']]
 						);
 				if($array['status']==0 or $array['status']==1){
 					//employee
 					$data[1]['data'][$array['employee_id']] = array(
 																$employee[$array['employee_id']]['namezh'].' ('.$employee[$array['employee_id']]['name'].') ',
-																number_format($data[1]['data'][$array['employee_id']][1]+$array['expense'],2)
+																$data[1]['data'][$array['employee_id']][1]+$array['expense']
 							);
 				}
 			}
