@@ -258,3 +258,16 @@ function downloadExcel($properties = array(), $data = array()){
 
 	exit;
 }
+
+//get owned department information for one person recursively
+function getOwnedDepartment($depart = array()){
+    $departId = array();
+    foreach($depart as $k=>$d){
+        $departId[] = $k;
+    }
+    $result = basicMysqliQuery('uatme_oa_system_department', ' WHERE parent_id IN ('.implode(',',$departId).') ');
+    if(count($result) > 0){
+        $depart = array_merge($depart, getOwnedDepartment($result));
+    }
+    return $depart;
+}
