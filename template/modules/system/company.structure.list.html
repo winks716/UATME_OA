@@ -2,12 +2,12 @@
 <{include file="topnav.html"}>
 
 <style>
-div.departLevel1{width:120px;float:left;margin-left:30px;margin-top:50px;font-weight:bold;}
-div.departLevel2{width:120px;float:left;margin-left:30px;margin-top:50px;font-weight:bold;}
-div.departLevel3{width:120px;float:left;margin-left:30px;margin-top:50px;font-weight:bold;margin-bottom:50px;}
-div.departLevel1:hover{cursor:e-resize;background-color:orange;}
-div.departLevel2:hover{cursor:e-resize;background-color:orange;}
-div.departLevel3:hover{cursor:e-resize;background-color:orange;}
+div.departLevel1{border:solid 1px orange;background-color:yellow;top:50px;width:120px;float:left;margin-left:30px;font-weight:bold;}
+div.departLevel2{border:solid 1px orange;background-color:yellow;top:200px;width:120px;float:left;margin-left:30px;font-weight:bold;}
+div.departLevel3{border:solid 1px orange;background-color:yellow;top:350px;width:120px;float:left;margin-left:30px;font-weight:bold;}
+div.departLevel1:hover{cursor:move;background-color:orange;}
+div.departLevel2:hover{cursor:move;background-color:orange;}
+div.departLevel3:hover{cursor:move;background-color:orange;}
 div.departManager{font-weight:bold;}
 div.departMember{font-weight:bold;}
 div.departMember span.departMember{font-weight:normal;}
@@ -87,9 +87,43 @@ function line(x1,y1,x2,y2,oc,pc){
 	} 
 } 
 
+function getXY(o, p){
+	var nodeWidth = 120;//假设节点框宽120px
+	var offset = o.offset();
+	var offsetParent = p.offset();
+	var ox = offset.left;
+	var oy = offset.top;
+	var px = offsetParent.left;
+	var py = offsetParent.top;
+	if(oy>(py+p.height())){//子元素位于母元素完全下方，子顶母底
+		ox += nodeWidth/2;
+		px += nodeWidth/2;
+		py += p.height();
+	}else{
+		if((oy+o.height())<py){//子元素位于母元素完全上方，子底母顶
+			oy += o.height();
+			ox += nodeWidth/2;
+			px += nodeWidth/2;
+		}else{//子元素位于母元素中间，子中母中
+			//分情况讨论左右
+			if((ox+nodeWidth)<px){//子元素完全在母元素左方，子右母左
+				ox += nodeWidth;
+			}else{
+				if(ox>(px+nodeWidth)){//子元素完全在母元素右方，子左母右
+					px += nodeWidth;
+				}else{//子元素与母元素相交，子左母左
+				
+				}
+			}
+			oy += o.height()/2;
+			py += p.height()/2;
+		}
+	}
+	line(ox,oy,px,py,o.attr('id'),p.attr('id'));
+}
+
 $(function(){
-	$('div.departLevel1').draggable({ 
-		axis: "x",  
+	$('div.departLevel1').draggable({   
 		start: function() {
 			$('div.connectLineP'+$(this).attr('id')).remove();
 		},
@@ -97,14 +131,11 @@ $(function(){
 			$('div.departLevel2[p="'+$(this).attr('id')+'"]').each(function(){
 				var o = $(this);
 				var p = $('div.departLevel1[id="'+$(this).attr('p')+'"]');
-				var offset = o.offset();
-				var offsetParent = p.offset();
-				line(offset.left,offset.top,offsetParent.left+60,offsetParent.top+p.height(),o.attr('id'),p.attr('id'));
+				getXY(o,p);
 			})
 		}
 	});
-	$('div.departLevel2').draggable({ 
-		axis: "x",  
+	$('div.departLevel2').draggable({  
 		start: function() {
 			$('div.connectLineP'+$(this).attr('id')).remove();
 			$('div.connectLineO'+$(this).attr('id')).remove();
@@ -113,43 +144,32 @@ $(function(){
 			$('div.departLevel3[p="'+$(this).attr('id')+'"]').each(function(){
 				var o = $(this);
 				var p = $('div.departLevel2[id="'+$(this).attr('p')+'"]');
-				var offset = o.offset();
-				var offsetParent = p.offset();
-				line(offset.left,offset.top,offsetParent.left+60,offsetParent.top+p.height(),o.attr('id'),p.attr('id'));
+				getXY(o,p);
 			})
 			var o = $(this);
 			var p = $('div.departLevel1[id="'+$(this).attr('p')+'"]');
-			var offset = o.offset();
-			var offsetParent = p.offset();
-			line(offset.left,offset.top,offsetParent.left+60,offsetParent.top+p.height(),o.attr('id'),p.attr('id'));
+			getXY(o,p);
 		}
 	});
-	$('div.departLevel3').draggable({ 
-		axis: "x",  
+	$('div.departLevel3').draggable({  
 		start: function() {
 			$('div.connectLineO'+$(this).attr('id')).remove();
 		},
 		stop: function() {
 			var o = $(this);
 			var p = $('div.departLevel2[id="'+$(this).attr('p')+'"]');
-			var offset = o.offset();
-			var offsetParent = p.offset();
-			line(offset.left,offset.top,offsetParent.left+60,offsetParent.top+p.height(),o.attr('id'),p.attr('id'));
+			getXY(o,p);
 		}
 	});
 	$('div.departLevel2').each(function(){
 		var o = $(this);
 		var p = $('div.departLevel1[id="'+$(this).attr('p')+'"]');
-		var offset = o.offset();
-		var offsetParent = p.offset();
-		line(offset.left,offset.top,offsetParent.left+60,offsetParent.top+p.height(),o.attr('id'),p.attr('id'));
+		getXY(o,p);
 	})
 	$('div.departLevel3').each(function(){
 		var o = $(this);
 		var p = $('div.departLevel2[id="'+$(this).attr('p')+'"]');
-		var offset = o.offset();
-		var offsetParent = p.offset();
-		line(offset.left,offset.top,offsetParent.left+60,offsetParent.top+p.height(),o.attr('id'),p.attr('id'));
+		getXY(o,p);
 	})
 })
 </script>
