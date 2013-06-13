@@ -826,4 +826,28 @@ switch($A){
 		//print_r($data);
 		downloadExcel($properties, $data);
 		break;
+	case 'get.employee.overtime':
+	    
+	    break;
+	case 'hr.get.employee.overtime':
+	    
+	    break;
+	case 'overtime.apply.report':
+	    
+	    break;
+	case 'overtime.apply.report.export':
+	
+	    break;
+	case 'overtime.apply.manager.report':
+	    
+	    break;
+	case 'overtime.apply.manager.report.export':
+	    
+	    break;
+	case 'overtime.apply.hr.report':
+	    
+	    break;
+	case 'overtime.apply.hr.report.export':
+	    
+	    break;
 }
