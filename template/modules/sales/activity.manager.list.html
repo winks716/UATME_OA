@@ -15,11 +15,11 @@ tr.activityAfterwards td{
 <div class="container">
 	<strong>活动历史</strong> &nbsp;
 	<input type="hidden" id="selectedDay"/> &nbsp;&nbsp;&nbsp;&nbsp;
-	日期跨度：<{$selectedPeriod}>
+	日期跨度：<{$selectedPeriod}>&nbsp;&nbsp;&nbsp;&nbsp;<span class="clickbtn reportExport">[导出报表]</span>
 	<table class="span-24">
 		<thead>
 			<tr>
-            <th>销售</th>
+            <th class="span-2">销售</th>
             <th>日期</th>
 			<th>开始</th>
 			<th>结束</th>
@@ -58,4 +58,8 @@ $('#selectedDay').datepicker({
 	 }
 });
 $('.ui-datepicker-trigger').css({cursor:'pointer',height:'25px',width:'25px'});
+
+$('.reportExport').click(function(){
+	window.open('index.php?m=sales&s=activity&a=manager.list.export&selectedDate='+$('#selectedDay').val());
+})
 </script>

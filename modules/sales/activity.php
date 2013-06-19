@@ -126,6 +126,58 @@ switch($A){
 		$smarty->assign($assign);
 		$smarty->display('sales/activity.manager.list.html');
 	    break;
+	case 'manager.list.export':
+	    //get selected date and caculate the week including the date
+	    $selectedDate = $_GET['selectedDate']!='' ? $_GET['selectedDate'] : date('Y-n-j');
+	    $assign['selectedDate'] = $selectedDate;
+	    $selectedDateArray = explode('-', $selectedDate);
+	    $selectedYear = $selectedDateArray[0];
+	    $selectedMonth = $selectedDateArray[1];
+	    $selectedDay = $selectedDateArray[2];
+	    $selectedUTCStamp = mktime(0,0,0,$selectedMonth, $selectedDay, $selectedYear); 
+		$minday = Date('Y-m-d',($selectedUTCStamp-Date('w', $selectedUTCStamp)*24*3600));
+		$maxday = Date('Y-m-d',($selectedUTCStamp+(6-Date('w', $selectedUTCStamp))*24*3600));
+	    $wherePeriod = ' AND (date BETWEEN "'.$minday.'" AND "'.$maxday.'") ';
+	    $assign['selectedPeriod'] = $minday . ' ~ ' . $maxday;
+	    //echo $wherePeriod;    
+	    
+	    $department = basicMysqliQuery('uatme_oa_system_department');
+	    $assign['customer'] = basicMysqliQuery('uatme_oa_sales_customer', ' WHERE ifavailable="1"');
+	    $assign['employee'] = basicMysqliQuery('uatme_oa_system_employee', ' WHERE ifavailable="1"');
+	    $myId = $_SESSION['employee_id'];
+	    $myEmployeeId = getMyEmployee($myId);
+	    foreach($myEmployeeId as $d=>$e){
+	        $activity[$d]['department_name'] = $department[$d]['name'];
+	        $activity[$d]['department_id'] = $d;
+	        $activity[$d]['activity'] = basicMysqliQuery('uatme_oa_sales_activity', ' WHERE employee_id IN ('.implode(',',$e).') '.$wherePeriod.' ORDER BY employee_id ASC, date DESC');
+	    }
+	    
+	    //INIT EXCEL title, attribute, etc.
+	    $properties = array('filename'=>'销售日志报表');
+	    $data = array(
+	    		array(
+	    				'title'=>'销售日志',
+	    				'data'=>array()
+	    		)
+	    );
+	    $data[0]['data'][] = array('销售日志报表('.$assign['selectedPeriod'].')');
+	    $data[0]['data'][] = array('姓名', '日期', '时间', '客户', '详情');
+	    
+    	foreach($activity as $v){
+    	    foreach($v['activity'] as $a){
+        		$data[0]['data'][] = array(
+        				$assign['employee'][$a['employee_id']]['namezh'].' ('.$assign['employee'][$a['employee_id']]['name'].') ',
+        				$a['date'],
+        				$a['start'].'~'.$a['end'],
+        				$assign['customer'][$a['customer_id']]['name'],
+        				$a['detail']
+        		);
+    	    }
+    	}
+	    //print_r($count);
+	    //print_r($data);
+	    downloadExcel($properties, $data);
+	    break;
 	case 'global.list':
 	    //get selected date and caculate the week including the date
 	    $selectedDate = $_GET['selectedDate']!='' ? $_GET['selectedDate'] : date('Y-n-j');
@@ -154,6 +206,50 @@ switch($A){
 	    //print_r($activity);
 		$smarty->assign($assign);
 		$smarty->display('sales/activity.global.list.html');
+	    break;
+	case 'global.list.export':
+	    //get selected date and caculate the week including the date
+	    $selectedDate = $_GET['selectedDate']!='' ? $_GET['selectedDate'] : date('Y-n-j');
+	    $assign['selectedDate'] = $selectedDate;
+	    $selectedDateArray = explode('-', $selectedDate);
+	    $selectedYear = $selectedDateArray[0];
+	    $selectedMonth = $selectedDateArray[1];
+	    $selectedDay = $selectedDateArray[2];
+	    $selectedUTCStamp = mktime(0,0,0,$selectedMonth, $selectedDay, $selectedYear); 
+		$minday = Date('Y-m-d',($selectedUTCStamp-Date('w', $selectedUTCStamp)*24*3600));
+		$maxday = Date('Y-m-d',($selectedUTCStamp+(6-Date('w', $selectedUTCStamp))*24*3600));
+	    $wherePeriod = ' AND (date BETWEEN "'.$minday.'" AND "'.$maxday.'") ';
+	    $assign['selectedPeriod'] = $minday . ' ~ ' . $maxday;
+	    //echo $wherePeriod;	
+	    
+	    $department = basicMysqliQuery('uatme_oa_system_department');
+	    $assign['customer'] = basicMysqliQuery('uatme_oa_sales_customer', ' WHERE ifavailable="1"');
+	    $assign['employee'] = basicMysqliQuery('uatme_oa_system_employee', ' WHERE ifavailable="1"');
+	    $activity = basicMysqliQuery('uatme_oa_sales_activity',  ' WHERE 1'.$wherePeriod.' ORDER BY employee_id ASC, date DESC');
+	    
+	    //INIT EXCEL title, attribute, etc.
+	    $properties = array('filename'=>'销售日志报表');
+	    $data = array(
+	    		array(
+	    				'title'=>'销售日志',
+	    				'data'=>array()
+	    		)
+	    );
+	    $data[0]['data'][] = array('销售日志报表('.$assign['selectedPeriod'].')');
+	    $data[0]['data'][] = array('姓名', '日期', '时间', '客户', '详情');
+	    
+    	foreach($activity as $a){
+    		$data[0]['data'][] = array(
+    				$assign['employee'][$a['employee_id']]['namezh'].' ('.$assign['employee'][$a['employee_id']]['name'].') ',
+    				$a['date'],
+    				$a['start'].'~'.$a['end'],
+    				$assign['customer'][$a['customer_id']]['name'],
+    				$a['detail']
+    		);
+    	}
+	    //print_r($count);
+	    //print_r($data);
+	    downloadExcel($properties, $data);
 	    break;
 	case 'self.list':
 	    //get selected date and caculate the week including the date
@@ -188,6 +284,48 @@ switch($A){
 	    //print_r($activity);
 		$smarty->assign($assign);
 		$smarty->display('sales/activity.self.list.html');
+	    break;
+	case 'self.list.export':
+	    //get selected date and caculate the week including the date
+	    $selectedDate = $_GET['selectedDate']!='' ? $_GET['selectedDate'] : date('Y-n-j');
+	    $assign['selectedDate'] = $selectedDate;
+	    $selectedDateArray = explode('-', $selectedDate);
+	    $selectedYear = $selectedDateArray[0];
+	    $selectedMonth = $selectedDateArray[1];
+	    $selectedDay = $selectedDateArray[2];
+	    $selectedUTCStamp = mktime(0,0,0,$selectedMonth, $selectedDay, $selectedYear); 
+		$minday = Date('Y-m-d',($selectedUTCStamp-Date('w', $selectedUTCStamp)*24*3600));
+		$maxday = Date('Y-m-d',($selectedUTCStamp+(6-Date('w', $selectedUTCStamp))*24*3600));
+	    $wherePeriod = ' AND (date BETWEEN "'.$minday.'" AND "'.$maxday.'") ';
+	    $assign['selectedPeriod'] = $minday . ' ~ ' . $maxday;
+	    //echo $wherePeriod;	
+	    
+	    $department = basicMysqliQuery('uatme_oa_system_department');
+	    $assign['customer'] = basicMysqliQuery('uatme_oa_sales_customer', ' WHERE ifavailable="1"');
+	    $activity = basicMysqliQuery('uatme_oa_sales_activity', ' WHERE employee_id="'.$_SESSION['employee_id'].'" '.$wherePeriod.' ORDER BY date DESC');
+	    	    
+	    //INIT EXCEL title, attribute, etc.
+	    $properties = array('filename'=>'销售日志报表');
+	    $data = array(
+	    		array(
+	    				'title'=>'销售日志',
+	    				'data'=>array()
+	    		)
+	    );
+	    $data[0]['data'][] = array('销售日志报表('.$assign['selectedPeriod'].')');
+	    $data[0]['data'][] = array('日期', '时间', '客户', '详情');
+	    
+    	foreach($activity as $a){
+    		$data[0]['data'][] = array(
+    				$a['date'],
+    				$a['start'].'~'.$a['end'],
+    				$assign['customer'][$a['customer_id']]['name'],
+    				$a['detail']
+    		);
+    	}
+	    //print_r($count);
+	    //print_r($data);
+	    downloadExcel($properties, $data);
 	    break;
 	default:
 		
