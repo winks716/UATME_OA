@@ -266,8 +266,8 @@ function getOwnedDepartment($depart = array()){
         $departId[] = $k;
     }
     $result = basicMysqliQuery('uatme_oa_system_department', ' WHERE parent_id IN ('.implode(',',$departId).') ');
-    foreach($result as $k=>$v){
-        $depart[$k] = $v;
+    if(count($result) > 0){
+        $depart = $depart + getOwnedDepartment($result);
     }
     return $depart;
 }

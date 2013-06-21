@@ -111,18 +111,25 @@ switch($A){
 	    $assign['selectedPeriod'] = $minday . ' ~ ' . $maxday;
 	    //echo $wherePeriod;    
 	    
-	    $department = basicMysqliQuery('uatme_oa_system_department');
-	    $assign['customer'] = basicMysqliQuery('uatme_oa_sales_customer', ' WHERE ifavailable="1"');
-	    $assign['employee'] = basicMysqliQuery('uatme_oa_system_employee', ' WHERE ifavailable="1"');
-	    $myId = $_SESSION['employee_id'];
-	    $myEmployeeId = getMyEmployee($myId);
-	    foreach($myEmployeeId as $d=>$e){
-	        $activity[$d]['department_name'] = $department[$d]['name'];
-	        $activity[$d]['department_id'] = $d;
-	        $activity[$d]['activity'] = basicMysqliQuery('uatme_oa_sales_activity', ' WHERE employee_id IN ('.implode(',',$e).') '.$wherePeriod.' ORDER BY employee_id ASC, date DESC');
+	    $department = getOwnedDepartment(basicMysqliQuery('uatme_oa_system_department', ' WHERE manager_employee_id="'.$_SESSION['employee_id'].'" '));
+	    foreach($department as $k=>$v){
+	        $departmentId[] = $k;
 	    }
-	    //print_r($activity);
-	    $assign['activity'] = $activity;
+	    
+	    $assign['customer'] = basicMysqliQuery('uatme_oa_sales_customer', ' WHERE ifavailable="1"');
+	    $assign['employee'] = basicMysqliQuery('uatme_oa_system_employee', ' WHERE department_id IN ('.implode(',',$departmentId).') AND ifavailable="1"');
+	    foreach($assign['employee'] as $k=>$v){
+	        $employeeId[] = $k;
+	    }
+	    
+	    $activity = basicMysqliQuery('uatme_oa_sales_activity',  ' WHERE employee_id IN ('.implode(',',$employeeId).') '.$wherePeriod.' ORDER BY employee_id ASC, date DESC');
+	    foreach($activity as $a){
+	        $department_id = $assign['employee'][$a['employee_id']]['department_id'];
+	        $assign['activity'][$department_id]['department_name'] = $department[$department_id]['name'];
+	        $assign['activity'][$department_id]['department_id'] = $department_id;
+	        $assign['activity'][$department_id]['activity'][] = $a;
+	    }
+	    
 		$smarty->assign($assign);
 		$smarty->display('sales/activity.manager.list.html');
 	    break;
@@ -141,16 +148,18 @@ switch($A){
 	    $assign['selectedPeriod'] = $minday . ' ~ ' . $maxday;
 	    //echo $wherePeriod;    
 	    
-	    $department = basicMysqliQuery('uatme_oa_system_department');
-	    $assign['customer'] = basicMysqliQuery('uatme_oa_sales_customer', ' WHERE ifavailable="1"');
-	    $assign['employee'] = basicMysqliQuery('uatme_oa_system_employee', ' WHERE ifavailable="1"');
-	    $myId = $_SESSION['employee_id'];
-	    $myEmployeeId = getMyEmployee($myId);
-	    foreach($myEmployeeId as $d=>$e){
-	        $activity[$d]['department_name'] = $department[$d]['name'];
-	        $activity[$d]['department_id'] = $d;
-	        $activity[$d]['activity'] = basicMysqliQuery('uatme_oa_sales_activity', ' WHERE employee_id IN ('.implode(',',$e).') '.$wherePeriod.' ORDER BY employee_id ASC, date DESC');
+	    $department = getOwnedDepartment(basicMysqliQuery('uatme_oa_system_department', ' WHERE manager_employee_id="'.$_SESSION['employee_id'].'" '));
+	    foreach($department as $k=>$v){
+	        $departmentId[] = $k;
 	    }
+	    
+	    $assign['customer'] = basicMysqliQuery('uatme_oa_sales_customer', ' WHERE ifavailable="1"');
+	    $assign['employee'] = basicMysqliQuery('uatme_oa_system_employee', ' WHERE department_id IN ('.implode(',',$departmentId).') AND ifavailable="1"');
+	    foreach($assign['employee'] as $k=>$v){
+	        $employeeId[] = $k;
+	    }
+	    
+	    $activity = basicMysqliQuery('uatme_oa_sales_activity',  ' WHERE employee_id IN ('.implode(',',$employeeId).') '.$wherePeriod.' ORDER BY employee_id ASC, date DESC');
 	    
 	    //INIT EXCEL title, attribute, etc.
 	    $properties = array('filename'=>'销售日志报表');
@@ -163,16 +172,14 @@ switch($A){
 	    $data[0]['data'][] = array('销售日志报表('.$assign['selectedPeriod'].')');
 	    $data[0]['data'][] = array('姓名', '日期', '时间', '客户', '详情');
 	    
-    	foreach($activity as $v){
-    	    foreach($v['activity'] as $a){
-        		$data[0]['data'][] = array(
-        				$assign['employee'][$a['employee_id']]['namezh'].' ('.$assign['employee'][$a['employee_id']]['name'].') ',
-        				$a['date'],
-        				$a['start'].'~'.$a['end'],
-        				$assign['customer'][$a['customer_id']]['name'],
-        				$a['detail']
-        		);
-    	    }
+    	foreach($activity as $a){
+    		$data[0]['data'][] = array(
+    				$assign['employee'][$a['employee_id']]['namezh'].' ('.$assign['employee'][$a['employee_id']]['name'].') ',
+    				$a['date'],
+    				$a['start'].'~'.$a['end'],
+    				$assign['customer'][$a['customer_id']]['name'],
+    				$a['detail']
+    		);
     	}
 	    //print_r($count);
 	    //print_r($data);
