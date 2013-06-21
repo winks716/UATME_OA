@@ -2,7 +2,7 @@
 <{include file="topnav.html"}>
 
 <style>
-#report tr.company td{background-color:#336699;color:#ffffff;font-weight:bold;cursor:normal;}
+#report tr.company td{background-color:#336699;font-weight:bold;color:#ffffff;cursor:normal;}
 #report tr.location td{background-color:#6699cc;color:#ffffff;cursor:normal;}
 #report tr.department td{background-color:#99ccff;cursor:normal;}
 #report tr.employee td{background-color:#eeeeee;display:;}
@@ -33,14 +33,6 @@
 <option value="4" <{if $timeSelect=="4"}>selected<{/if}>>第四季度</option>
 </select>
 &nbsp;&nbsp;&nbsp;&nbsp;
-<strong>假期类型</strong>
-<select id="typeSelect">
-<option value="0">-请选择-</option>
-<{foreach from=$type item=t}>
-<option value="<{$t.id}>" <{if $typeSelect==$t.id}>selected<{/if}>><{$t.name}></option>
-<{/foreach}>
-</select>
-&nbsp;&nbsp;&nbsp;&nbsp;
 <strong>员工</strong>
 <select id="employeeSelect">
 <option value="0">-请选择-</option>
@@ -54,16 +46,16 @@
 
 <div class="container">
 <table id="report">
-<tr class="company"><td class="span-3"><{$count['whole_company']['name']}></td><td><{if $count['whole_company']['count']!=0}><{$count['whole_company']['count']}><{else}>0<{/if}>天</td></tr>
+<tr class="company"><td class="span-3"><{$count['whole_company']['name']}></td><td><{if $count['whole_company']['count']!=0}><{$count['whole_company']['count']}><{else}>0.00<{/if}></td></tr>
 <{foreach from=$location item=l}>
 <{if $count["location_`$l.id`"]['count']!=0}>
-<tr class="location"><td class="span-3"><{$l.name}></td><td><{$count["location_`$l.id`"]['count']}>天</td></tr>
+<tr class="location"><td class="span-3"><{$l.name}></td><td><{$count["location_`$l.id`"]['count']}></td></tr>
 	<{foreach from=$department item=d}>
 	<{if $d.location_id==$l.id && $count["department_`$d.id`"]['count']!=0}>
-	<tr class="department"><td><{$d.name}></td><td><{$count["department_`$d.id`"]['count']}>天</td></tr>
+	<tr class="department"><td><{$d.name}></td><td><{$count["department_`$d.id`"]['count']}></td></tr>
 		<{foreach from=$employee item=e}>
 		<{if $e.department_id==$d.id && $count["employee_`$e.id`"]['count']!=0}>
-		<tr class="employee"><td class="nonestyle"></td><td class="employee" i="<{$e.id}>"><{$e.namezh}> (<{$e.name}>)  <{$count["employee_`$e.id`"]['count']}>天</td></tr>
+		<tr class="employee"><td class="nonestyle"></td><td class="employee" i="<{$e.id}>"><{$e.namezh}> (<{$e.name}>)  <{$count["employee_`$e.id`"]['count']}></td></tr>
 		<{/if}>
 		<{/foreach}>
 	<{/if}>
@@ -85,7 +77,7 @@ $(function(){
 		var o = $(this);
 		var id = $(o).attr('i');
 		$(o).parent().after('<tr class="apply"><td class="nonestyle"></td><td class="detail">等待数据载入……</td></tr>');
-		$.post('index.php?m=hr&s=report&a=get.employee.leave',{'id':id},function(data){
+		$.post('index.php?m=hr&s=report&a=get.employee.overtime',{'id':id},function(data){
 			var json = eval('(' + data + ')');
 			if(json.httpstatus==200){
 				$('tr.apply').find('td.detail').html(json.msg);
@@ -98,10 +90,10 @@ $(function(){
 	})
 	
 	$('.reportSearch').click(function(){
-		window.location = 'index.php?m=hr&s=report&a=leave.apply.report&employeeSelect='+$('#employeeSelect').val()+'&yearSelect='+$('#yearSelect').val()+'&timeSelect='+$('#timeSelect').val()+'&typeSelect='+$('#typeSelect').val();
+		window.location = 'index.php?m=hr&s=report&a=overtime.apply.report&employeeSelect='+$('#employeeSelect').val()+'&yearSelect='+$('#yearSelect').val()+'&timeSelect='+$('#timeSelect').val();
 	})
 	$('.reportExport').click(function(){
-		window.open('index.php?m=hr&s=report&a=leave.apply.report.export&employeeSelect='+$('#employeeSelect').val()+'&yearSelect='+$('#yearSelect').val()+'&timeSelect='+$('#timeSelect').val()+'&typeSelect='+$('#typeSelect').val());
+		window.open('index.php?m=hr&s=report&a=overtime.apply.report.export&employeeSelect='+$('#employeeSelect').val()+'&yearSelect='+$('#yearSelect').val()+'&timeSelect='+$('#timeSelect').val());
 	})
 })
 </script>

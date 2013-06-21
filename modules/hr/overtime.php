@@ -93,7 +93,7 @@ switch($A){
 		}
 		sendResponse($httpstatus, $error, $msg);
 		break;
-	/*case 'manager.cancel':
+	case 'manager.cancel':
 	    //check if operator is the supervisor of applier
 	    $sql = 'SELECT id FROM uatme_oa_system_department  
 	            WHERE id=(SELECT department_id FROM uatme_oa_system_employee WHERE id="'.$_POST['eid'].'")  
@@ -114,7 +114,7 @@ switch($A){
 	        $error = '申请撤销：服务器1忙，请稍后再试，谢谢！';
 	    }
 		sendResponse($httpstatus, $error, $msg);
-		break;*/
+		break;
 	case 'hr.cancel':
 	    $sql = 'UPDATE uatme_oa_hr_overtime_apply SET status=4, comment="上级撤销" WHERE id="'.$_POST['id'].'" AND employee_id="'.$_POST['eid'].'"';
         if($mysqli->query($sql)){
@@ -126,17 +126,17 @@ switch($A){
         }
 		sendResponse($httpstatus, $error, $msg);
 	    break;
-	case 'hr.update.overtime.type':
+	/*case 'hr.update.overtime.type':
 	    $sql = 'UPDATE uatme_oa_hr_overtime_apply SET type="'.$_POST['type'].'" WHERE id="'.$_POST['id'].'" AND employee_id="'.$_POST['eid'].'"';
         if($mysqli->query($sql)){
             $httpstatus = 200;
-            $msg = '更新休假类型已成功';
+            $msg = '更新加班类型已成功';
         }else{
             $httpstatus = 500;
             $error = '服务器1忙，请稍后再试，谢谢！';
         }
 		sendResponse($httpstatus, $error, $msg);
-		break;
+		break;*/
 	case 'list':
 		//get apply status definition list
 		$assign['status'] = basicMysqliQuery('uatme_oa_system_apply_status');
