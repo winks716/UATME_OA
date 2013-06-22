@@ -116,16 +116,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$typesql = ($assign['typeSelect']>0) ? (' AND type="'.$assign['typeSelect'].'"') : '';
@@ -193,16 +217,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$typesql = ($assign['typeSelect']>0) ? (' AND type="'.$assign['typeSelect'].'"') : '';
@@ -277,16 +325,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$typesql = ($assign['typeSelect']>0) ? (' AND type="'.$assign['typeSelect'].'"') : '';
@@ -343,16 +415,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$typesql = ($assign['typeSelect']>0) ? (' AND type="'.$assign['typeSelect'].'"') : '';
@@ -409,16 +505,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$typesql = ($assign['typeSelect']>0) ? (' AND type="'.$assign['typeSelect'].'"') : '';
@@ -501,16 +621,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
@@ -571,16 +715,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
@@ -648,16 +816,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
@@ -708,16 +900,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
@@ -768,16 +984,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
@@ -883,16 +1123,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01" AND "'.$assign['yearSelect'].'-12-31"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01" AND "'.$assign['yearSelect'].'-03-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01" AND "'.$assign['yearSelect'].'-06-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01" AND "'.$assign['yearSelect'].'-09-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01" AND "'.$assign['yearSelect'].'-12-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
@@ -942,16 +1206,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01" AND "'.$assign['yearSelect'].'-12-31"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01" AND "'.$assign['yearSelect'].'-03-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01" AND "'.$assign['yearSelect'].'-06-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01" AND "'.$assign['yearSelect'].'-09-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01" AND "'.$assign['yearSelect'].'-12-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
@@ -1030,16 +1318,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
@@ -1100,16 +1412,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
@@ -1178,16 +1514,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01" AND "'.$assign['yearSelect'].'-12-31"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01" AND "'.$assign['yearSelect'].'-03-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01" AND "'.$assign['yearSelect'].'-06-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01" AND "'.$assign['yearSelect'].'-09-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01" AND "'.$assign['yearSelect'].'-12-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
@@ -1237,16 +1597,40 @@ switch($A){
 				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01" AND "'.$assign['yearSelect'].'-12-31"';
 				break;
 			case '1':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01" AND "'.$assign['yearSelect'].'-03-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-01-01 00:00:00" AND "'.$assign['yearSelect'].'-01-31 23:59:59"';
 				break;
 			case '2':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01" AND "'.$assign['yearSelect'].'-06-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-02-01 00:00:00" AND "'.$assign['yearSelect'].'-02-31 23:59:59"';
 				break;
 			case '3':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01" AND "'.$assign['yearSelect'].'-09-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-03-01 00:00:00" AND "'.$assign['yearSelect'].'-03-31 23:59:59"';
 				break;
 			case '4':
-				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01" AND "'.$assign['yearSelect'].'-12-31"';
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-04-01 00:00:00" AND "'.$assign['yearSelect'].'-04-31 23:59:59"';
+				break;
+			case '5':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-05-01 00:00:00" AND "'.$assign['yearSelect'].'-05-31 23:59:59"';
+				break;
+			case '6':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-06-01 00:00:00" AND "'.$assign['yearSelect'].'-06-31 23:59:59"';
+				break;
+			case '7':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-07-01 00:00:00" AND "'.$assign['yearSelect'].'-07-31 23:59:59"';
+				break;
+			case '8':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-08-01 00:00:00" AND "'.$assign['yearSelect'].'-08-31 23:59:59"';
+				break;
+			case '9':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-09-01 00:00:00" AND "'.$assign['yearSelect'].'-09-31 23:59:59"';
+				break;
+			case '10':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-10-01 00:00:00" AND "'.$assign['yearSelect'].'-10-31 23:59:59"';
+				break;
+			case '11':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-11-01 00:00:00" AND "'.$assign['yearSelect'].'-11-31 23:59:59"';
+				break;
+			case '12':
+				$yearsql = ' BETWEEN "'.$assign['yearSelect'].'-12-01 00:00:00" AND "'.$assign['yearSelect'].'-12-31 23:59:59"';
 				break;
 		}
 		$employeesql = ($assign['employeeSelect']>0) ? (' AND employee_id="'.$assign['employeeSelect'].'"') : '';
