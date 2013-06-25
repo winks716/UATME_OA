@@ -35,6 +35,8 @@ function workflowInit($apply_employee_id, $apply_type_english, $apply_id){
 		while($array = $result->fetch_assoc()){
 			$document_typelv1_id = $array['id'];
 		}
+	}else{
+	    exit('workflow init error');
 	}
 	//step2 select workflow template based on document type id
 	$sql_workflow_template = 'SELECT * FROM uatme_oa_workflow_template WHERE document_typelv1_id="'.$document_typelv1_id.'" ORDER BY orderby ASC';

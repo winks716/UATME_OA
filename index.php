@@ -118,8 +118,10 @@ if(isset($_SESSION['employee_id']) && $_SESSION['employee_id']>0){
 		//if(IS_M){
 		//require_once DOCROOT.'/mobile/calendar/login.php';
 		//}else{
-			require_once DOCROOT.'/modules/base/login.php';
+		require_once DOCROOT.'/modules/base/login.php';
 		//}
+	}else if($S == 'self' and $A == 'reset.password'){
+	    require_once DOCROOT.'/modules/base/self.php';
 	}else{
 		header('Location: index.php?m=base&s=login');
 	}

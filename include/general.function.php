@@ -71,6 +71,21 @@ downloadExcel($properties = array(), $data = array()){
 	);
 //Return: downloadable excel file
 ------------------------------------------------------
+getOwnedDepartment($depart = array())
+//Description: get all the department under control recursively, from a parent department to all sub-department
+//Acception: department array, indexed by department_id, like array(5=>array(5,'hr','human resource',0,...),8=>array(8,'sales','sales',0,...)), means accept multiple array if one take charge of two departments at the same time.
+//Return: a merged array, same format as $depart, combined with new sub-department into it.
+------------------------------------------------------
+getDateSQLByMonth($yearSelect = 0, $timeSelect = 0)
+//Description: get the date period SQL string by select a month name
+//Acception: number, from ''/0 to 12, means select nothing, Jan, Feb, Mar, ..., Dec
+//Return: sql condition string for selection, like, "BETWEEN XXXX-XX-XX XX:XX:XX AND YYYY-YY-YY YY:YY:YY"
+------------------------------------------------------
+getDateSQLByQuarter($yearSelect = 0, $timeSelect = 0)
+//Description: get the date period SQL string by select a quarter name
+//Acception: number, from ''/0, 1 to 4, means select nothing, 1st quarter, 2nd quarter, ..., 4th quarter
+//Return: sql condition string for selection, like, "BETWEEN XXXX-XX-XX XX:XX:XX AND YYYY-YY-YY YY:YY:YY"
+
 
 */
 
@@ -270,4 +285,58 @@ function getOwnedDepartment($depart = array()){
         $depart = $depart + getOwnedDepartment($result);
     }
     return $depart;
+}
+
+//Description: get the date period SQL string by select a month name
+function getDateSQLByMonth($yearSelect = 0, $timeSelect = 0){
+    $yearsql = '';
+    if(!$yearSelect){
+        $yearSelect = date('Y');
+    }
+    switch($timeSelect){
+        case '0':
+        case '':
+            $yearsql = ' BETWEEN "'.$yearSelect.'-01-01 00:00:00" AND "'.$yearSelect.'-12-31 23:59:59"';
+            break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+            $yearsql = ' BETWEEN "'.$yearSelect.'-0'.$timeSelect.'-01 00:00:00" AND "'.$yearSelect.'-0'.$timeSelect.'-31 23:59:59"';
+            break;
+        case '10':
+        case '11':
+        case '12':
+            $yearsql = ' BETWEEN "'.$yearSelect.'-'.$timeSelect.'-01 00:00:00" AND "'.$yearSelect.'-'.$timeSelect.'-31 23:59:59"';
+            break;
+    }
+    return $yearsql;
+}
+
+//Description: get the date period SQL string by select a quarter name
+function getDateSQLByQuarter($yearSelect = 0, $timeSelect = 0){
+    $yearsql = '';
+    if(!$yearSelect){
+        $yearSelect = date('Y');
+    }
+    switch($timeSelect){
+        case '0':
+        case '':
+            $yearsql = ' BETWEEN "'.$yearSelect.'-01-01 00:00:00" AND "'.$yearSelect.'-12-31 23:59:59"';
+            break;
+        case '1':
+        case '2':
+        case '3':
+            $yearsql = ' BETWEEN "'.$yearSelect.'-0'.(($timeSelect-1)*3+1).'-01 00:00:00" AND "'.$yearSelect.'-0'.($timeSelect*3).'-31 23:59:59"';
+            break;
+        case '4':
+            $yearsql = ' BETWEEN "'.$yearSelect.'-'.(($timeSelect-1)*3+1).'-01 00:00:00" AND "'.$yearSelect.'-'.($timeSelect*3).'-31 23:59:59"';
+            break;
+    }
+    return $yearsql;
 }

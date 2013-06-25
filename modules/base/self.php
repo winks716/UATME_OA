@@ -83,4 +83,48 @@ switch($A){
 			$httpstatus = 500;
 		}
 	break;
+	case 'reset.password':
+	    $email = $_POST['email'].'@'.COMPANY_DOMAIN;
+	    $name = $_POST['email'];
+	    
+	    $employee = basicMysqliQuery('uatme_oa_system_employee', ' WHERE email="'.$email.'" ');
+	    if(count($employee) == 1){
+	        foreach($employee as $employee_id => $e){
+	            $lastrequest = basicMysqliQuery('uatme_oa_workflow_resetpassword', ' WHERE employee_id="'.$employee_id.'" AND created_date >= "'.(time()-1800).'" ');
+	            if(count($lastrequest) >= 1){
+	                $httpstatus = 500;
+	                $error = '30分钟内请勿多次递交申请！';
+	            }else{
+	                $time = time();
+	                $token = md5(sha1(rand().$employee_id.$time.rand()));
+    	            $mysqli->query('INSERT INTO  uatme_oa_workflow_resetpassword(employee_id, author_key, created_date) VALUES("'.$employee_id.'","'.$token.'", "'.$time.'")');
+    	            $task_id = $mysqli->insert_id;
+    	            $SMTPConfig = array(
+    	                    'sendto' => array(array('mail'=>$email,'name'=>$e['namezh'])),
+    	                    'subject' => '密码重置',
+    	                    'body' => '<head>
+        					<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+        					<style>
+        					.clickbtn{color:blue;cursor:pointer;}
+        					</style>
+        					</head>
+        					<body>
+        					<h4>'.$e['name'].'('.$e['namezh'].'),<br/>请点击以下链接来重置您的密码，若链接失效请复制链接到您的浏览器</h4>
+        					<p>
+                                <a class="clickbtn" href="'.WEBSERVER.'api/before.resetpassword.php?e='.$employee_id.'&i='.$task_id.'&k='.$token.'">'.WEBSERVER.'api/before.resetpassword.php?e='.$employee_id.'&i='.$task_id.'&k='.$token.'</a>
+        					</p>
+        					</body>
+        					'
+    	            );
+    	            mailSendMail($SMTPConfig);
+    	            $httpstatus = 200;
+    	            $msg = '密码重置申请已递交！请前去邮箱收取密码重置邮件,30分钟内有效';
+	            }
+	        }   
+	    }else{
+	        $httpstatus = 500;
+	        $error = '邮箱验证失败，请重新填写！';
+	    }
+	    sendResponse($httpstatus, $error, $msg);
+	    break;
 }

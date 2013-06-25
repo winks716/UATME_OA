@@ -19,7 +19,7 @@ switch($A){
 			}
 		}
 		//has used annual leave
-		$sql = 'SELECT start, end, employee_id FROM uatme_oa_hr_leave_apply WHERE status!=2 AND ((start BETWEEN "'.Date('Y').'-01-01 00:00:00" AND "'.Date('Y').'-12-31 23:59:59") OR (end BETWEEN "'.Date('Y').'-01-01 00:00:00" AND "'.Date('Y').'-12-31 23:59:59")) AND type=(SELECT id FROM uatme_oa_hr_leave_type WHERE name="年假" LIMIT 1)';
+		$sql = 'SELECT start, end, employee_id FROM uatme_oa_hr_leave_apply WHERE (status NOT IN (2,3,4)) AND ((start BETWEEN "'.Date('Y').'-01-01 00:00:00" AND "'.Date('Y').'-12-31 23:59:59") OR (end BETWEEN "'.Date('Y').'-01-01 00:00:00" AND "'.Date('Y').'-12-31 23:59:59")) AND type=(SELECT id FROM uatme_oa_hr_leave_type WHERE name="年假" LIMIT 1)';
 		$result = $mysqli->query($sql);
 		if($result->num_rows > 0){
 			while($array = $result->fetch_assoc()){

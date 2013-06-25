@@ -93,7 +93,7 @@ $(function(){
 		var o = $(this);
 		var id = $(o).attr('i');
 		$(o).parent().after('<tr class="apply"><td class="nonestyle"></td><td class="detail">等待数据载入……</td></tr>');
-		$.post('index.php?m=hr&s=report&a=get.employee.leave',{'id':id},function(data){
+		$.post('index.php?m=hr&s=report&a=get.employee.leave'+'&yearSelect='+$('#yearSelect').val()+'&timeSelect='+$('#timeSelect').val(),{'id':id},function(data){
 			var json = eval('(' + data + ')');
 			if(json.httpstatus==200){
 				$('tr.apply').find('td.detail').html(json.msg);
