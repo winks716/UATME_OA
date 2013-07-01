@@ -1,0 +1,47 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+<div class="container">
+    <div class="left span-4">
+        to be checkin
+        <{foreach from=$employee_list item=e}>
+            <div><{$e.namezh}>(<{$e.name}>)</div>
+        <{/foreach}>
+    </div>
+    <div class="left span-20">
+    <{if $employee_infor.basic}>
+    
+        <div class="clear">Basic Info</div>
+        <{foreach from=$employee_infor.basic item=b}>
+            <div><{$employee_list[$b.employee_id].namezh}></div>
+            <div><{$b.comment}></div>
+        <{/foreach}>
+        
+        <{if $employee_infor.education}>
+        <div class="clear">Education Info</div>
+        <{foreach from=$employee_infor.education item=e}>
+            <div><{$b.brief}></div>
+        <{/foreach}>
+        <{else}>
+            <div class="clear">no data</div>
+        <{/if}>
+        
+        <{if $employee_infor.skill}>
+        <div class="clear">Skill Info</div>
+        <{foreach from=$employee_infor.skill item=s}>
+            <div><{$b.brief}></div>
+        <{/foreach}>
+        <{else}>
+            <div class="clear">no data</div>
+        <{/if}>
+    
+    <{else}>
+    
+        Please select one employee from left bar to carry out the check process.
+        
+    <{/if}>
+    </div>
+</div>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>
