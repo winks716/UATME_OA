@@ -25,14 +25,7 @@ switch($A){
 			$task = workflowInit($_SESSION['employee_id'], 'overtime.apply', $mysqli->insert_id);
 			//send mail to the first person
 			if($task['executerId'] > 0){
-				//
-				$sql = 'SELECT id,name,namezh FROM uatme_oa_system_employee';
-				$result = $mysqli->query($sql);
-				if($result->num_rows > 0){
-					while($array = $result->fetch_assoc()){
-						$employee[$array['id']] = array('name'=>$array['name'],'namezh'=>$array['namezh']); 
-					}
-				}
+			    //get first person information
 				$sql = 'SELECT email,name FROM uatme_oa_system_employee WHERE id="'.$task['executerId'].'"';
 				$result = $mysqli->query($sql);
 				if($result->num_rows == 1){

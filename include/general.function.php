@@ -85,7 +85,16 @@ getDateSQLByQuarter($yearSelect = 0, $timeSelect = 0)
 //Description: get the date period SQL string by select a quarter name
 //Acception: number, from ''/0, 1 to 4, means select nothing, 1st quarter, 2nd quarter, ..., 4th quarter
 //Return: sql condition string for selection, like, "BETWEEN XXXX-XX-XX XX:XX:XX AND YYYY-YY-YY YY:YY:YY"
-
+--------------------------------------------------------
+getUsedAnnualLeave($employee_id = 0, $ifOnlyApproved = 1)
+//Description: get specific employee's used annual leave number
+//Acception: Int, >0, employee id;    Int, ==1, only approved apply will be counted, Else, approving not end will also be counted
+//Return: if successful, Float, number of used annual leave; Else, 'N/A'
+------------------------------------------------------------------
+getRestAnnualLeave($employee_id = 0)
+//Description: get specific employee's rest annual leave number
+//Acception: Int, >0, employee id
+//Return: if successful, Float, number of rest annual leave; Else, 'N/A'
 
 */
 
@@ -339,4 +348,37 @@ function getDateSQLByQuarter($yearSelect = 0, $timeSelect = 0){
             break;
     }
     return $yearsql;
+}
+
+function getUsedAnnualLeave($employee_id = 0, $ifOnlyApproved = 1){
+    if($employee_id > 0){
+        global $mysqli;
+        $usedAnnualLeave= 0;
+        $sql = 'SELECT start, end FROM uatme_oa_hr_leave_apply WHERE employee_id="'.$employee_id.'" AND (status IN (1'.((!$ifOnlyApproved)?',2':'').')) AND ((start BETWEEN "'.Date('Y').'-01-01 00:00:00" AND "'.Date('Y').'-12-31 23:59:59") OR (end BETWEEN "'.Date('Y').'-01-01 00:00:00" AND "'.Date('Y').'-12-31 23:59:59")) AND type=(SELECT id FROM uatme_oa_hr_leave_type WHERE name="年假" LIMIT 1)';
+        $result = $mysqli->query($sql);
+        if($result->num_rows > 0){
+            while($array = $result->fetch_assoc()){
+                $return = caculateDay($array['start'], $array['end']);
+                $usedAnnualLeave += $return['day'];
+            }
+        }
+        return $usedAnnualLeave;
+    }else{
+        return 'N/A';
+    }    
+}
+
+function getRestAnnualLeave($employee_id = 0){
+    if($employee_id > 0){
+        $totalAnnualLeave = 0;
+        $usedAnnualLeave = getUsedAnnualLeave($employee_id);
+        $totalAnnualLeaveResult = basicMysqliQuery('uatme_oa_hr_leave_employee', ' WHERE employee_id="'.$employee_id.'" AND leave_type_id=(SELECT id FROM uatme_oa_hr_leave_type WHERE name="年假" LIMIT 1) AND ifavailable=1 ');
+        foreach($totalAnnualLeaveResult as $t){
+            $totalAnnualLeave += $t['count'];
+        }
+        $restAnnualLeave = $totalAnnualLeave - $usedAnnualLeave;
+        return $restAnnualLeave;
+    }else{
+        return 'N/A';
+    }
 }

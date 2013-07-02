@@ -263,6 +263,7 @@ $language['zh_CN'] = array(
 	'base.self.task.taskList.tableHeader5' => '指定代办',
 	'base.self.task.taskList.tableHeader6' => '操作',
 	'base.self.task.taskList.tableHeader7' => '审批备注',
+	'base.self.task.taskList.tableHeader8' => '可用年假',
 	'base.self.task.taskList.agreeButtonLabel' => '同意',
 	'base.self.task.taskList.declineButtonLabel' => '拒绝',
 	

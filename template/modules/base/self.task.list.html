@@ -7,15 +7,17 @@
 	<th><{$lang['base.self.task.taskList.tableHeader2']}></th>
 	<th><{$lang['base.self.task.taskList.tableHeader3']}></th>
 	<th><{$lang['base.self.task.taskList.tableHeader4']}></th>
-	<th><{$lang['base.self.task.taskList.tableHeader5']}></th>
+	<th><{$lang['base.self.task.taskList.tableHeader8']}></th>
+    <th><{$lang['base.self.task.taskList.tableHeader5']}></th>
 	<th><{$lang['base.self.task.taskList.tableHeader6']}></th></tr>
 	<{foreach from=$task item=t}>
 	<tr><td><{$t.document_typelv1_name}></td>
 	<td><{$t.apply_employee}></td>
 	<td><{$t.period}><br/><{$t.reason}></td>
 	<td><{$t.apply_date}></td>
+    <td><{$t.rest_annual_leave}></td>
 	<td><{$t.apply_alternative}></td>
-	<td><{$lang['base.self.task.taskList.tableHeader7']}> <input class="span-8 comment"/>
+	<td><{$lang['base.self.task.taskList.tableHeader7']}> <input class="span-6 comment"/>
 	<span class="clickbtn agreeApply" s="<{$t.document_typelv1_nameen}>" a="agree" e="<{$t.employee_id}>" i="<{$t.id}>" k="<{$t.author_key}>">[<{$lang['base.self.task.taskList.agreeButtonLabel']}>]</span>
 	<span class="clickbtn denyApply" s="<{$t.document_typelv1_nameen}>" a="deny" e="<{$t.employee_id}>" i="<{$t.id}>" k="<{$t.author_key}>">[<{$lang['base.self.task.taskList.declineButtonLabel']}>]</span></td></tr>
 	<{/foreach}>

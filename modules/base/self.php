@@ -1,6 +1,6 @@
 <?php
 switch($A){
-	case 'task.count':
+	case 'approval.count':
 		$taskcount = 0;
 		$httpstatus = 200;
 		$sql = 'SELECT COUNT(*) as taskcount FROM uatme_oa_workflow_task WHERE employee_id="'.$_SESSION['employee_id'].'" AND status=1 GROUP BY employee_id';
@@ -12,7 +12,7 @@ switch($A){
 		}
 		sendResponse($httpstatus, $error, $taskcount);
 		break;
-	case 'task.list':
+	case 'approval.list':
 		//get employee information
 		$employee = basicMysqliQuery('uatme_oa_system_employee');
 		//get task type
@@ -25,7 +25,12 @@ switch($A){
 				$array['document_typelv1_name'] = $taskType[$array['document_typelv1_id']]['name'];
 				$apply = basicMysqliQuery($taskType[$array['document_typelv1_id']]['db_table_name'],' WHERE id="'.$array['document_id'].'" ');
 				$array['reason'] = $apply[$array['document_id']]['reason'];
-				$array['period'] = $apply[$array['document_id']]['start'].'~'.$apply[$array['document_id']]['end'];
+				if($apply[$array['document_id']]['start'] and $apply[$array['document_id']]['end']){
+				    $array['period'] = $apply[$array['document_id']]['start'].'~'.$apply[$array['document_id']]['end'];
+				}else{
+				    $array['period'] = $apply[$array['document_id']]['period'].'小时';
+				}
+				$array['rest_annual_leave'] = getRestAnnualLeave($apply[$array['document_id']]['employee_id']);
 				$array['apply_date'] = $apply[$array['document_id']]['apply_date'];
 				$array['apply_employee'] = $employee[$apply[$array['document_id']]['employee_id']]['namezh'].' ('.$employee[$apply[$array['document_id']]['employee_id']]['name'].')';
 				$array['apply_alternative'] = $employee[$apply[$array['document_id']]['alternative_employee_id']]['namezh'].' ('.$employee[$apply[$array['document_id']]['alternative_employee_id']]['name'].')';
