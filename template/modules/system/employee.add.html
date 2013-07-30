@@ -6,7 +6,8 @@
 		<tr><th>英文缩写</th><td><input name="short_name"/></td></tr>
 		<tr><th>电子邮箱</th><td><input name="email"/></td></tr>
 		<tr><th>工号</th><td><input name="employee_no"/></td></tr>
-		<tr><th>在职</th><td><input type="radio" name="ifleave" value="0" checked/>是&nbsp;&nbsp;<input type="radio" name="ifleave" value="1"/>否</td></tr>
+		<tr><th>在职</th><td><input type="radio" name="ifavailable" value="1"/>是&nbsp;&nbsp;<input type="radio" name="ifavailable" value="0" checked/>否</td></tr>
+        <tr><th>试用</th><td><input type="radio" name="ifprobation" value="1" checked/>是&nbsp;&nbsp;<input type="radio" name="ifprobation" value="0"/>否</td></tr>
 		<tr><th>部门</th><td><select name="department_id">
 								<option value="0">-请选择员工所属部门-</option>
 								<{foreach from=$department item=d}>

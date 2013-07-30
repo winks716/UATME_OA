@@ -9,7 +9,7 @@ if($_SESSION['if_system_admin'] == 1){
 					$department[$array['id']] = $array['name'];
 				}
 			}
-			$sql = 'SELECT * from uatme_oa_system_employee WHERE id!=1 ORDER BY ifleave ASC, name ASC';
+			$sql = 'SELECT * from uatme_oa_system_employee WHERE id!=1 ORDER BY ifavailable DESC, name ASC';
 			$result = $mysqli->query($sql);
 			if($result->num_rows > 0){
 				while($array = $result->fetch_assoc()){
@@ -32,14 +32,15 @@ if($_SESSION['if_system_admin'] == 1){
 			$smarty->display('system/employee.add.html');
 			break;
 		case 'employee.add.save':
-			$sql = 'INSERT INTO uatme_oa_system_employee (name, namezh, short_name, email, employee_no, department_id, ifleave) 
+			$sql = 'INSERT INTO uatme_oa_system_employee (name, namezh, short_name, email, employee_no, department_id, ifavailable, ifprobation) 
 					VALUES ("'.$_POST['name'].'", 
 							"'.$_POST['namezh'].'", 
 							"'.$_POST['short_name'].'",
 							"'.$_POST['email'].'",
 							"'.$_POST['employee_no'].'",
 							"'.$_POST['department_id'].'",
-							"'.$_POST['ifleave'].'")';
+							"'.$_POST['ifavailable'].'",
+							"'.$_POST['ifprobation'].'")';
 			if($mysqli->query($sql)){
 				if($mysqli->insert_id > 0){
 					$httpstatus = 200;
@@ -96,8 +97,9 @@ if($_SESSION['if_system_admin'] == 1){
 											email="'.$_POST['email'].'", 
 													employee_no="'.$_POST['employee_no'].'",
 															department_id="'.$_POST['department_id'].'",
-																	ifleave="'.$_POST['ifleave'].'"  
-																		 WHERE id="'.$_POST['id'].'" LIMIT 1';
+																	ifavailable="'.$_POST['ifavailable'].'",
+																	    ifprobation="'.$_POST['ifprobation'].'"  
+																		     WHERE id="'.$_POST['id'].'" LIMIT 1';
 			if($mysqli->query($sql)){
 				$httpstatus = 200;
 				$msg = '保存用户成功';
