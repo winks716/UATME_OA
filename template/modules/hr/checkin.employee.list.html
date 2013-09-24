@@ -3,45 +3,132 @@
 
 <div class="container">
     <div class="left span-4">
-        to be checkin
+        	未入职员工列表
         <{foreach from=$employee_list item=e}>
-            <div><{$e.namezh}>(<{$e.name}>)</div>
+            <div><a href="index.php?m=hr&s=checkin&a=employee.list&eid=<{$e.id}>"><{$e.namezh}>(<{$e.name}>)</a></div>
         <{/foreach}>
     </div>
     <div class="left span-20">
     <{if $employee_infor.basic}>
+    <{foreach from=$employee_infor.basic item=b}>
     
-        <div class="clear">Basic Info</div>
-        <{foreach from=$employee_infor.basic item=b}>
-            <div><{$employee_list[$b.employee_id].namezh}></div>
-            <div><{$b.comment}></div>
-        <{/foreach}>
-        
+        <div class="clear"><strong>基本信息</strong><span class="clickbtn basicEdit" i="<{$b.employee_id}>">[编辑]</span></div>
+            <div>姓名：<{$employee_list[$b.employee_id].namezh}></div>
+            <div>手机：<{$b.mobile}></div>
+            <div>座机：<{$b.telephone}></div>
+            <div>地址：<{$b.address}></div>
+            <div>婚姻：<{$b.marriage}></div>
+            <div>籍贯：<{$b.native}></div>
+            <div>岗位：<{$jd[$b.jdid].name}>
+            <span class="clickbtn" title="<{$jd[$b.jdid].description}>">[描述]</span>
+            <span class="clickbtn" title="<{$jd[$b.jdid].requirement}>">[要求]</span></div>
+        <br/><br/>
+        <div class="clear"><strong>教育背景</strong><span class="clickbtn educationAdd" i="<{$b.employee_id}>">[添加]</span></div>
         <{if $employee_infor.education}>
-        <div class="clear">Education Info</div>
         <{foreach from=$employee_infor.education item=e}>
-            <div><{$b.brief}></div>
+            <div><{$e.school}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <{$e.major}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <{$e.start}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <{$e.end}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <{$e.comment}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="clickbtn" i="<{$b.employee_id}>" i="<{$e.id}>">[删除]</span></div>
         <{/foreach}>
         <{else}>
-            <div class="clear">no data</div>
+            <div class="clear">无</div>
         <{/if}>
-        
+        <br/><br/>
+        <div class="clear"><strong>技能列表</strong><span class="clickbtn skillAdd" i="<{$b.employee_id}>">[添加]</span></div>
         <{if $employee_infor.skill}>
-        <div class="clear">Skill Info</div>
         <{foreach from=$employee_infor.skill item=s}>
-            <div><{$b.brief}></div>
+            <div><{$s.skill}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <{$s.level}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <{$s.time}>个月&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="clickbtn" i="<{$b.employee_id}>" i="<{$s.id}>">[删除]</span></div>
         <{/foreach}>
         <{else}>
-            <div class="clear">no data</div>
+            <div class="clear">无</div>
         <{/if}>
+        <br/><br/>
+        <div class="clear">
+        	<span class="clickbtn" i="<{$b.employee_id}>">[确认入职]</span>
+        </div>
     
+    <{/foreach}>
     <{else}>
     
-        Please select one employee from left bar to carry out the check process.
+        请从左侧选择将入职的员工
         
     <{/if}>
     </div>
 </div>
 
+<div id="alertDiv"></div>
+
 <{include file="declaration.html"}>
 <{include file="footer.html"}>
+
+<script>
+	$(function(){
+		$(".basicEdit").click(function(){
+			$('#alertDiv').html('').dialog({
+				modal: true,
+				width: 500,
+				height: 450,
+				buttons: {
+					'保存': function(){
+						$.post('index.php?m=hr&s=checkin&a=employee.basic.editsave',$('#editBasicForm').serialize(),function(data){
+							var json = eval('(' + data + ')');
+							if(json.httpstatus == 200){
+								alert(json.msg);
+								window.location.reload();
+							}else{
+								alert(json.error);
+							}
+						})
+					},
+					'取消': function(){$('#alertDiv').dialog('close').html('')}
+				}
+			}).load('index.php?m=hr&s=checkin&a=employee.basic.editinit&eid='+$(this).attr("i"));
+		})
+		$(".educationAdd").click(function(){
+			$('#alertDiv').html('').dialog({
+				modal: true,
+				width: 500,
+				height: 450,
+				buttons: {
+					'确认添加': function(){
+						$.post('index.php?m=hr&s=checkin&a=employee.education.addsave',$('#addEducationForm').serialize(),function(data){
+							var json = eval('(' + data + ')');
+							if(json.httpstatus == 200){
+								alert(json.msg);
+								window.location.reload();
+							}else{
+								alert(json.error);
+							}
+						})
+					},
+					'取消': function(){$('#alertDiv').dialog('close').html('')}
+				}
+			}).load('index.php?m=hr&s=checkin&a=employee.education.addinit&eid='+$(this).attr("i"));
+		})
+		$(".skillAdd").click(function(){
+			$('#alertDiv').html('').dialog({
+				modal: true,
+				width: 500,
+				height: 450,
+				buttons: {
+					'确认添加': function(){
+						$.post('index.php?m=hr&s=checkin&a=employee.skill.addsave',$('#addSkillForm').serialize(),function(data){
+							var json = eval('(' + data + ')');
+							if(json.httpstatus == 200){
+								alert(json.msg);
+								window.location.reload();
+							}else{
+								alert(json.error);
+							}
+						})
+					},
+					'取消': function(){$('#alertDiv').dialog('close').html('')}
+				}
+			}).load('index.php?m=hr&s=checkin&a=employee.skill.addinit&eid='+$(this).attr("i"));
+		})
+	})
+</script>

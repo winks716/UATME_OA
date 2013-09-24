@@ -1,7 +1,20 @@
-<{include file="header.html"}>
-<{include file="topnav.html"}>
-
-checkin.basic.edit.html
-
-<{include file="declaration.html"}>
-<{include file="footer.html"}>
+<strong>编辑基本信息 </strong>
+<form id="editBasicForm">
+<input type="hidden" name="employee_id" value="<{$employee_id}>"/>
+<{foreach from=$basic item=b}>
+<table>
+	<tr><td>手机</td><td><input name="mobile" value="<{$b.mobile}>"/></td></tr>
+	<tr><td>电话</td><td><input name="telephone" value="<{$b.telephone}>"/></td></tr>
+	<tr><td>住址</td><td><input name="address" value="<{$b.address}>"/></td></tr>
+	<tr><td>婚姻</td><td><input type="radio" name="marriage" value="已婚" <{if $b.marriage=='已婚'}>checked<{/if}>/>已婚 &nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="radio" name="marriage" value="未婚" <{if $b.marriage!='已婚'}>checked<{/if}>/>未婚</td></tr>
+	<tr><td>籍贯</td><td><input name="native" value="<{$b.native}>"/></td></tr>
+	<tr><td>岗位JD</td>
+	<td><select name="jdid">
+		<{foreach from=$jd item=j}>
+		<option value="<{$j.id}>" <{if $j.id==$b.jdid}>selected<{/if}>><{$j.name}></option>
+		<{/foreach}>
+	</select></td></tr>
+</table>
+<{/foreach}>
+</form>
