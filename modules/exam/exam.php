@@ -8,6 +8,7 @@ switch($A){
     case 'exam':
         $examToken = (isset($_GET['t']) && $_GET['t']!='') ? $_GET['t'] : '';
         $examTemplate = 'exam/exam.exam.html';
+        $i = 1;
         if($examToken){
             //find exam match the token, then show the exam
             $sql = 'SELECT examId FROM uatme_oa_oexam_exam_employee WHERE employeeId="'.$_SESSION['employee_id'].'" AND examToken="'.$examToken.'"';
@@ -24,7 +25,7 @@ switch($A){
             	if($resultExam->num_rows == 1){
             	    while ($arrayExam = $resultExam->fetch_assoc()){
             	        //question
-            	        $sqlQuestion = 'SELECT * FROM uatme_oa_oexam_question WHERE examId="'.$arrayExam['examId'].'"';
+            	        $sqlQuestion = 'SELECT * FROM uatme_oa_oexam_question WHERE examId="'.$arrayExam['id'].'"';
             	        $resultQuestion = $mysqli->query($sqlQuestion);
             	        if($resultQuestion->num_rows > 0){
             	            while ($arrayQuestion = $resultQuestion->fetch_assoc()){
@@ -38,12 +39,13 @@ switch($A){
             	                }else{
                                     $examTemplate = 'exam/exam.none.html';
                                 }
+                                $arrayQuestion['i'] = $i++;
             	                $arrayExam['question'][] = $arrayQuestion;
             	            }
             	        }else{
                             $examTemplate = 'exam/exam.none.html';
                         }
-            	        $assign['exam'] = $arrayExam;
+            	        $assign['exam'][] = $arrayExam;
             	    }
             	}else{
                     $examTemplate = 'exam/exam.none.html';

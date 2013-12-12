@@ -1,7 +1,65 @@
 <{include file="header.html"}>
 <{include file="topnav.html"}>
 
-exam.exam.html
+<style>
+.exam {
+    margin: 0 auto;
+    width: 800px;
+}
+.exam .examTitle {
+    margin: 10px 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+.exam .examInstruction {
+    margin: 10px 0 30px;
+}
+.exam .question {
+    margin: 20px 0;
+    font-weight: bold;
+}
+.exam .question .option {
+    margin: 5px 0;
+    font-weight: normal;
+}
+.exam #examSubmit {
+    margin: 50px auto;
+    width: 150px;
+}
+</style>
+
+<form id="examForm">
+<{foreach from=$exam item=e}>
+    <div id="exam" class="exam">
+        <div class="examTitle">
+            <{$e.name}>
+        </div>
+        <div class="examInstruction">
+            <em><{$e.description}></em>
+        </div>
+    <{foreach from=$e.question item=q}>
+        <div class="question">
+        <{$q.i}>. <{$q.content}>
+        <{foreach from=$q.option item=o}>
+            <div class="option">
+            <input <{if $q.ifSingle==1}>type="radio" name="answer_<{$q.id}>"<{else}>type="checkbox" name="answer_<{$q.id}>[]"<{/if}> value="<{$o.id}>"/>
+            <{$o.content}>
+            </div>
+        <{/foreach}>
+        </div>
+    <{/foreach}>
+        <div id="examSubmit" class="clickbtn">[交卷]</div>
+    </div>
+<{/foreach}>
+</form>
 
 <{include file="declaration.html"}>
 <{include file="footer.html"}>
+
+<script>
+$(function(){
+	$('#examSubmit').click(function(){
+		alert($('#examForm').serialize());
+	})
+})
+</script>
