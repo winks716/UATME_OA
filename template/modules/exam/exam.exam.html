@@ -11,6 +11,11 @@
     font-size: 20px;
     font-weight: bold;
 }
+.exam .examTitle .autoSaveTip {
+    font-size: 14px;
+    font-weight: normal;
+    margin-left: 100px;
+}
 .exam .examInstruction {
     margin: 10px 0 30px;
 }
@@ -28,7 +33,7 @@
 }
 </style>
 
-<form id="examForm">
+<form id="examForm" method="post" action="index.php?m=exam&s=exam&a=submit&t=<{$examToken}>">
 <{foreach from=$exam item=e}>
     <div id="exam" class="exam">
         <div class="examTitle">
@@ -57,9 +62,27 @@
 <{include file="footer.html"}>
 
 <script>
+function autoSave() {
+	//alert($('#examForm').serialize());
+	$.post('index.php?m=exam&s=exam&a=save&t=<{$examToken}>',$('#examForm').serialize(),function(data){
+		//alert(data);
+		var json = eval('(' + data + ')');
+		if(json.httpstatus == 200){
+			// update tip to tell student autosaved
+			$('.examTitle').append('<span class="autoSaveTip">答卷内容已保存...</span>');
+			$('.autoSaveTip').fadeOut(5000);
+		} else {
+			//do nothing
+		}
+	})
+	setTimeout("autoSave()",30000);
+}
 $(function(){
 	$('#examSubmit').click(function(){
 		alert($('#examForm').serialize());
+		$('#examForm').submit();
 	})
+	
+	autoSave();
 })
 </script>
