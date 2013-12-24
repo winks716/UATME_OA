@@ -1,0 +1,59 @@
+<{include file="header.html"}>
+<{include file="topnav.html"}>
+
+<style>
+.exam {
+    margin: 0 auto;
+    width: 800px;
+}
+.exam .examTitle {
+    margin: 10px 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+.exam .examTitle .autoSaveTip {
+    font-size: 14px;
+    font-weight: normal;
+    margin-left: 100px;
+}
+.exam .examInstruction {
+    margin: 10px 0 30px;
+}
+.exam .question {
+    margin: 20px 0;
+    font-weight: bold;
+}
+.exam .question .option {
+    margin: 5px 0;
+    font-weight: normal;
+}
+.exam #examSubmit {
+    margin: 50px auto;
+    width: 150px;
+}
+</style>
+
+<{foreach from=$exam item=e}>
+    <div id="exam" class="exam">
+        <div class="examTitle">
+            <{$e.name}>
+        </div>
+        <div class="examInstruction">
+            <em><{$e.description}></em>
+        </div>
+    <{foreach from=$e.question item=q}>
+        <div class="question">
+        <{$q.i}>. <{$q.content}>
+        <{foreach from=$q.option item=o}>
+            <div class="option">
+            <input  <{foreach from=$answerSheet[$q.id] item=as}><{if $as==$o.id}>checked<{/if}><{/foreach}>  <{if $q.ifSingle==1}>type="radio" name="answer_<{$q.id}>"<{else}>type="checkbox" name="answer_<{$q.id}>[]"<{/if}> value="<{$o.id}>"/>
+            <{$o.content}>
+            </div>
+        <{/foreach}>
+        </div>
+    <{/foreach}>
+    </div>
+<{/foreach}>
+
+<{include file="declaration.html"}>
+<{include file="footer.html"}>

@@ -114,15 +114,23 @@ switch($A){
         break;
     case 'review':
         $assign['examToken'] = (isset($_GET['t']) && $_GET['t']!='') ? $_GET['t'] : '';
-        $examTemplate = 'exam/exam.exam.html';
+        $examTemplate = 'exam/exam.review.html';
         $i = 1;
         if($assign['examToken']){
             //find exam match the token, then show the exam
-            $sql = 'SELECT examId FROM uatme_oa_oexam_exam_employee WHERE employeeId="'.$_SESSION['employee_id'].'" AND examToken="'.$assign['examToken'].'"';
+            $sql = 'SELECT examId, sheet FROM uatme_oa_oexam_exam_employee WHERE employeeId="'.$_SESSION['employee_id'].'" AND examToken="'.$assign['examToken'].'" AND ifDone="1"';
             $resultPaper = $mysqli->query($sql);
             if($resultPaper->num_rows == 1){
             	while($arrayPaper = $resultPaper->fetch_assoc()){
             		$assign['examId'] = $arrayPaper['examId'];
+                    $sheet = explode(',', $arrayPaper['sheet']);
+                    foreach ($sheet as $value) {
+                        $answer = explode('_', $value);
+                        $answerSheet[array_shift($answer)] = $answer;
+                    }
+                    $assign['answerSheet'] = $answerSheet;
+                    echo $arrayPaper['sheet'];
+                    print_r($answerSheet);
             	}
             	
             	//find related exam info, question info and option info
